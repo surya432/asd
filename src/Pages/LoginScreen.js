@@ -34,13 +34,19 @@ export default class App extends Component {
         } else {
             // console.log(loginResponse);
             this._fectLogin();
-            // this.props.navigation.navigate('Dashboard')
             // console.log(dataUser);
         }
 
     }
-
-    componentDidMount() {
+    componentWillMount() {
+        console.log(this.getToken("dataUser"));
+        let dataLogin = this.getToken("dataUser");
+        if(dataLogin != null){
+            this._goDashboard()
+        }
+    }
+    _goDashboard(){
+        this.props.navigation.navigate('Dashboard')
 
     }
     _fectLogin() {
@@ -65,8 +71,10 @@ export default class App extends Component {
         }).then((response) => response.json())
             .then((responseJson) => {
                 console.log(responseJson);
-                if (responseJson.keterangan == "OK") {
-                    this.storeToken(JSON.stringify(responseJson.data))
+                if (responseJson.kode == 1) {
+                    console.log(responseJson.data);
+                    this.storeToken("dataUser",JSON.stringify(responseJson.data))
+                    this._goDashboard()
                 } else {
                     alert(responseJson.keterangan)
                 }
@@ -78,18 +86,19 @@ export default class App extends Component {
             });
 
     }
-    async storeToken(user) {
+    async storeToken(keysData,values) {
         try {
-            await AsyncStorage.setItem("userData", JSON.stringify(user));
+            await AsyncStorage.setItem(keysData, JSON.stringify(values));
         } catch (error) {
             console.log("Something went wrong", error);
         }
     }
-    async getToken(user) {
+    async getToken(keysData) {
         try {
-            let userData = await AsyncStorage.getItem("userData");
+            let userData = await AsyncStorage.getItem(keysData);
             let data = JSON.parse(userData);
             console.log(data);
+            return data;
         } catch (error) {
             console.log("Something went wrong", error);
         }

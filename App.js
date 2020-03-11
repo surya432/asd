@@ -10,10 +10,10 @@ const Stack = createStackNavigator();
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="LoginScreen">
-        <Stack.Screen name="Splash" component={SplashScreen} />
+      <Stack.Navigator initialRouteName="SplashScreen" options={{headerShown:false}} >
+        <Stack.Screen name="SplashScreen" component={SplashScreen} options={{headerShown:false}}  />
         <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown:false}} />
-        <Stack.Screen name="Dashboard" component={Dashboard} />
+        <Stack.Screen name="Dashboard" component={Dashboard} options={{headerShown:false}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

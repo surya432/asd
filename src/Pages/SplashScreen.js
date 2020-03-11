@@ -12,6 +12,16 @@ export class SplashScreen extends Component {
             timePassed: false
         };
     }
+    async getToken(keysData) {
+        try {
+            let userData = await AsyncStorage.getItem(keysData);
+            let data = JSON.parse(userData);
+            console.log(data);
+            return data;
+        } catch (error) {
+            console.log("Something went wrong", error);
+        }
+    }
     componentDidMount() {
         setTimeout(() => { this.setState({ timePassed: true }) }, 3000);
     }
@@ -22,10 +32,15 @@ export class SplashScreen extends Component {
 
     render() {
         if (!this.state.timePassed) {
-            return <SplashScreen />;
+            return <Text>ini SplashScreen</Text>;
         } else {
-            return this.props.navigation.navigate('LoginScreen')
+            let dataLogin = this.getToken("dataUser");
+            if(dataLogin != null){
+                return this.props.navigation.navigate('Dashboard')
+            }else{
+                return this.props.navigation.navigate('LoginScreen')
 
+            }
         }
 
     }
