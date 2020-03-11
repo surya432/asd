@@ -1,14 +1,46 @@
-import React, { Component } from 'react'
-import { Text, View } from 'react-native'
+import react from 'react'
+import {
+    ActivityIndicator,
+    StatusBar,
+    View,
+} from 'react-native'
+import {
+    createSwitchNavigator,
+    createAppContainer,
+} from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 
-export class App extends Component {
-    render() {
-        return (
-            <View>
-                <Text>Cupidatat adipisicing sunt anim velit pariatur tempor.  </Text>
-            </View>
-        )
+import SplashScreen from './Pages/SplashScreen';
+import LoginScreen from './Pages/LoginScreen';
+import Dashboard from './Pages/Dashboard';
+
+const RootStack = createStackNavigator({
+    Dashboard: Dashboard
+}, {
+    defaultNavigationOptions: {
+        headerStyle: {
+            backgroundColor: '#1e90ff',
+            justifyContent:"center",
+            alignItems:"center",
+            alignContent:"center"
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+            textAlign: 'center',
+            flex: 1
+        }
     }
-}
+})
+const AuthStack = createSwitchNavigator({ LoginScreen: LoginScreen });
 
-export default App
+
+export default createAppContainer(createSwitchNavigator(
+    {
+        SplashScreen: SplashScreen,
+        App: RootStack,
+        Auth: AuthStack
+    },
+    {
+        initialRouteName: "SplashScreen",
+    }
+))

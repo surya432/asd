@@ -1,9 +1,12 @@
-import React, { Component } from 'react'
-import { } from 'react-native';
-import { Text, View, Image, YellowBox, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
-YellowBox.ignoreWarnings(['Warning: ...']);
-import Swiper from 'react-native-swiper'
-const { width } = Dimensions.get('window')
+import React, { Component } from 'react';
+import {
+    StyleSheet,
+    View,Text,
+    Image,
+} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+
+import AsyncStorage from '@react-native-community/async-storage';
 
 export class SplashScreen extends Component {
     constructor(props) {
@@ -11,37 +14,29 @@ export class SplashScreen extends Component {
         this.state = {
             timePassed: false
         };
+        // this._loadData()
     }
-    async getToken(keysData) {
-        try {
-            let userData = await AsyncStorage.getItem(keysData);
-            let data = JSON.parse(userData);
-            console.log(data);
-            return data;
-        } catch (error) {
-            console.log("Something went wrong", error);
-        }
+    _loadData = async () => {
+        const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
+        this.props.navigation.navigate(isLoggedIn !== "1" ? 'Auth' : 'App')
     }
     componentDidMount() {
-        setTimeout(() => { this.setState({ timePassed: true }) }, 3000);
-    }
-
-    setTimePassed() {
-        this.setState({ timePassed: true });
+        // setTimeout(() => {
+        //     // this._loadData();
+        // }, 3000);
     }
 
     render() {
-        if (!this.state.timePassed) {
-            return <Text>ini SplashScreen</Text>;
-        } else {
-            let dataLogin = this.getToken("dataUser");
-            if(dataLogin != null){
-                return this.props.navigation.navigate('Dashboard')
-            }else{
-                return this.props.navigation.navigate('LoginScreen')
 
-            }
-        }
+        return (
+            <View style={styles.Container}>
+                <View style={styles.imageContainer}>
+                    <Image source={require('../asset/asset1.png')} style={styles.Images}></Image>
+                    <Text  style={[styles.TextHead,{paddingHorizontal:25, marginTop:18}]}>Qui laborum pariatur est cupidatat</Text>
+                    <Text style={styles.TextSubtile}>Sit minim nulla officia pariatur laborum eiusmod mollit aliquip enim velit ad. Anim commodo sunt culpa amet ipsum ex ut adipisicing commodo qui enim. Ea aute ea anim ipsum minim sit adipisicing tempor.</Text>
+                </View>
+            </View>
+        )
 
     }
 }
@@ -51,8 +46,6 @@ export default SplashScreen
 const styles = new StyleSheet.create({
     Container: {
         flex: 1,
-    },
-    wrapper: {
         backgroundColor: "#003d99",
     },
     imageContainer: {
@@ -62,16 +55,21 @@ const styles = new StyleSheet.create({
     },
     TextHead: {
         fontWeight: "bold",
-        fontSize: 30,
+        fontSize: 26,
+        color: "#f2f2f2",
+        alignItems:"center",
+        justifyContent:"center",
     },
     TextSubtile: {
         fontSize: 12,
-        color: "#f2f2f2"
+        color: "#f2f2f2",
+        justifyContent:"center",
+        alignItems:"center",
     },
     Images: {
-        width: 250,
-        height: 250,
-        resizeMode: "cover"
+        width: 300,
+        height: 300,
+        resizeMode: "stretch"
     },
 
 })
