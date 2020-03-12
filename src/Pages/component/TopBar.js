@@ -7,6 +7,7 @@ class TopBar extends React.Component {
                 {/* <Text>Left</Text> */}
                 <Text styles={styles.TitleBar}>HOME</Text>
                 {/* <Text>Right</Text> */}
+                
             </View>
         );
     }
