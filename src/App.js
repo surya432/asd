@@ -18,6 +18,7 @@ const RootStack = createStackNavigator({
     Dashboard: Dashboard
 }, {
     defaultNavigationOptions: {
+        headerShown: false,
         headerStyle: {
             backgroundColor: '#1e90ff',
         },

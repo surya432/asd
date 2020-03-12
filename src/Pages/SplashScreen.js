@@ -4,6 +4,8 @@ import {
     StyleSheet,
     View, Text,
     Image,
+    Animated,
+    Easing
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -16,8 +18,16 @@ export class SplashScreen extends Component {
         setTimeout(() => {
             this._loadData();
         }, 7000);
+        fadeValue: new Animated.Value(0)
         // this._loadData()
     }
+    _start = () => {
+        Animated.timing(this.state.fadeValue, {
+          toValue: 1,
+          duration: 3000
+        }).start();
+      };
+    
     _loadData = async () => {
         const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
         this.props.navigation.navigate(isLoggedIn !== "1" ? 'Auth' : 'App')
@@ -26,11 +36,11 @@ export class SplashScreen extends Component {
     render() {
         return (
             <View style={styles.Container}>
-                <View style={styles.imageContainer}>
-                    <Image source={require('../asset/asset1.png')} style={styles.Images}></Image>
+                <Animated.View style={[styles.imageContainer,{opacity: this.state.fadeValue,}]}>
+                    <Image source={require('../asset/asset1.png')} style={styles.Images} />
                     <Text style={[styles.TextHead, { paddingHorizontal: 25, marginTop: 18 }]}>Qui laborum pariatur est cupidatat</Text>
                     <Text style={[styles.TextSubtile, { paddingHorizontal: 25, marginTop: 6 }]}>Sit minim nulla officia pariatur laborum eiusmod mollit aliquip enim velit ad. Anim commodo sunt culpa amet ipsum ex ut adipisicing commodo qui enim. Ea aute ea anim ipsum minim sit adipisicing tempor.</Text>
-                </View>
+                </Animated.View>
             </View>
         )
     }
@@ -54,14 +64,14 @@ const styles = new StyleSheet.create({
         color: "#f2f2f2",
         alignItems: "center",
         justifyContent: "center",
-        textAlign:"center",
+        textAlign: "center",
     },
     TextSubtile: {
         fontSize: 12,
         color: "#f2f2f2",
         justifyContent: "center",
         alignItems: "center",
-        textAlign:"center",
+        textAlign: "center",
     },
     Images: {
         width: 300,
