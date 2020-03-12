@@ -26,13 +26,12 @@ export class SplashScreen extends Component {
     }
 
     render() {
-
         return (
             <View style={styles.Container}>
                 <View style={styles.imageContainer}>
                     <Image source={require('../asset/asset1.png')} style={styles.Images}></Image>
                     <Text  style={[styles.TextHead,{paddingHorizontal:25, marginTop:18}]}>Qui laborum pariatur est cupidatat</Text>
-                    <Text style={styles.TextSubtile}>Sit minim nulla officia pariatur laborum eiusmod mollit aliquip enim velit ad. Anim commodo sunt culpa amet ipsum ex ut adipisicing commodo qui enim. Ea aute ea anim ipsum minim sit adipisicing tempor.</Text>
+                    <Text style={[styles.TextSubtile,{paddingHorizontal:25, marginTop:6}]}>Sit minim nulla officia pariatur laborum eiusmod mollit aliquip enim velit ad. Anim commodo sunt culpa amet ipsum ex ut adipisicing commodo qui enim. Ea aute ea anim ipsum minim sit adipisicing tempor.</Text>
                 </View>
             </View>
         )

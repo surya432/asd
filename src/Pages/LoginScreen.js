@@ -33,7 +33,7 @@ export default class App extends Component {
             alert("Password Belum Di isi");
         } else {
             this._fectLogin();
-            await AsyncStorage.setItem("dataUser",JSON.stringify(this.state.dataUser));
+            await AsyncStorage.setItem("dataUser", JSON.stringify(this.state.dataUser));
             await AsyncStorage.setItem("isLoggedIn", "1");
             this.props.navigation.navigate('Dashboard');
         }
@@ -61,7 +61,7 @@ export default class App extends Component {
             .then((responseJson) => {
                 console.log(responseJson);
                 if (responseJson.kode == 1) {
-                  this.setState.dataUser = responseJson
+                    this.setState.dataUser = responseJson
                     return
                 } else {
                     alert(responseJson.keterangan)
@@ -78,7 +78,7 @@ export default class App extends Component {
     render() {
         return (
             <LinearGradient
-                start={{ x: 1, y: 0 }} end={{ x: 1, y: 0 }}
+                start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }}
                 colors={['#1e3c72', '#3b5998', '#1e90ff']}
                 style={styles.Container}>
                 <View style={styles.cardLogin} >
@@ -106,7 +106,7 @@ export default class App extends Component {
                         <TouchableOpacity onPress={this._onPressLogin.bind(this)}>
                             <LinearGradient
                                 start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }}
-                                colors={['#ff5722', '#ff9800', '#ffc107']}
+                                colors={['#ff5722', '#ff9800']}
                                 style={styles.button}>
                                 <Text style={styles.button}>LOGIN</Text>
                             </LinearGradient>
