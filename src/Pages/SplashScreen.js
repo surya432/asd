@@ -4,6 +4,7 @@ import { Text, View, Image, YellowBox, StyleSheet, TouchableOpacity, Dimensions 
 YellowBox.ignoreWarnings(['Warning: ...']);
 import Swiper from 'react-native-swiper'
 const { width } = Dimensions.get('window')
+import AsyncStorage from '@react-native-community/async-storage';
 
 export class SplashScreen extends Component {
     constructor(props) {
@@ -39,7 +40,6 @@ export class SplashScreen extends Component {
                 return this.props.navigation.navigate('Dashboard')
             }else{
                 return this.props.navigation.navigate('LoginScreen')
-
             }
         }
 
