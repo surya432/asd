@@ -4,6 +4,7 @@ import {
     View,
     Text,
     TextInput,
+    Alert,
     TouchableOpacity,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -23,34 +24,22 @@ export default class App extends Component {
     }
 
     _onPressLogin = async () => {
-        const { edtUserName, edtPass, dataUser } = this.state;
-
-        if (edtUserName.length < 1 && edtPass.length < 1) {
+        const { edtUserName, edtPass } = this.state;
+        if (edtUserName.length == 0 && edtPass.length == 0) {
             alert("Form Belum Di isi Semua")
-        } else if (edtUserName.length < 1) {
+        } else if (edtUserName.length == 0) {
             alert("Email belum di isi");
-        } else if (edtPass.length < 1) {
+        } else if (edtPass.length == 0) {
             alert("Password Belum Di isi");
         } else {
-            // console.log(loginResponse);
             this._fectLogin();
-            // console.log(dataUser);
-        }
-
-    }
-    componentWillMount() {
-        console.log(this.getToken("dataUser"));
-        let dataLogin = this.getToken("dataUser");
-        if(dataLogin != null){
-            this._goDashboard()
+            await AsyncStorage.setItem("dataUser",JSON.stringify(this.state.dataUser));
+            await AsyncStorage.setItem("isLoggedIn", "1");
+            this.props.navigation.navigate('Dashboard');
         }
     }
-    _goDashboard(){
-        this.props.navigation.navigate('Dashboard')
-
-    }
-    _fectLogin() {
-        const { edtUserName, edtPass, dataUser } = this.state;
+    _fectLogin = async () => {
+        const { edtUserName, edtPass } = this.state;
         var details = {
             'email': edtUserName,
             'password': edtPass,
@@ -62,7 +51,7 @@ export default class App extends Component {
             formBody.push(encodedKey + "=" + encodedValue);
         }
         formBody = formBody.join("&");
-        fetch("http://47.75.169.97/todo/public/login", {
+        return await fetch("http://47.75.169.97/todo/public/login", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -72,42 +61,25 @@ export default class App extends Component {
             .then((responseJson) => {
                 console.log(responseJson);
                 if (responseJson.kode == 1) {
-                    console.log(responseJson.data);
-                    this.storeToken("dataUser",JSON.stringify(responseJson.data))
-                    this._goDashboard()
+                  this.setState.dataUser = responseJson
+                    return
                 } else {
                     alert(responseJson.keterangan)
+                    return
                 }
-            })
-            .catch((error) => {
+            }).catch((error) => {
                 console.error("error " + error);
                 return null;
 
             });
 
     }
-    async storeToken(keysData,values) {
-        try {
-            await AsyncStorage.setItem(keysData, JSON.stringify(values));
-        } catch (error) {
-            console.log("Something went wrong", error);
-        }
-    }
-    async getToken(keysData) {
-        try {
-            let userData = await AsyncStorage.getItem(keysData);
-            let data = JSON.parse(userData);
-            console.log(data);
-            return data;
-        } catch (error) {
-            console.log("Something went wrong", error);
-        }
-    }
+
     render() {
         return (
             <LinearGradient
                 start={{ x: 1, y: 0 }} end={{ x: 1, y: 0 }}
-                colors={['#1e3c72', '#3b5998', '#192f6a']}
+                colors={['#1e3c72', '#3b5998', '#1e90ff']}
                 style={styles.Container}>
                 <View style={styles.cardLogin} >
                     <Text style={[styles.textView]}> LOGIN</Text>
@@ -195,7 +167,6 @@ const styles = new StyleSheet.create({
         width: 150,
         height: 50,
         marginVertical: 8,
-
         paddingVertical: 10,
 
     },
