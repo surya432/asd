@@ -11,7 +11,7 @@ import {
 import { createStackNavigator } from 'react-navigation-stack';
 
 import SplashScreen from './Pages/SplashScreen';
-import LoginScreen from './Pages/LoginScreen';
+import LoginScreen from './Pages/Auth/LoginScreen';
 import Dashboard from './Pages/Dashboard';
 
 const RootStack = createStackNavigator({
@@ -20,9 +20,6 @@ const RootStack = createStackNavigator({
     defaultNavigationOptions: {
         headerStyle: {
             backgroundColor: '#1e90ff',
-            justifyContent:"center",
-            alignItems:"center",
-            alignContent:"center"
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
