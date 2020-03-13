@@ -17,7 +17,7 @@ export class SplashScreen extends Component {
         };
         setTimeout(() => {
             this._loadData();
-        }, 7000);
+        }, 3000);
         fadeValue: new Animated.Value(0)
         // this._loadData()
     }

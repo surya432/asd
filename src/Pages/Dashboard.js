@@ -10,12 +10,11 @@ const TabNavigator = createBottomTabNavigator(
     {
         Home: {
             screen: HomeScreen,
-            
         },
         Task: {
             screen: ChatScreen,
         },
-        Settings: {
+        Profile: {
             screen: SettingsScreen,
         },
     },
@@ -28,8 +27,8 @@ const TabNavigator = createBottomTabNavigator(
                     iconName = 'ios-home';
                 } else if (routeName === 'Task') {
                     iconName = 'ios-create';
-                } else if (routeName === 'Settings') {
-                    iconName = 'ios-settings';
+                } else if (routeName === 'Profile') {
+                    iconName = 'ios-person';
                 }
                 return (
                     <Ionicons
@@ -40,8 +39,6 @@ const TabNavigator = createBottomTabNavigator(
                 );
             },
             activeTintColor: '#F44336',
-            
-
         }),
     },
 );

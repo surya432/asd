@@ -14,21 +14,25 @@ import SplashScreen from './Pages/SplashScreen';
 import LoginScreen from './Pages/Auth/LoginScreen';
 import Dashboard from './Pages/Dashboard';
 
-const RootStack = createStackNavigator({
-    Dashboard: Dashboard
-}, {
-    defaultNavigationOptions: {
-        headerShown: false,
-        headerStyle: {
-            backgroundColor: '#1e90ff',
-        },
-        headerTintColor: '#fff',
-        headerTitleStyle: {
-            textAlign: 'center',
-            flex: 1
+const RootStack = createStackNavigator(
+    {
+        Dashboard: {
+            screen: Dashboard,
+            navigationOptions: { headerShown: false },
         }
-    }
-})
+    },
+    {
+        defaultNavigationOptions: {
+            headerStyle: {
+                backgroundColor: '#1e90ff',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                textAlign: 'center',
+                flex: 1
+            }
+        }
+    })
 const AuthStack = createSwitchNavigator({ LoginScreen: LoginScreen });
 
 
