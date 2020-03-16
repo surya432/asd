@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import HomeScreen from './screens/HomeScreen';
 import ChatScreen from './screens/ChatScreen';
-import SettingsScreen from './screens/SettingsScreen';
+import ProfileScreen from './screens/ProfileScreen';
 
 const TabNavigator = createBottomTabNavigator(
     {
@@ -15,8 +15,8 @@ const TabNavigator = createBottomTabNavigator(
             screen: ChatScreen,
         },
         Profile: {
-            screen: SettingsScreen,
-        },
+            screen: ProfileScreen,
+        }
     },
     {
         defaultNavigationOptions: ({ navigation }) => ({
@@ -40,6 +40,9 @@ const TabNavigator = createBottomTabNavigator(
             },
             activeTintColor: '#F44336',
         }),
+        animationEnabled: true,
+        swipeEnabled: true,
+        tabBarPosition: 'bottom'
     },
 );
 export default createAppContainer(TabNavigator);

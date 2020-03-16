@@ -12,12 +12,12 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 import SplashScreen from './Pages/SplashScreen';
 import LoginScreen from './Pages/Auth/LoginScreen';
-import Dashboard from './Pages/Dashboard';
-
+import DashboardScreen from './Pages/DashboardScreen';
+import SignUpScreen from './Pages/Auth/SignUpScreen'
 const RootStack = createStackNavigator(
     {
         Dashboard: {
-            screen: Dashboard,
+            screen: DashboardScreen,
             navigationOptions: { headerShown: false },
         }
     },
@@ -32,8 +32,17 @@ const RootStack = createStackNavigator(
                 flex: 1
             }
         }
-    })
-const AuthStack = createSwitchNavigator({ LoginScreen: LoginScreen });
+    }
+)
+const AuthStack = createStackNavigator(
+    {
+        LoginScreen: LoginScreen,
+        SignUp: SignUpScreen,
+    },
+    {
+        navigationOptions: { headerShown: false },
+    }
+);
 
 
 export default createAppContainer(createSwitchNavigator(

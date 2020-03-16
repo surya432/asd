@@ -4,13 +4,18 @@ import { Container, CardItem, Header, Left, Item, DatePicker, Right, Content, Bu
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Feather from 'react-native-vector-icons/Feather'
 import moment from 'moment';
+import AsyncStorage from '@react-native-community/async-storage';
+
 export class HomeScreen extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { chosenDate: new Date() };
+        this.state = { chosenDate: new Date(), dataUser: {} };
         this.setDate = this.setDate.bind(this);
     }
-
+    async componentDidMount() {
+        const isLoggedIn = await AsyncStorage.getItem("dataUser");
+        console.log(isLoggedIn);
+    }
     setDate(newDate) {
         this.setState({ chosenDate: newDate });
     }

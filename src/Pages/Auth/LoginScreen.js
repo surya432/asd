@@ -33,9 +33,6 @@ export default class App extends Component {
             alert("Password Belum Di isi");
         } else {
             this._fectLogin();
-            await AsyncStorage.setItem("dataUser", JSON.stringify(this.state.dataUser));
-            await AsyncStorage.setItem("isLoggedIn", "1");
-            this.props.navigation.navigate('Dashboard');
         }
     }
     _fectLogin = async () => {
@@ -62,6 +59,14 @@ export default class App extends Component {
                 console.log(responseJson);
                 if (responseJson.kode == 1) {
                     this.setState.dataUser = responseJson
+                    try{
+                        AsyncStorage.setItem("dataUser", JSON.stringify(responseJson.data))
+                        AsyncStorage.setItem("isLoggedIn", "1");
+                        this.props.navigation.navigate('Dashboard');
+
+                    }catch(error){
+                        console.log("error "+ error)
+                    }
                     return
                 } else {
                     alert(responseJson.keterangan)
@@ -70,7 +75,6 @@ export default class App extends Component {
             }).catch((error) => {
                 console.error("error " + error);
                 return null;
-
             });
 
     }
