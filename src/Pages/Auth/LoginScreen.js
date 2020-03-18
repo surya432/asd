@@ -14,6 +14,7 @@ export default class App extends Component {
         super();
         this.state = {
             name: '',
+            isLoading: false,
             hobby: '',
             edtUserName: '',
             edtPass: '',
@@ -21,6 +22,9 @@ export default class App extends Component {
             dataUser: [],
             isLogin: false
         };
+    }
+    _onPressSignUp = async () => {
+        this.props.navigation.navigate('SignUpScreen');
     }
 
     _onPressLogin = async () => {
@@ -47,6 +51,7 @@ export default class App extends Component {
             var encodedValue = encodeURIComponent(details[property]);
             formBody.push(encodedKey + "=" + encodedValue);
         }
+        this.setState.isLoading = true
         formBody = formBody.join("&");
         return await fetch("http://47.75.169.97/todo/public/login", {
             method: 'POST',
@@ -57,15 +62,18 @@ export default class App extends Component {
         }).then((response) => response.json())
             .then((responseJson) => {
                 console.log(responseJson);
+                this.setState.isLoading = false
+
                 if (responseJson.kode == 1) {
+
                     this.setState.dataUser = responseJson
-                    try{
+                    try {
                         AsyncStorage.setItem("dataUser", JSON.stringify(responseJson.data))
                         AsyncStorage.setItem("isLoggedIn", "1");
                         this.props.navigation.navigate('Dashboard');
 
-                    }catch(error){
-                        console.log("error "+ error)
+                    } catch (error) {
+                        console.log("error " + error)
                     }
                     return
                 } else {
@@ -73,59 +81,68 @@ export default class App extends Component {
                     return
                 }
             }).catch((error) => {
-                console.error("error " + error);
-                return null;
+                console.log(error)
             });
 
     }
 
     render() {
-        return (
-            <LinearGradient
-                start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }}
-                colors={['#1e3c72', '#3b5998', '#1e90ff']}
-                style={styles.Container}>
-                <View style={styles.cardLogin} >
-                    <Text style={[styles.textView]}> LOGIN</Text>
-                    <View style={styles.InputContent}>
-                        <TextInput style={styles.TextInput}
-                            autoCompleteType={"off"}
-                            keyboardType={"email-address"}
-                            autoCorrect={false}
-                            autoCapitalize='none'
-                            returnKeyType={"next"}
-                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                            blurOnSubmit={false}
-                            onChangeText={(edtUserName) => this.setState({ edtUserName })}
-                            placeholder={"Email Addres"} />
-                        <TextInput
-                            onChangeText={(edtPass) => this.setState({ edtPass })}
-                            secureTextEntry={true}
-                            autoCapitalize='none'
-                            ref={(input) => { this.secondTextInput = input; }}
-                            style={styles.TextInput}
-                            placeholder={"Password"} />
-                    </View>
-                    <View style={styles.buttonContainer}>
+        if (this.state.isLoading) {
+            return (<statusbar />);
+        } else {
+            return (
+                <LinearGradient
+                    start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }}
+                    colors={['#1e3c72', '#3b5998', '#1e90ff']}
+                    style={styles.Container}>
+                    <View style={styles.cardLogin} >
+                        <Text style={[styles.textView]}> LOGIN</Text>
+                        <View style={styles.InputContent}>
+                            <TextInput style={styles.TextInput}
+                                autoCompleteType={"off"}
+                                keyboardType={"email-address"}
+                                autoCorrect={false}
+                                autoCapitalize='none'
+                                returnKeyType={"next"}
+                                onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                blurOnSubmit={false}
+                                onChangeText={(edtUserName) => this.setState({ edtUserName })}
+                                placeholder={"Email Addres"} />
+                            <TextInput
+                                onChangeText={(edtPass) => this.setState({ edtPass })}
+                                secureTextEntry={true}
+                                autoCapitalize='none'
+                                ref={(input) => { this.secondTextInput = input; }}
+                                style={styles.TextInput}
+                                placeholder={"Password"} />
+                        </View>
+                        <View style={styles.buttonContainer}>
                         <TouchableOpacity onPress={this._onPressLogin.bind(this)}>
-                            <LinearGradient
-                                start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }}
-                                colors={['#ff5722', '#ff9800']}
-                                style={styles.button}>
-                                <Text style={styles.button}>LOGIN</Text>
-                            </LinearGradient>
-                        </TouchableOpacity>
+                                <LinearGradient
+                                    start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }}
+                                    colors={['#ff5722', '#ff9800']}
+                                    style={styles.button}>
+                                    <Text style={styles.buttonText}>LOGIN</Text>
+                                </LinearGradient>
+                            </TouchableOpacity>
+                             <TouchableOpacity onPress={this._onPressSignUp.bind(this)}>
+                               
+                                    <Text style={styles.buttonTextLogin}>Sign Up</Text>
+                            </TouchableOpacity>
+                            
+
+                        </View>
                     </View>
-                </View>
-            </LinearGradient>
-        );
+                </LinearGradient>
+            );
+        }
     }
 }
 const styles = new StyleSheet.create({
     Container: {
         flex: 1,
         justifyContent: "center",
-        padding: 16,
+        paddingHorizontal: 16
     },
     cardLogin: {
         backgroundColor: 'white',
@@ -168,19 +185,33 @@ const styles = new StyleSheet.create({
     buttonContainer: {
         alignContent: "center",
         justifyContent: "center",
-        width: 150,
-        height: 50,
+        width: 170,
         marginVertical: 8,
         paddingVertical: 10,
 
     },
-    button: {
+    buttonText: {
         textAlign: "center",
         borderRadius: 8,
         marginVertical: 5,
+        paddingHorizontal: 15,
         color: "white",
+        fontSize:12,
         alignContent: "center",
         padding: 5,
-
     },
+    buttonTextLogin: {
+        textAlign: "center",
+        borderRadius: 8,
+        marginVertical: 5,
+        paddingHorizontal: 15,
+        color: "black",
+        fontSize:12,
+        alignContent: "center",
+        padding: 5,
+    },
+    button: {
+        borderRadius:8,
+        marginBottom: 8
+    }
 });

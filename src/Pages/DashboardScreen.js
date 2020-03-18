@@ -5,14 +5,14 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import HomeScreen from './screens/HomeScreen';
 import ChatScreen from './screens/ChatScreen';
 import ProfileScreen from './screens/ProfileScreen';
-
+//  Task: {
+//             screen: ChatScreen,
+//         },
 const TabNavigator = createBottomTabNavigator(
     {
         Home: {
             screen: HomeScreen,
-        },
-        Task: {
-            screen: ChatScreen,
+
         },
         Profile: {
             screen: ProfileScreen,

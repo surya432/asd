@@ -23,21 +23,29 @@ const RootStack = createStackNavigator(
     },
     {
         defaultNavigationOptions: {
+            headerShown: false,
             headerStyle: {
-                backgroundColor: '#1e90ff',
+                backgroundColor: '#f4511e',
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
                 textAlign: 'center',
-                flex: 1
+                flex: 1,
+                fontWeight: 'bold',
             }
         }
     }
 )
 const AuthStack = createStackNavigator(
     {
-        LoginScreen: LoginScreen,
-        SignUp: SignUpScreen,
+        LoginScreen: {
+            screen: LoginScreen,
+            navigationOptions: { headerShown: false },
+        },
+        SignUpScreen: {
+            screen: SignUpScreen,
+            navigationOptions: { headerShown: false },
+        },
     },
     {
         navigationOptions: { headerShown: false },
@@ -53,5 +61,6 @@ export default createAppContainer(createSwitchNavigator(
     },
     {
         initialRouteName: "SplashScreen",
+        navigationOptions: { headerShown: false },
     }
 ))
