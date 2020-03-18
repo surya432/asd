@@ -152,7 +152,7 @@ const styles = new StyleSheet.create({
         marginVertical: 5,
         paddingHorizontal: 15,
         color: "white",
-        fontSize:12,
+        fontSize: 12,
         alignContent: "center",
         padding: 5,
     },
@@ -162,12 +162,12 @@ const styles = new StyleSheet.create({
         marginVertical: 5,
         paddingHorizontal: 15,
         color: "black",
-        fontSize:12,
+        fontSize: 12,
         alignContent: "center",
         padding: 5,
     },
     button: {
-        borderRadius:8,
+        borderRadius: 8,
         marginBottom: 8
     }
 });
