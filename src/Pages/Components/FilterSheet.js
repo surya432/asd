@@ -1,55 +1,85 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { Container, DatePicker, Header, Picker, Icon, Content, Form, Item, Label, Input, } from 'native-base'
-const formattedDate = moment(new Date()).format("MM/DD/YYYY");
-import moment from 'moment';
-
-const FilterSheet = (props) => {
-    state: {
-        chosenDate: ""
+import React, { Component } from 'react'
+import { Text, StyleSheet, View } from 'react-native'
+import { Container, Content, Form, Picker, Icon, DatePicker, Button } from 'native-base'
+export default class FilterSheet extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            valueChangePicker: "",
+            valueChangeDatePicker: "",
+        };
     }
-    
-    return (
-        <Container>
-            <Content>
-                <Form>
-                    <Picker
-                        mode="dropdown"
-                        iosHeader="Select your SIM"
-                        iosIcon={<Icon name="arrow-down" />}
-                        style={{ width: undefined }}
-                        selectedValue={this.state.chosenDate}
-                        onValueChange={this.onValueChange.bind(this)}
-                    >
-                        <Picker.Item label="Wallet" value="key0" />
-                        <Picker.Item label="ATM Card" value="key1" />
-                        <Picker.Item label="Debit Card" value="key2" />
-                        <Picker.Item label="Credit Card" value="key3" />
-                        <Picker.Item label="Net Banking" value="key4" />
-                    </Picker>
-                </Form>
-            </Content>
-        </Container>
-    )
+    onValueChangePicker(value) {
+        this.setState({
+            valueChangePicker: value,
+        });
+    }
+    onValueChangeDatePicker(value) {
+        this.setState({
+            valueChangeDatePicker: value,
+        });
+    }
+    render() {
+        return (
+            <Container>
+                <Content>
+                    <Form>
+                        <View style={{ alignItems: "center" }}>
+                            <Text style={{ color: "#000", fontSize: 22, fontWeight: "bold", alignItems: "center" }}>FILTER</Text>
+                        </View>
+                        {/* DATEPICKER */}
+                        <View style={{ flexDirection: "row" }}>
+                            <View style={{ flex: 1, justifyContent: "center" }}>
+                                <Text style={{ color: "#000", fontSize: 18 }}>Tanggal:</Text>
+                            </View>
+                            <View style={{ flex: 4 }}>
+                                <DatePicker
+                                    locale={"en"}
+                                    timeZoneOffsetInMinutes={undefined}
+                                    modalTransparent={false}
+                                    animationType={"fade"}
+                                    androidMode={"default"}
+                                    placeHolderText="Pilih Tanggal"
+                                    textStyle={{ color: "black" }}
+                                    placeHolderTextStyle={{ color: "black" }}
+                                    onDateChange={this.onValueChangeDatePicker.bind(this)}
+                                    disabled={false}
+                                >
+                                </DatePicker>
+                            </View>
+                        </View>
+                        {/* SPINNER */}
+                        <View style={{ flexDirection: "row" }}>
+                            <View style={{ flex: 1, justifyContent: "center" }}>
+                                <Text style={{ color: "#000", fontSize: 18 }}>Status:</Text>
+                            </View>
+                            <View style={{ flex: 4 }}>
+                                <Picker
+                                    mode="dropdown"
+                                    iosHeader="Select Status"
+                                    iosIcon={<Icon name="arrow-down" />}
+                                    style={{ width: undefined }}
+                                    selectedValue={this.state.valueChangePicker}
+                                    onValueChange={this.onValueChangePicker.bind(this)}
+                                >
+                                    <Picker.Item label="Semua" value="Semua" />
+                                    <Picker.Item label="Mulai" value="Mulai" />
+                                    <Picker.Item label="On Progress" value="On Progress" />
+                                    <Picker.Item label="Selesai" value="Selesai" />
+                                </Picker>
+                            </View>
+                        </View>
+                        {/* BTNFILTER */}
+                        <View style={{ alignItems: "center", alignSelf: "center", width: 200 }}>
+                            <Button style={{ backgroundColor: "#007AFF", borderRadius: 15, paddingHorizontal: 30, alignItems: "center", justifyContent: "center" }}>
+                                <Text style={{ color: "white", fontSize: 14 }}>FILTER</Text>
+                            </Button>
+                        </View>
+                    </Form>
+                </Content>
+            </Container>
+        )
+    }
 }
 
-export default FilterSheet
-
-const styles = StyleSheet.create({
-    Container: {
-        flex: 1,
-        borderColor: "black"
-    },
-    titleFilter: {
-        fontWeight: "bold",
-        fontSize: 28,
-        width: "100%",
-        alignItems: "center",
-        justifyContent: "center"
-    },
-    rowContainer: {
-        flexDirection: "row",
-        height: 50
-    }
-
-})
+const styles = StyleSheet.create({})

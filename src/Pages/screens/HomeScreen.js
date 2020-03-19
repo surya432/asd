@@ -1,6 +1,19 @@
 import React, { Component } from 'react'
-import { Text, Image, View, StyleSheet } from 'react-native'
-import { Container, CardItem, Header, Left, Title, FooterTab, Item, DatePicker, Right, Content, Button, Col, Row, Icon, Thumbnail, Body, Footer, Grid, Card, CardSwiper, Input } from 'native-base';
+import { Text, View, StyleSheet, ActivityIndicator } from 'react-native'
+import {
+    Container,
+    Header,
+    Left,
+    FooterTab,
+    List,
+    Right,
+    Content,
+    Button,
+    Thumbnail,
+    Body,
+    Footer,
+    ListItem,
+} from 'native-base';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Feather from 'react-native-vector-icons/Feather'
 import moment from 'moment';
@@ -10,10 +23,16 @@ import FilterSheet from '../Components/FilterSheet';
 export class HomeScreen extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { chosenDate: new Date(), dataUser: {} };
+        this.state = {
+            chosenDate: new Date(),
+            dataUser: {}
+        };
         this.setDate = this.setDate.bind(this);
     }
     async componentDidMount() {
+        this._kondisiAwal();
+    }
+    async _kondisiAwal() {
         const isLoggedIn = await AsyncStorage.getItem("dataUser");
         const jsonParse = await JSON.parse(isLoggedIn);
         this.setState({ dataUser: jsonParse[0] });
@@ -27,9 +46,9 @@ export class HomeScreen extends React.Component {
         this.state.chosenDate = formattedDate
         return (
             <Container style={{ backgroundColor: "#gray" }}>
-                <Header transparent>
+                <Header noLeft>
                     <Body>
-                        <Title>asdasd</Title>
+                        <Text style={{ color: "white", fontSize: 24, }}>To Do Task List</Text>
                     </Body>
                     <Right>
                         <View style={{ flexDirection: "row" }}>
@@ -39,6 +58,7 @@ export class HomeScreen extends React.Component {
                                 ref={ref => {
                                     this.RBSheet = ref;
                                 }}
+                                height={200}
                                 customStyles={{
                                     container: {
                                         paddingHorizontal: 16
@@ -50,63 +70,21 @@ export class HomeScreen extends React.Component {
                         </View>
                     </Right>
                 </Header>
-                <Content padder >
-                    {/* <Card >
-                        <CardItem>
+                <Content>
+                    <List>
+                        <ListItem avatar>
                             <Left>
-                                <Item>
-                                    <MaterialCommunityIcons size={20} active name='filter-outline' />
-                                    <Body>
-                                        
-                                    </Body>
-                                </Item>
+                                <Thumbnail source={require('./../../asset/asset1.png')} />
                             </Left>
-
-                        </CardItem>
-                    </Card> */}
-
-                    <Card style={{ marginHorizontal: 15, marginBottom: 8 }}>
-                        <CardItem>
-                            <Left>
-                                <Thumbnail source={require('./../../asset/asset2.png')} />
-                                <Body>
-                                    <Text>NativeBase</Text>
-                                    <Text note>GeekyAnts</Text>
-                                </Body>
-                            </Left>
-                        </CardItem>
-                        <CardItem cardBody style={{ paddingHorizontal: 8, paddingBottom: 8 }}>
-                            <Image source={require('./../../asset/asset3.png')} style={{ height: 200, width: null, flex: 1 }} />
-                        </CardItem>
-                    </Card>
-                    <Card style={{ marginHorizontal: 15, marginBottom: 8 }}>
-                        <CardItem>
-                            <Left>
-                                <Thumbnail source={require('./../../asset/asset2.png')} />
-                                <Body>
-                                    <Text>NativeBase</Text>
-                                    <Text note>GeekyAnts</Text>
-                                </Body>
-                            </Left>
-                        </CardItem>
-                        <CardItem cardBody style={{ paddingHorizontal: 8, paddingBottom: 8 }}>
-                            <Image source={require('./../../asset/asset3.png')} style={{ height: 200, width: null, flex: 1 }} />
-                        </CardItem>
-                    </Card>
-                    <Card style={{ marginHorizontal: 15, marginBottom: 8 }}>
-                        <CardItem>
-                            <Left>
-                                <Thumbnail source={require('./../../asset/asset2.png')} />
-                                <Body>
-                                    <Text>NativeBase</Text>
-                                    <Text note>GeekyAnts</Text>
-                                </Body>
-                            </Left>
-                        </CardItem>
-                        <CardItem cardBody style={{ paddingHorizontal: 8, paddingBottom: 8 }}>
-                            <Image source={require('./../../asset/asset3.png')} style={{ height: 200, width: null, flex: 1 }} />
-                        </CardItem>
-                    </Card>
+                            <Body>
+                                <Text>Kumar Pratik</Text>
+                                <Text note>Doing what you like will always keep you happy . .</Text>
+                            </Body>
+                            <Right>
+                                <Text note>3:43 pm</Text>
+                            </Right>
+                        </ListItem>
+                    </List>
                 </Content>
                 <Footer >
                     <FooterTab>

@@ -8,26 +8,94 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import AsyncStorage from '@react-native-community/async-storage';
+import Spinner from 'react-native-loading-spinner-overlay';
 export default class SignUpScreen extends Component {
     constructor() {
         super();
         this.state = {
-            name: '',
-            isLoading: false,
-            hobby: '',
-            edtUserName: '',
-            edtPass: '',
-            response: "",
-            dataUser: [],
-            isLogin: false
+            spinner: false,
+
+            formData: {
+                edtName: '',
+                edtEmail: '',
+                edtPass: '',
+                edtPassConfirm: '',
+            }
         };
     }
     _onPressLogin = async () => {
         this.props.navigation.navigate('LoginScreen');
     }
     _onPressSignUp = async () => {
-
+        const { edtEmail, edtName, edtPass, edtPassConfirm } = this.state.formData
+        if (edtName.length == 0) {
+            alert("Field Nama Kosong!")
+            return;
+        }
+        if (edtEmail.length == 0) {
+            alert("Field Email Kosong!")
+            return;
+        }
+        if (edtPass.length == 0) {
+            alert("Field Password Kosong!")
+            return;
+        }
+        if (edtPassConfirm.length == 0) {
+            alert("Field Password Konfirmasi Kosong!")
+            return;
+        }
+        if (edtPassConfirm != edtPass) {
+            alert("Password Konfirmasi Tidak Sama dengan Password")
+            return;
+        } else {
+            this.setState({
+                spinner: true
+            })
+            setTimeout(() => {
+                this._fecthSignUp();
+            }, 2000);
+            console.log(this.state.formData)
+        }
+    }
+    _fecthSignUp = async () => {
+        const { edtEmail, edtName, edtPass, edtPassConfirm } = this.state.formData
+        var details = {
+            'nama': edtName,
+            'email': edtEmail,
+            'password': edtPass,
+        };
+        var formBody = [];
+        for (var property in details) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(details[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+        console.log(formBody)
+        return await fetch("http://10.0.2.2/todoTask/public/create/user", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+            },
+            body: formBody
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson);
+                this.setState({
+                    spinner: false
+                })
+                if (responseJson.kode == 1) {
+                    alert(responseJson.keterangan)
+                    this.props.navigation.goBack(null)
+                    return;
+                } else {
+                    alert(responseJson.keterangan)
+                    return;
+                }
+            }).catch((error) => {
+                alert(error)
+                console.log(error)
+            });
     }
     render() {
         return (
@@ -36,6 +104,13 @@ export default class SignUpScreen extends Component {
                 colors={['#1e3c72', '#3b5998', '#1e90ff']}
                 style={styles.Container}>
                 <View style={styles.cardLogin} >
+                    <Spinner
+                        backgroundColor={"white"}
+                        borderRadius="15"
+                        visible={this.state.spinner}
+                        textContent={'Tunggu Sebentar...'}
+                        textStyle={styles.spinnerTextStyle}
+                    />
                     <Text style={[styles.textView]}>Sign Up</Text>
                     <View style={styles.InputContent}>
                         <TextInput style={styles.TextInput}
@@ -45,7 +120,12 @@ export default class SignUpScreen extends Component {
                             returnKeyType={"next"}
                             onSubmitEditing={() => { this.edtEmailAddress.focus(); }}
                             blurOnSubmit={false}
-                            onChangeText={(edtUserName) => this.setState({ edtUserName })}
+                            onChangeText={(edtName) => this.setState(prevState => ({
+                                formData: {
+                                    ...prevState.formData,
+                                    edtName
+                                }
+                            }))}
                             placeholder={"Your Name"} />
                         <TextInput style={styles.TextInput}
                             autoCompleteType={"off"}
@@ -56,10 +136,20 @@ export default class SignUpScreen extends Component {
                             onSubmitEditing={() => { this.edtPassword.focus(); }}
                             blurOnSubmit={false}
                             ref={(input) => { this.edtEmailAddress = input; }}
-                            onChangeText={(edtUserName) => this.setState({ edtUserName })}
+                            onChangeText={(edtEmail) => this.setState(prevState => ({
+                                formData: {
+                                    ...prevState.formData,
+                                    edtEmail
+                                }
+                            }))}
                             placeholder={"Email Address"} />
                         <TextInput
-                            onChangeText={(edtPass) => this.setState({ edtPass })}
+                            onChangeText={(edtPass) => this.setState(prevState => ({
+                                formData: {
+                                    ...prevState.formData,
+                                    edtPass
+                                }
+                            }))}
                             secureTextEntry={true}
                             autoCapitalize='none'
                             ref={(input) => { this.edtPassword = input; }}
@@ -67,7 +157,12 @@ export default class SignUpScreen extends Component {
                             onSubmitEditing={() => { this.edtconfirmPassword.focus(); }}
                             placeholder={"Password"} />
                         <TextInput
-                            onChangeText={(edtPass) => this.setState({ edtPass })}
+                            onChangeText={(edtPassConfirm) => this.setState(prevState => ({
+                                formData: {
+                                    ...prevState.formData,
+                                    edtPassConfirm
+                                }
+                            }))}
                             secureTextEntry={true}
                             autoCapitalize='none'
                             ref={(input) => { this.edtconfirmPassword = input; }}

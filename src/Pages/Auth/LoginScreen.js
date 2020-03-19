@@ -8,12 +8,14 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-community/async-storage';
 export default class App extends Component {
     constructor() {
         super();
         this.state = {
             name: '',
+            spinner: false,
             isLoading: false,
             hobby: '',
             edtUserName: '',
@@ -28,6 +30,7 @@ export default class App extends Component {
     }
 
     _onPressLogin = async () => {
+        
         const { edtUserName, edtPass } = this.state;
         if (edtUserName.length == 0 && edtPass.length == 0) {
             alert("Form Belum Di isi Semua")
@@ -36,7 +39,12 @@ export default class App extends Component {
         } else if (edtPass.length == 0) {
             alert("Password Belum Di isi");
         } else {
-            this._fectLogin();
+            this.setState({
+                spinner: true
+            })
+            setTimeout(() => {
+                this._fectLogin();
+            }, 2000);
         }
     }
     _fectLogin = async () => {
@@ -53,7 +61,7 @@ export default class App extends Component {
         }
         this.setState.isLoading = true
         formBody = formBody.join("&");
-        return await fetch("http://47.75.169.97/todo/public/login", {
+        return await fetch("http://10.0.2.2/todoTask/public/login", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -62,11 +70,11 @@ export default class App extends Component {
         }).then((response) => response.json())
             .then((responseJson) => {
                 console.log(responseJson);
-                this.setState.isLoading = false
-
+                this.setState({
+                    spinner: false
+                })
                 if (responseJson.kode == 1) {
 
-                    this.setState.dataUser = responseJson
                     try {
                         AsyncStorage.setItem("dataUser", JSON.stringify(responseJson.data))
                         AsyncStorage.setItem("isLoggedIn", "1");
@@ -81,6 +89,8 @@ export default class App extends Component {
                     return
                 }
             }).catch((error) => {
+                this.setState.spinner = false
+                alert(error)
                 console.log(error)
             });
 
@@ -88,7 +98,12 @@ export default class App extends Component {
 
     render() {
         if (this.state.isLoading) {
-            return (<statusbar />);
+            return (<StatusBar
+                backgroundColor="#b3e6ff"
+                barStyle="dark-content"
+                hidden={false}
+                translucent={true}
+            />);
         } else {
             return (
                 <LinearGradient
@@ -96,6 +111,11 @@ export default class App extends Component {
                     colors={['#1e3c72', '#3b5998', '#1e90ff']}
                     style={styles.Container}>
                     <View style={styles.cardLogin} >
+                        <Spinner
+                            visible={this.state.spinner}
+                            textContent={'Tunggu Sebentar...'}
+                            textStyle={styles.spinnerTextStyle}
+                        />
                         <Text style={[styles.textView]}> LOGIN</Text>
                         <View style={styles.InputContent}>
                             <TextInput style={styles.TextInput}
@@ -117,7 +137,7 @@ export default class App extends Component {
                                 placeholder={"Password"} />
                         </View>
                         <View style={styles.buttonContainer}>
-                        <TouchableOpacity onPress={this._onPressLogin.bind(this)}>
+                            <TouchableOpacity onPress={this._onPressLogin.bind(this)}>
                                 <LinearGradient
                                     start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }}
                                     colors={['#ff5722', '#ff9800']}
@@ -125,11 +145,11 @@ export default class App extends Component {
                                     <Text style={styles.buttonText}>LOGIN</Text>
                                 </LinearGradient>
                             </TouchableOpacity>
-                             <TouchableOpacity onPress={this._onPressSignUp.bind(this)}>
-                               
-                                    <Text style={styles.buttonTextLogin}>Sign Up</Text>
+                            <TouchableOpacity onPress={this._onPressSignUp.bind(this)}>
+
+                                <Text style={styles.buttonTextLogin}>Sign Up</Text>
                             </TouchableOpacity>
-                            
+
 
                         </View>
                     </View>
@@ -196,7 +216,7 @@ const styles = new StyleSheet.create({
         marginVertical: 5,
         paddingHorizontal: 15,
         color: "white",
-        fontSize:12,
+        fontSize: 12,
         alignContent: "center",
         padding: 5,
     },
@@ -206,12 +226,12 @@ const styles = new StyleSheet.create({
         marginVertical: 5,
         paddingHorizontal: 15,
         color: "black",
-        fontSize:12,
+        fontSize: 12,
         alignContent: "center",
         padding: 5,
     },
     button: {
-        borderRadius:8,
+        borderRadius: 8,
         marginBottom: 8
     }
 });
