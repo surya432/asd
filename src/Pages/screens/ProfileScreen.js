@@ -2,21 +2,33 @@ import React, { Component } from 'react'
 import { View, StyleSheet, Alert, SafeAreaView, TouchableOpacity } from 'react-native'
 import { Button, Container, Header, Content, Footer, Text, Thumbnail } from 'native-base'
 import AsyncStorage from '@react-native-community/async-storage';
+import GlobalStyles from '../Components/GlobalStyles';
 
 class ProfileScreen extends Component {
     constructor(props) {
         super(props);
-        this.state = { chosenDate: new Date(), dataUser: {} };
+        this.state = {
+            chosenDate: new Date(), dataUser: {
+                nama: "",
+                email: ""
+            }
+        };
     }
     async componentDidMount() {
         const isLoggedIn = await AsyncStorage.getItem("dataUser");
         const jsonParse = await JSON.parse(isLoggedIn);
-        this.setState({ dataUser: jsonParse[0] });
+        this.setState({
+            dataUser: {
+                nama: jsonParse.nama,
+                email: jsonParse.email
+            }
+        });
 
         console.log(isLoggedIn);
     }
     _logOut = async () => {
-        await AsyncStorage.clear();
+        await AsyncStorage.removeItem("isLoggedIn");
+        await AsyncStorage.removeItem("dataUser");
         this.props.navigation.navigate('Auth');
     }
 
@@ -25,22 +37,24 @@ class ProfileScreen extends Component {
 
         console.log(this.state.dataUser);
         return (
-            <Container  >
-                <Header transparent />
-                <Content padder >
-                    <View style={{ alignItems: "center", marginBottom: 8 }}>
-                        <Thumbnail large source={{ uri: uri }} />
+            <SafeAreaView style={GlobalStyles.droidSafeArea}>
+                <Container  >
+                    <Content padder >
+                        <View style={{ alignItems: "center", marginBottom: 8 }}>
+                            <Thumbnail large source={{ uri: uri }} />
+                            <Text style={{ fontSize: 20, fontWeight: "400", marginTop: 8 }}>{this.state.dataUser.nama}</Text>
+                            <Text style={{ fontSize: 16, fontWeight: "400", marginTop: 8 }}>{this.state.dataUser.email}</Text>
+                        </View>
 
-                    </View>
-
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={this._logOut}
-                    >
-                        <Text>Log Out</Text>
-                    </TouchableOpacity>
-                </Content>
-            </Container>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={this._logOut}
+                        >
+                            <Text>Log Out</Text>
+                        </TouchableOpacity>
+                    </Content>
+                </Container>
+            </SafeAreaView>
         )
     }
 }

@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { Text, StyleSheet, View } from 'react-native'
 import { Container, Content, Form, Picker, Icon, DatePicker, Button } from 'native-base'
+import Moment from 'moment';
 export default class FilterSheet extends Component {
     constructor(props) {
         super(props);
+        // Moment.locale('en');
         this.state = {
             valueChangePicker: "",
             valueChangeDatePicker: "",
@@ -18,6 +20,15 @@ export default class FilterSheet extends Component {
         this.setState({
             valueChangeDatePicker: value,
         });
+    }
+    onFilter(){
+        const {valueChangeDatePicker, valueChangePicker} = this.state;
+        const changeMoment = Moment(valueChangeDatePicker).format('YYYY/MM/DD')
+        let filter = {
+            tgl:changeMoment,
+            status:valueChangePicker
+        }
+        console.log(filter)
     }
     render() {
         return (
@@ -71,7 +82,7 @@ export default class FilterSheet extends Component {
                         </View>
                         {/* BTNFILTER */}
                         <View style={{ alignItems: "center", alignSelf: "center", width: 200 }}>
-                            <Button style={{ backgroundColor: "#007AFF", borderRadius: 15, paddingHorizontal: 30, alignItems: "center", justifyContent: "center" }}>
+                            <Button onPress={this.onFilter.bind(this)} style={{ backgroundColor: "#007AFF", borderRadius: 15, paddingHorizontal: 30, alignItems: "center", justifyContent: "center" }}>
                                 <Text style={{ color: "white", fontSize: 14 }}>FILTER</Text>
                             </Button>
                         </View>

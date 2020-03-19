@@ -14,7 +14,6 @@ export default class SignUpScreen extends Component {
         super();
         this.state = {
             spinner: false,
-
             formData: {
                 edtName: '',
                 edtEmail: '',
@@ -100,8 +99,8 @@ export default class SignUpScreen extends Component {
     render() {
         return (
             <LinearGradient
-                start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }}
-                colors={['#1e3c72', '#3b5998', '#1e90ff']}
+                start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+                colors={['#2980B9', '#6DD5FA',"#FFFFFF"]}
                 style={styles.Container}>
                 <View style={styles.cardLogin} >
                     <Spinner
@@ -194,6 +193,9 @@ const styles = new StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         paddingHorizontal: 16
+    },
+    spinnerTextStyle: {
+        color: '#FFF'
     },
     cardLogin: {
         backgroundColor: 'white',

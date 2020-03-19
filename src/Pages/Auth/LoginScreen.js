@@ -4,12 +4,13 @@ import {
     View,
     Text,
     TextInput,
-    Alert,
+    AppState,
     TouchableOpacity,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-community/async-storage';
+import CheckBox from '@react-native-community/checkbox';
 export default class App extends Component {
     constructor() {
         super();
@@ -22,7 +23,10 @@ export default class App extends Component {
             edtPass: '',
             response: "",
             dataUser: [],
-            isLogin: false
+            isLogin: false,
+            email: '',
+            check: false,
+            appState: AppState.currentState,
         };
     }
     _onPressSignUp = async () => {
@@ -30,7 +34,6 @@ export default class App extends Component {
     }
 
     _onPressLogin = async () => {
-        
         const { edtUserName, edtPass } = this.state;
         if (edtUserName.length == 0 && edtPass.length == 0) {
             alert("Form Belum Di isi Semua")
@@ -47,19 +50,28 @@ export default class App extends Component {
             }, 2000);
         }
     }
+    _setEmail = async () => {
+        const { edtUserName } = this.state
+        await AsyncStorage.setItem("Email", edtUserName)
+    }
+    checkBox_Test = (name, checked) => {
+        console.log(name.value)
+        this.setState((prevState) => ({ check: !prevState.check }));
+    }
     _fectLogin = async () => {
-        const { edtUserName, edtPass } = this.state;
+        const { edtUserName, edtPass, check } = this.state;
+        console.log(check)
         var details = {
             'email': edtUserName,
             'password': edtPass,
         };
+        this.setState.isLoading = true
         var formBody = [];
         for (var property in details) {
             var encodedKey = encodeURIComponent(property);
             var encodedValue = encodeURIComponent(details[property]);
             formBody.push(encodedKey + "=" + encodedValue);
         }
-        this.setState.isLoading = true
         formBody = formBody.join("&");
         return await fetch("http://10.0.2.2/todoTask/public/login", {
             method: 'POST',
@@ -75,6 +87,10 @@ export default class App extends Component {
                 })
                 if (responseJson.kode == 1) {
 
+                    if (check) {
+                        console.log("hore")
+                        this._setEmail();
+                    }
                     try {
                         AsyncStorage.setItem("dataUser", JSON.stringify(responseJson.data))
                         AsyncStorage.setItem("isLoggedIn", "1");
@@ -96,6 +112,15 @@ export default class App extends Component {
 
     }
 
+    async componentDidMount() {
+        this.setState({
+            edtUserName: "",
+            edtPass: ""
+        })
+        let emailV = await AsyncStorage.getItem("Email");
+        console.log(emailV);
+        this.setState.email = emailV
+    }
     render() {
         if (this.state.isLoading) {
             return (<StatusBar
@@ -107,8 +132,9 @@ export default class App extends Component {
         } else {
             return (
                 <LinearGradient
-                    start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }}
-                    colors={['#1e3c72', '#3b5998', '#1e90ff']}
+                    start={{ x: 0, y:0}}
+                     end={{ x: 1, y: 1 }}
+                    colors={['#2980B9', '#6DD5FA',"#FFFFFF"]}
                     style={styles.Container}>
                     <View style={styles.cardLogin} >
                         <Spinner
@@ -136,21 +162,26 @@ export default class App extends Component {
                                 style={styles.TextInput}
                                 placeholder={"Password"} />
                         </View>
+                        {/* <View style={{ flexDirection: "row", alignSelf: "flex-start" }}>
+                            <CheckBox
+                                value={this.state.check}
+                                onChange={(checked) => this.checkBox_Test(checked)}
+                            />
+                            <Text style={{ alignSelf: "center" }} >Simpan Email Sebagai Default</Text>
+                        </View> */}
                         <View style={styles.buttonContainer}>
                             <TouchableOpacity onPress={this._onPressLogin.bind(this)}>
                                 <LinearGradient
-                                    start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }}
+                                    start={{ x: 0, y: 1 }} 
+                                    end={{ x: 1, y: 0 }}
                                     colors={['#ff5722', '#ff9800']}
                                     style={styles.button}>
                                     <Text style={styles.buttonText}>LOGIN</Text>
                                 </LinearGradient>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={this._onPressSignUp.bind(this)}>
-
                                 <Text style={styles.buttonTextLogin}>Sign Up</Text>
                             </TouchableOpacity>
-
-
                         </View>
                     </View>
                 </LinearGradient>
@@ -163,6 +194,9 @@ const styles = new StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         paddingHorizontal: 16
+    },
+    spinnerTextStyle: {
+        color: '#FFF'
     },
     cardLogin: {
         backgroundColor: 'white',
