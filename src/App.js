@@ -14,10 +14,15 @@ import SplashScreen from './Pages/SplashScreen';
 import LoginScreen from './Pages/Auth/LoginScreen';
 import DashboardScreen from './Pages/DashboardScreen';
 import SignUpScreen from './Pages/Auth/SignUpScreen'
+import Formtask from './Pages/screens/Formtask';
 const RootStack = createStackNavigator(
     {
         Dashboard: {
             screen: DashboardScreen,
+            navigationOptions: { headerShown: false },
+        },
+        FormTask: {
+            screen: Formtask,
             navigationOptions: { headerShown: false },
         }
     },

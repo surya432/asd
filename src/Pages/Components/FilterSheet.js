@@ -7,7 +7,7 @@ export default class FilterSheet extends Component {
         super(props);
         // Moment.locale('en');
         this.state = {
-            valueChangePicker: "",
+            valueChangePicker: "Semua",
             valueChangeDatePicker: "",
         };
     }
@@ -21,14 +21,14 @@ export default class FilterSheet extends Component {
             valueChangeDatePicker: value,
         });
     }
-    onFilter(){
-        const {valueChangeDatePicker, valueChangePicker} = this.state;
-        const changeMoment = Moment(valueChangeDatePicker).format('YYYY/MM/DD')
+    onFilter = () => {
+        const { valueChangeDatePicker, valueChangePicker } = this.state;
+        const changeMoment = Moment(valueChangeDatePicker).format('YYYY-MM-DD')
         let filter = {
-            tgl:changeMoment,
-            status:valueChangePicker
+            tgl: changeMoment != "Invalid date" ? changeMoment : "Pilih Tanggal",
+            status: valueChangePicker
         }
-        console.log(filter)
+        this.props.callbackFromParent(filter);
     }
     render() {
         return (
@@ -45,7 +45,6 @@ export default class FilterSheet extends Component {
                             </View>
                             <View style={{ flex: 4 }}>
                                 <DatePicker
-                                    locale={"en"}
                                     timeZoneOffsetInMinutes={undefined}
                                     modalTransparent={false}
                                     animationType={"fade"}

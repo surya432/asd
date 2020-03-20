@@ -11,6 +11,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-community/async-storage';
 import CheckBox from '@react-native-community/checkbox';
+import { base_url } from '../../config/config';
 export default class App extends Component {
     constructor() {
         super();
@@ -73,7 +74,7 @@ export default class App extends Component {
             formBody.push(encodedKey + "=" + encodedValue);
         }
         formBody = formBody.join("&");
-        return await fetch("http://10.0.2.2/todoTask/public/login", {
+        return await fetch(base_url + "login", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -86,7 +87,6 @@ export default class App extends Component {
                     spinner: false
                 })
                 if (responseJson.kode == 1) {
-
                     if (check) {
                         console.log("hore")
                         this._setEmail();
@@ -95,7 +95,6 @@ export default class App extends Component {
                         AsyncStorage.setItem("dataUser", JSON.stringify(responseJson.data))
                         AsyncStorage.setItem("isLoggedIn", "1");
                         this.props.navigation.navigate('Dashboard');
-
                     } catch (error) {
                         console.log("error " + error)
                     }
@@ -109,7 +108,6 @@ export default class App extends Component {
                 alert(error)
                 console.log(error)
             });
-
     }
 
     async componentDidMount() {
@@ -132,9 +130,9 @@ export default class App extends Component {
         } else {
             return (
                 <LinearGradient
-                    start={{ x: 0, y:0}}
-                     end={{ x: 1, y: 1 }}
-                    colors={['#2980B9', '#6DD5FA',"#FFFFFF"]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    colors={['#2980B9', '#6DD5FA', "#FFFFFF"]}
                     style={styles.Container}>
                     <View style={styles.cardLogin} >
                         <Spinner
@@ -172,7 +170,7 @@ export default class App extends Component {
                         <View style={styles.buttonContainer}>
                             <TouchableOpacity onPress={this._onPressLogin.bind(this)}>
                                 <LinearGradient
-                                    start={{ x: 0, y: 1 }} 
+                                    start={{ x: 0, y: 1 }}
                                     end={{ x: 1, y: 0 }}
                                     colors={['#ff5722', '#ff9800']}
                                     style={styles.button}>
