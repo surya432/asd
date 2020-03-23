@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from 'react'
-import { Text, View, StyleSheet, SafeAreaView, Alert } from 'react-native'
+import { Text, View, StyleSheet, SafeAreaView, Alert, AppState, RefreshControl } from 'react-native'
 import {
     Container,
     Header,
@@ -24,7 +24,7 @@ import FilterSheet from '../Components/FilterSheet';
 import { ServiceTaskListFilter } from '../../services/ServiceTaskListFilter';
 import Spinner from 'react-native-loading-spinner-overlay';
 import ListitemTask from '../Components/ListitemTask';
-
+import { withNavigationFocus } from 'react-navigation';
 export class HomeScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -33,14 +33,15 @@ export class HomeScreen extends React.Component {
             dataUser: {},
             dataResponse: [],
             dataFilter: {},
-            spinner: true
+            spinner: true,
         };
-        this.setDate = this.setDate.bind(this);
     }
     async componentDidMount() {
-        this._kondisiAwal();
+        const { navigation } = this.props;
+        navigation.addListener('didFocus', () => {
+            this._kondisiAwal();
+        });
     }
-
     async _kondisiAwal() {
         this.setState({
             spinner: true
@@ -66,14 +67,13 @@ export class HomeScreen extends React.Component {
             })
             return null;
         }
-
+       
     }
     setDate(newDate) {
         this.setState({ chosenDate: newDate });
     }
     myCallback = async (dataFromChild) => {
         try {
-
             const { dataUser } = this.state
             if (dataFromChild.tgl == "Pilih Tanggal" && dataFromChild.status == "Semua") {
                 this._kondisiAwal()
@@ -88,7 +88,6 @@ export class HomeScreen extends React.Component {
                     return dataList;
                 } else {
                     this.setState({ dataResponse: [] });
-
                     alert(dataList.keterangan);
                     return;
                 }
@@ -100,22 +99,64 @@ export class HomeScreen extends React.Component {
     handlerOnclick = (items) => {
         this.props.navigation.navigate('FormTask', { dataObject: JSON.stringify(items) });
     }
+    
+    handlerOnclickEdit = (items) => {
+        this.props.navigation.navigate('FormTaskEdit', { dataObject: JSON.stringify(items) });
+    }
+    handlerOnclickCreate = () => {
+        this.props.navigation.navigate('FormtaskCreate');
+    }
+    handlerOnclickDelete = async (items) => {
+        Alert.alert(
+            'Peringatan!',
+            'Apa Anda yakin ingin Menghapus?',
+            [
+                { text: 'Tidak', onPress: () => console.log('Cancel Delete'), style: 'cancel' },
+                { text: 'Hapus Sekarang', onPress: () => this.onDelete(items) },
+            ],
+        );
+    }
+    onDelete = async (items) => {
+        console.log(items)
+        try {
+            this.setState({
+                spinner: false
+            })
+            let filter = {
+                id: items,
+            }
+            console.log(filter);
+            const dataList = await ServiceTaskListFilter(filter, "taksDelete")
+            console.log(dataList)
+            if (dataList.kode == 1) {
+                this._kondisiAwal()
+                alert(dataList.keterangan);
+            } else {
+                alert(dataList.keterangan);
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
     render() {
         const formattedDate = moment(new Date()).format("MM/DD/YYYY");
         this.state.chosenDate = formattedDate
         const { dataResponse } = this.state;
+
         return (
             <SafeAreaView style={GlobalStyles.droidSafeArea}>
                 <Container style={{ backgroundColor: "#gray" }}>
                     <Header noLeft translucent noShadow>
                         <Right>
                             <View style={{ flexDirection: "row" }}>
-                                <Feather size={20} active name='refresh-ccw' style={{ marginStart: 8 }} />
-                                <MaterialCommunityIcons
-                                    size={24}
-                                    onPress={() => this.spanFilter.open()}
-                                    name='filter-outline'
-                                    style={{ marginStart: 8 }} />
+                                <Button transparent onPress={() => this._kondisiAwal()} >
+                                    <Feather size={24} active name='refresh-ccw' style={{ marginStart: 8 }} />
+                                </Button>
+                                <Button transparent onPress={() => this.spanFilter.open()}>
+                                    <MaterialCommunityIcons
+                                        size={24}
+                                        name='filter-outline' />
+                                </Button>
                                 <RBSheet
                                     ref={ref => {
                                         this.spanFilter = ref;
@@ -142,13 +183,22 @@ export class HomeScreen extends React.Component {
                             textContent={'Tunggu Sebentar...'}
                             textStyle={styles.spinnerTextStyle}
                         />
-                        <List>
+                        <List refreshControl={
+                            <RefreshControl
+                                //refresh control used for the Pull to Refresh
+                                // refreshing={this.state.spinner}
+                                onRefresh={this._kondisiAwal.bind(this)}
+                            />
+                        }
+                        >
                             {
                                 dataResponse.map(item => {
                                     return <ListitemTask
                                         key={item.id}
                                         dataObject={item}
                                         onclick={this.handlerOnclick}
+                                        onclickEdit={this.handlerOnclickEdit}
+                                        onclickDelete={this.handlerOnclickDelete}
                                         status={item.status}
                                         perkerjaan={item.perkerjaan}
                                         tglmulai={item.tglmulai}
@@ -160,7 +210,7 @@ export class HomeScreen extends React.Component {
                     </Content>
                     <Footer >
                         <FooterTab>
-                            <Button full>
+                            <Button block onPress={this.handlerOnclickCreate.bind(this)}>
                                 <Text style={{
                                     color: "white", fontSize: 16, fontWeight: "400"
                                 }}>Buat Task Baru</Text>

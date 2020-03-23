@@ -1,6 +1,8 @@
 import React from 'react'
-import { StyleSheet, Text,} from 'react-native'
+import { StyleSheet, Text, View, } from 'react-native'
 import { ListItem, Left, Body, Right, Thumbnail, Icon } from 'native-base'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import Fontisto from "react-native-vector-icons/Fontisto";
 const ListitemTask = (props) => {
 
     const getImageStatus = (param) => {
@@ -13,25 +15,75 @@ const ListitemTask = (props) => {
                 return require('./../../asset/asset3.png')
         }
     }
+    const getImageStatus2 = (param) => {
+        switch (param) {
+            case 'On Progress':
+                return "hourglass-half"
+            case 'Mulai':
+                return "hourglass-start"
+            case 'Selesai':
+                return "hourglass-end"
+        }
+    }
+    const getcolorStatus2 = (param)=>{
+        switch (param) {
+            case 'On Progress':
+                return "green"
+            case 'Mulai':
+                return "gray"
+            case 'Selesai':
+                return "blue"
+        }
+    }
     const onHalderClick = (itms) => {
         props.onclick(itms)
     }
+    const onHalderClickEdit = (itms) => {
+        props.onclickEdit(itms)
+    } 
+    const onHalderClickDelete = (itms) => {
+        props.onclickDelete(itms)
+    }
     return (
-        <ListItem button avatar onPress={() => onHalderClick(props.dataObject)}>
+        <ListItem button avatar >
+
             <Left>
-                <Thumbnail source={getImageStatus(props.status)} />
+                <TouchableOpacity onPress={() => onHalderClick(props.dataObject)}>
+                    {/* <Thumbnail source={getImageStatus(props.status)} /> */}
+                    <Fontisto name={getImageStatus2(props.status)} color={getcolorStatus2(props.status)} size={24} /> 
+                </TouchableOpacity>
             </Left>
             <Body>
-                <Text>{props.perkerjaan}</Text>
-                <Text note>{props.tglmulai} - {props.tglselesai}</Text>
+                <TouchableOpacity onPress={() => onHalderClick(props.dataObject)}>
+                    <Text>{props.perkerjaan}</Text>
+                    <Text note>{props.tglmulai} - {props.tglselesai}</Text>
+                </TouchableOpacity>
             </Body>
-            <Right>
-                <Icon type="FontAwesome" name="home" />
+            <Right style={styles.containerBtn}>
+                <View style={styles.iconBtn}>
+                    <TouchableOpacity onPress={() => onHalderClickEdit(props.dataObject)}>
+                        <Icon type="FontAwesome" size={24} name="pencil" />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => onHalderClickDelete(props.dataObject.id)}>
+                        <Icon type="MaterialCommunityIcons" size={24} name="delete" />
+                    </TouchableOpacity>
+                </View>
             </Right>
-        </ListItem>
+        </ListItem >
     )
 }
 
 export default ListitemTask
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    containerBtn: {
+        justifyContent: "center",
+        alignContent: "center"
+    },
+    iconBtn: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        width: 55,
+
+    }
+})
