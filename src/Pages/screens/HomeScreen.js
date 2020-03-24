@@ -217,7 +217,7 @@ export class HomeScreen extends React.Component {
                             </Button>
                         </FooterTab>
                     </Footer>
-                </Container >
+                </Container>
             </SafeAreaView>
         )
     }

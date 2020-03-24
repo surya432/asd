@@ -2,12 +2,34 @@ import React, { Component } from 'react'
 import { Text, StyleSheet, View, SafeAreaView, TouchableOpacity } from 'react-native'
 import GlobalStyles from '../Components/GlobalStyles'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { Container, Content, Thumbnail } from 'native-base';
+import { Container, Content } from 'native-base';
+import Fontisto from "react-native-vector-icons/Fontisto";
+
 export default class Formtask extends Component {
     constructor(props) {
         super(props)
         this.state = {
             jsonDataParse: {}
+        }
+    }
+    getImageStatus2 = (param) => {
+        switch (param) {
+            case 'On Progress':
+                return "hourglass-half"
+            case 'Mulai':
+                return "hourglass-start"
+            case 'Selesai':
+                return "hourglass-end"
+        }
+    }
+    getcolorStatus2 = (param) => {
+        switch (param) {
+            case 'On Progress':
+                return "green"
+            case 'Mulai':
+                return "gray"
+            case 'Selesai':
+                return "blue"
         }
     }
     _onPressBack = async () => {
@@ -33,17 +55,32 @@ export default class Formtask extends Component {
                             </TouchableOpacity>
                         </View>
                         <View style={{ alignItems: 'center', marginBottom: 8 }}>
-                            <Thumbnail large source={{ uri: uri }} />
-                            <Text style={{ fontSize: 20, fontWeight: '700', marginTop: 8 }}>
-                                {jsonDataParse.status}
-                            </Text>
-                            <Text style={{ fontSize: 16, fontWeight: '400', marginTop: 8 }}>
-                                {jsonDataParse.status}
-                            </Text>
+                            <View style={styles.containerImage}>
+                                <Fontisto style={{
+                                    width: 24,
+                                    height: 24,
+                                }} name={this.getImageStatus2(jsonDataParse.status)} color={this.getcolorStatus2(jsonDataParse.status)} size={24} />
+
+                            </View>
+                            <View
+                                style={{
+                                    marginTop: 8,
+                                    alignItems: "center",
+                                    justifyContent: "center",
+
+                                }}
+                            >
+                                <Text style={{ fontSize: 20, fontWeight: '700' }}>
+                                    {jsonDataParse.perkerjaan}
+                                </Text>
+                                <Text style={{ fontSize: 12, marginTop: 4 }}>
+                                    {jsonDataParse.status}
+                                </Text>
+                                <Text style={{ marginTop: 4, textAlign: "justify" }}>
+                                    {jsonDataParse.keterangan}
+                                </Text>
+                            </View>
                         </View>
-                        <TouchableOpacity style={styles.button}>
-                            <Text>Log Out</Text>
-                        </TouchableOpacity>
                     </Content>
                 </Container>
             </SafeAreaView>
@@ -51,4 +88,19 @@ export default class Formtask extends Component {
     }
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    Container: {
+        flex: 1
+    },
+    containerImage: {
+        width: 60,
+        height: 60,
+        borderRadius: 60 / 2,
+        backgroundColor: "white",
+        borderColor: 'gray',
+        borderWidth: 2,
+        justifyContent: "center",
+        alignContent: "center",
+        alignItems: "center"
+    }
+})
