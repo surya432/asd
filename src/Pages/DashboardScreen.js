@@ -3,7 +3,7 @@ import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import HomeScreen from './screens/HomeScreen';
-import ChatScreen from './screens/ChatScreen';
+import RandDScreen from './screens/RandDScreen';
 import ProfileScreen from './screens/ProfileScreen';
 //  Task: {
 //             screen: ChatScreen,
@@ -12,7 +12,9 @@ const TabNavigator = createBottomTabNavigator(
     {
         Home: {
             screen: HomeScreen,
-
+        },
+        RandDScreen: {
+            screen: RandDScreen,
         },
         Profile: {
             screen: ProfileScreen,
@@ -26,8 +28,8 @@ const TabNavigator = createBottomTabNavigator(
                 let iconName;
                 if (routeName === 'Home') {
                     iconName = 'ios-home';
-                } else if (routeName === 'Task') {
-                    iconName = 'ios-create';
+                } else if (routeName === 'RandDScreen') {
+                    iconName = 'ios-flask';
                 } else if (routeName === 'Profile') {
                     iconName = 'ios-person';
                 }

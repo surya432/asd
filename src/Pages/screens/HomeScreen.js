@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from 'react'
-import { Text, View, StyleSheet, SafeAreaView, Alert, AppState, RefreshControl } from 'react-native'
+import { Text, View, StyleSheet, SafeAreaView, Alert, FlatList, RefreshControl } from 'react-native'
 import {
     Container,
     Header,
@@ -33,8 +33,9 @@ export class HomeScreen extends React.Component {
             dataUser: {},
             dataResponse: [],
             dataFilter: {},
-            spinner: true,
+            spinner: false,
         };
+
     }
     async componentDidMount() {
         const { navigation } = this.props;
@@ -43,46 +44,40 @@ export class HomeScreen extends React.Component {
         });
     }
     async _kondisiAwal() {
-        this.setState({
-            spinner: true
-        })
-        const isLoggedIn = await AsyncStorage.getItem("dataUser");
-        const jsonParse = await JSON.parse(isLoggedIn);
-        this.setState({ dataUser: jsonParse });
         this._calldata()
     }
     async _calldata() {
-        const { dataUser } = this.state
-        const dataList = await ServiceTaskListFilter(null, "taskAll/" + dataUser.id)
-        console.log(dataList)
-        if (dataList.kode == 1) {
-            this.setState({
-                spinner: false
-            })
-            this.setState({ dataResponse: dataList.data });
-            return dataList;
-        } else {
-            this.setState({
-                spinner: false
-            })
-            return null;
+        try {
+            const dataUser = await AsyncStorage.getItem('dataUser')
+                    .then((result) => JSON.parse(result))
+            const dataList = await ServiceTaskListFilter(null, "taskAll/" + dataUser.id)
+            if (dataList.kode == 1) {
+                this.setState({
+                    dataResponse: dataList.data,
+                });
+                return dataList;
+            } else {
+                return null;
+            }
+        } catch (error) {
+            console.log(error)
         }
-       
+
+    }
+    refeshDataCok = async () => {
+        this._kondisiAwal();
     }
     setDate(newDate) {
         this.setState({ chosenDate: newDate });
     }
     myCallback = async (dataFromChild) => {
         try {
-            const { dataUser } = this.state
             if (dataFromChild.tgl == "Pilih Tanggal" && dataFromChild.status == "Semua") {
                 this._kondisiAwal()
             } else {
-                this.setState({
-                    spinner: false
-                })
+                const dataUser = await AsyncStorage.getItem('dataUser')
+                    .then((result) => JSON.parse(result))
                 const dataList = await ServiceTaskListFilter(dataFromChild, "filterNew/" + dataUser.id)
-                console.log(dataList)
                 if (dataList.kode == 1) {
                     this.setState({ dataResponse: dataList.data });
                     return dataList;
@@ -99,7 +94,7 @@ export class HomeScreen extends React.Component {
     handlerOnclick = (items) => {
         this.props.navigation.navigate('FormTask', { dataObject: JSON.stringify(items) });
     }
-    
+
     handlerOnclickEdit = (items) => {
         this.props.navigation.navigate('FormTaskEdit', { dataObject: JSON.stringify(items) });
     }
@@ -116,6 +111,7 @@ export class HomeScreen extends React.Component {
             ],
         );
     }
+
     onDelete = async (items) => {
         console.log(items)
         try {
@@ -142,7 +138,6 @@ export class HomeScreen extends React.Component {
         const formattedDate = moment(new Date()).format("MM/DD/YYYY");
         this.state.chosenDate = formattedDate
         const { dataResponse } = this.state;
-
         return (
             <SafeAreaView style={GlobalStyles.droidSafeArea}>
                 <Container style={{ backgroundColor: "#gray" }}>
@@ -177,20 +172,21 @@ export class HomeScreen extends React.Component {
                             </View>
                         </Right>
                     </Header>
-                    <Content>
+                    <Content
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.spinner}
+                                onRefresh={() => this._kondisiAwal()}
+                                title="Loading..."
+                            />
+                        }
+                    >
                         <Spinner
                             visible={this.state.spinner}
                             textContent={'Tunggu Sebentar...'}
                             textStyle={styles.spinnerTextStyle}
                         />
-                        <List refreshControl={
-                            <RefreshControl
-                                //refresh control used for the Pull to Refresh
-                                // refreshing={this.state.spinner}
-                                onRefresh={this._kondisiAwal.bind(this)}
-                            />
-                        }
-                        >
+                        <List>
                             {
                                 dataResponse.map(item => {
                                     return <ListitemTask

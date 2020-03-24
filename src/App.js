@@ -16,7 +16,9 @@ import DashboardScreen from './Pages/DashboardScreen';
 import SignUpScreen from './Pages/Auth/SignUpScreen'
 import Formtask from './Pages/screens/Formtask';
 import FormtaskEdit from './Pages/screens/FormtaskEdit';
-import FormtaskCreate from "./Pages/screens/FormtaskCreate";
+import GeoLocationScreen from "./Pages/screens/GeoLocation";
+import RandDScreen from './Pages/screens/RandDScreen';
+import FormtaskCreate from './Pages/screens/FormtaskCreate'
 const RootStack = createStackNavigator(
     {
         Dashboard: {
@@ -25,6 +27,10 @@ const RootStack = createStackNavigator(
         },
         FormTask: {
             screen: Formtask,
+            navigationOptions: { headerShown: false },
+        },
+        GeoLocationScreen: {
+            screen: GeoLocationScreen,
             navigationOptions: { headerShown: false },
         },
         FormTaskEdit: {

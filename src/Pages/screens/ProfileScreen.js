@@ -23,34 +23,47 @@ class ProfileScreen extends Component {
         super(props);
         this.state = {
             chosenDate: new Date(),
-            dataUser: {
-                nama: '',
-                email: '',
-            },
+            dataUser: {},
         };
     }
     async componentDidMount() {
-        const isLoggedIn = await AsyncStorage.getItem('dataUser');
-        const jsonParse = await JSON.parse(isLoggedIn);
-        this.setState({
-            dataUser: {
-                nama: jsonParse.nama,
-                email: jsonParse.email,
-            },
-        });
+        // const isLoggedIn = await AsyncStorage.getItem('dataUser');
+        // const jsonParse = await JSON.parse(isLoggedIn);
+        // this.setState({
+        //     dataUser: {
+        //         nama: jsonParse.nama,
+        //         email: jsonParse.email,
+        //     },
+        // });
+        const isLoggedIn = await AsyncStorage.getItem('dataUser')
+            .then((result) => JSON.parse(result))
+            .then((dataUser) =>
+                this.setState({
+                    dataUser
+                })
+            )
 
-        console.log(isLoggedIn);
     }
     _logOut = async () => {
+
+        Alert.alert(
+            'Peringatan!',
+            'Apa Anda yakin ingin Keluar Dari Aplikasi?',
+            [
+                { text: 'Tidak', onPress: () => console.log('Cancel Delete'), style: 'cancel' },
+                { text: 'Lanjutkan', onPress: () => this.onLogout() },
+            ],
+        );
+    };
+    onLogout = async () => {
         await AsyncStorage.removeItem('isLoggedIn');
         await AsyncStorage.removeItem('dataUser');
         this.props.navigation.navigate('Auth');
-    };
+    }
 
     render() {
         const uri =
             'https://facebook.github.io/react-native/docs/assets/favicon.png';
-        console.log(this.state.dataUser);
         return (
             <SafeAreaView style={GlobalStyles.droidSafeArea}>
                 <Container>
