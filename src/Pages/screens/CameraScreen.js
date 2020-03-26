@@ -38,7 +38,7 @@ export default class GeoLocation extends PureComponent {
         if (this.camera) {
             const options = { quality: 0.5, base64: true };
             const data = await this.camera.takePictureAsync(options);
-            console.log(data.uri);
+            console.log(data);
 
         }
     };
@@ -74,7 +74,7 @@ export default class GeoLocation extends PureComponent {
                             return (
                                 <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
                                     <TouchableOpacity onPress={() => this.takePicture(camera)} style={styles.capture}>
-                                        <Text style={{ fontSize: 14 }}> SNAP </Text>
+                                        <Text style={{ fontSize: 14 }}> Take Photo </Text>
                                     </TouchableOpacity>
                                 </View>
                             );
