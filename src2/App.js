@@ -17,12 +17,8 @@ import SignUpScreen from './Pages/Auth/SignUpScreen'
 import Formtask from './Pages/screens/Formtask';
 import FormtaskEdit from './Pages/screens/FormtaskEdit';
 import GeoLocationScreen from "./Pages/screens/GeoLocation";
+import RandDScreen from './Pages/screens/RandDScreen';
 import FormtaskCreate from './Pages/screens/FormtaskCreate'
-import GeoLocationDistance from './Pages/screens/GeoLocationDistance'
-import CameraScreen from './Pages/screens/CameraScreen'
-import BarcodeScreen from './Pages/screens/BarcodeScreen'
-import GeoLocationMap from './Pages/screens/GeoLocationMap'
-
 const RootStack = createStackNavigator(
     {
         Dashboard: {
@@ -37,27 +33,10 @@ const RootStack = createStackNavigator(
             screen: GeoLocationScreen,
             navigationOptions: { headerShown: false },
         },
-        GeoLocationDistance: {
-            screen: GeoLocationDistance,
-            navigationOptions: { headerShown: false },
-        },
-        CameraScreen: {
-            screen: CameraScreen,
-            navigationOptions: { headerShown: false },
-        },
-        BarcodeScreen: {
-            screen: BarcodeScreen,
-            navigationOptions: { headerShown: false },
-        },
-        GeoLocationMap: {
-            screen: GeoLocationMap,
-            navigationOptions: { headerShown: false },
-        },
-
         FormTaskEdit: {
             screen: FormtaskEdit,
             navigationOptions: {
-
+                
             },
         },
         FormtaskCreate: {

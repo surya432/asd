@@ -3,7 +3,7 @@ import { Text, StyleSheet, PermissionsAndroid, View, SafeAreaView } from 'react-
 import Geolocation from 'react-native-geolocation-service';
 import GlobalStyles from '../Components/GlobalStyles';
 import { Content, Container } from 'native-base';
-import Geocoder from 'react-native-geocoding';
+import { getDistance, getPreciseDistance } from 'geolib';
 export default class GeoLocation extends Component {
     constructor() {
         super()
@@ -12,29 +12,30 @@ export default class GeoLocation extends Component {
             geolat: "",
             error: null,
             address: null,
+            jarak: null,
         }
         this.requestLocationPermission()
 
     }
+
     async getLocation() {
         try {
-            Geocoder.init("AIzaSyCpxEFwG_S-CV4zIt99YZjlpY1NnvytqdE");
             let lat1 = ""
             let lng1 = ""
             await Geolocation.getCurrentPosition(
                 (posision) => {
                     lat1 = posision.coords.latitude;
                     lng1 = posision.coords.longitude;
+
+                    let jarakDistance = getDistance(
+                        { latitude: lat1, longitude: lng1 },
+                        { latitude: -7.446792, longitude: 112.697697 }, 1
+                    );
                     this.setState({
                         geolat: lat1,
                         geolng: lng1,
+                        jarak: jarakDistance
                     })
-                    Geocoder.from("Colosseum").then(json => {
-                        var location = json.results[0].geometry.location;
-                        console.log(location);
-                    })
-                        .catch(error => console.warn(error));
-
                 },
                 (error) => {
                     this.setState.error = error.message
@@ -49,6 +50,9 @@ export default class GeoLocation extends Component {
         } catch (error) {
             console.log(error)
         }
+    }
+    async _ditDistance(jarak) {
+        return jarak
     }
     async requestLocationPermission() {
         const chckLocationPermission = PermissionsAndroid.check(
@@ -76,16 +80,19 @@ export default class GeoLocation extends Component {
             }
         }
     };
+
     render() {
-        const { geolng, geolat, error, address } = this.state
+        const { geolng, geolat, error, jarak } = this.state
         return (
             <SafeAreaView style={GlobalStyles.droidSafeArea}>
                 <Container>
                     <Content padder>
                         <View style={{ flex: 1 }}>
                             {
-                                error ? <Text>{error}</Text> : <Text>Koordinat: {geolat},{geolng}. {address}</Text>
+                                error ? <Text>{error}</Text> : <Text>Koordinat Sekarang: {geolat},{geolng}. </Text>
                             }
+                            <Text>Koordinat Tujuan: -7.446792, 112.697697 . </Text>
+                            <Text>Jarak {jarak} M</Text>
                         </View>
                     </Content>
                 </Container>

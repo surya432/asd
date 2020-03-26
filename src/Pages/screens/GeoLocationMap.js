@@ -3,7 +3,7 @@ import { Text, StyleSheet, PermissionsAndroid, View, SafeAreaView } from 'react-
 import Geolocation from 'react-native-geolocation-service';
 import GlobalStyles from '../Components/GlobalStyles';
 import { Content, Container } from 'native-base';
-import Geocoder from 'react-native-geocoding';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
 export default class GeoLocation extends Component {
     constructor() {
         super()
@@ -16,25 +16,20 @@ export default class GeoLocation extends Component {
         this.requestLocationPermission()
 
     }
+
     async getLocation() {
         try {
-            Geocoder.init("AIzaSyCpxEFwG_S-CV4zIt99YZjlpY1NnvytqdE");
             let lat1 = ""
             let lng1 = ""
             await Geolocation.getCurrentPosition(
                 (posision) => {
                     lat1 = posision.coords.latitude;
                     lng1 = posision.coords.longitude;
+
                     this.setState({
                         geolat: lat1,
                         geolng: lng1,
                     })
-                    Geocoder.from("Colosseum").then(json => {
-                        var location = json.results[0].geometry.location;
-                        console.log(location);
-                    })
-                        .catch(error => console.warn(error));
-
                 },
                 (error) => {
                     this.setState.error = error.message
@@ -43,13 +38,14 @@ export default class GeoLocation extends Component {
                 {
                     enableHighAccuracy: true,
                     timeout: 15000,
-                    maximumAge: 10000
+                    maximumAge: 1000
                 }
             )
         } catch (error) {
             console.log(error)
         }
     }
+
     async requestLocationPermission() {
         const chckLocationPermission = PermissionsAndroid.check(
             PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
@@ -76,17 +72,22 @@ export default class GeoLocation extends Component {
             }
         }
     };
+
     render() {
-        const { geolng, geolat, error, address } = this.state
+        const { geolng, geolat, error, jarak } = this.state
         return (
             <SafeAreaView style={GlobalStyles.droidSafeArea}>
                 <Container>
                     <Content padder>
-                        <View style={{ flex: 1 }}>
-                            {
-                                error ? <Text>{error}</Text> : <Text>Koordinat: {geolat},{geolng}. {address}</Text>
-                            }
-                        </View>
+                        <MapView
+                            style={{flex:1}}
+                            region={{
+                                latitude: 31.776685,
+                                longitude: 35.234491,
+                                latitudeDelta: 0.04,
+                                longitudeDelta: 0.05,
+                            }}
+                        />
                     </Content>
                 </Container>
             </SafeAreaView>

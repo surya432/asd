@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { Text, SafeAreaView,PermissionsAndroid, StyleSheet } from 'react-native'
+import { Text, SafeAreaView, PermissionsAndroid, StyleSheet } from 'react-native'
 import GlobalStyles from '../Components/GlobalStyles';
-import { Container, Content, Button,List, ListItem } from 'native-base';
+import { Container, Content, Separator, List, ListItem } from 'native-base';
 
 export class RandDScreen extends Component {
     constructor(props) {
@@ -10,18 +10,38 @@ export class RandDScreen extends Component {
     _onClickGPS() {
         this.props.navigation.navigate('GeoLocationScreen');
     }
+    _onClickGPSDistance() {
+        this.props.navigation.navigate('GeoLocationDistance');
+    }
+    _onClickTakePicture(){
+        this.props.navigation.navigate('CameraScreen');
+    }
+    _onClickTakeBarcode(){
+        this.props.navigation.navigate('BarcodeScreen');
+    }
     render() {
         return (
             <SafeAreaView style={GlobalStyles.droidSafeArea}>
                 <Container >
                     <Content padder>
-                        <List>
-                            <ListItem>
-                                <Button primary onPress={this._onClickGPS()}>
-                                    <Text>RND Location</Text>
-                                </Button>
-                            </ListItem>
-                        </List>
+                        <Separator bordered>
+                            <Text>Geo Location</Text>
+                        </Separator>
+                        <ListItem onPress={this._onClickGPS.bind(this)} >
+                            <Text>Get Location</Text>
+                        </ListItem>
+                        <ListItem onPress={this._onClickGPSDistance.bind(this)} >
+                            <Text>Get Location Distance</Text>
+                        </ListItem>
+                        <Separator bordered>
+                            <Text>Camera</Text>
+                        </Separator>
+                        <ListItem onPress={this._onClickTakePicture.bind(this)} >
+                            <Text>Take Picture</Text>
+                        </ListItem>
+                        <ListItem onPress={this._onClickTakeBarcode.bind(this)} >
+                            <Text>Take Barcode</Text>
+                        </ListItem>
                     </Content>
                 </Container>
             </SafeAreaView>
@@ -42,5 +62,8 @@ const styles = new StyleSheet.create({
     text: {
         paddingHorizontal: 8,
         paddingVertical: 5,
+    },
+    btnList: {
+
     }
 });

@@ -5,13 +5,15 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import HomeScreen from './screens/HomeScreen';
 import RandDScreen from './screens/RandDScreen';
 import ProfileScreen from './screens/ProfileScreen';
-
+//  Task: {
+//             screen: ChatScreen,
+//         },
 const TabNavigator = createBottomTabNavigator(
     {
         Home: {
             screen: HomeScreen,
         },
-        RnD: {
+        RandDScreen: {
             screen: RandDScreen,
         },
         Profile: {
@@ -26,7 +28,7 @@ const TabNavigator = createBottomTabNavigator(
                 let iconName;
                 if (routeName === 'Home') {
                     iconName = 'ios-home';
-                } else if (routeName === 'RnD') {
+                } else if (routeName === 'RandDScreen') {
                     iconName = 'ios-flask';
                 } else if (routeName === 'Profile') {
                     iconName = 'ios-person';
