@@ -14,7 +14,7 @@ import {
     Footer,
     ListItem,
 } from 'native-base';
-import GlobalStyles from "./../Components/GlobalStyles"
+import GlobalStyles from "../Components/GlobalStyles"
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Feather from 'react-native-vector-icons/Feather'
 import moment from 'moment';

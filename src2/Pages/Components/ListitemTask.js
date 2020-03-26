@@ -8,11 +8,11 @@ const ListitemTask = (props) => {
     const getImageStatus = (param) => {
         switch (param) {
             case 'On Progress':
-                return require('./../../asset/asset1.png')
+                return require('../../asset/asset1.png')
             case 'Mulai':
-                return require('./../../asset/asset2.png')
+                return require('../../asset/asset2.png')
             case 'Selesai':
-                return require('./../../asset/asset3.png')
+                return require('../../asset/asset3.png')
         }
     }
     const getImageStatus2 = (param) => {
