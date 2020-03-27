@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { base_url } from '../../config/config';
 export default class SignUpScreen extends Component {
     constructor() {
         super();
@@ -71,7 +72,7 @@ export default class SignUpScreen extends Component {
         }
         formBody = formBody.join("&");
         console.log(formBody)
-        return await fetch("http://10.0.2.2/todoTask/public/create/user", {
+        return await fetch(base_url+"create/user", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -84,15 +85,18 @@ export default class SignUpScreen extends Component {
                     spinner: false
                 })
                 if (responseJson.kode == 1) {
-                    alert(responseJson.keterangan)
+                    Alert.alert("Berhasil",responseJson.keterangan)
                     this.props.navigation.goBack(null)
                     return;
                 } else {
-                    alert(responseJson.keterangan)
+                    Alert.alert("Error",responseJson.keterangan)
                     return;
                 }
             }).catch((error) => {
                 alert(error)
+                this.setState({
+                    spinner: false
+                })
                 console.log(error)
             });
     }

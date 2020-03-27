@@ -22,7 +22,8 @@ import GeoLocationDistance from './Pages/screens/GeoLocationDistance'
 import CameraScreen from './Pages/screens/CameraScreen'
 import BarcodeScreen from './Pages/screens/BarcodeScreen'
 import GeoLocationMap from './Pages/screens/GeoLocationMap'
-
+import GeoLocationBackgroud from './Pages/screens/GeoLocationBackgroud'
+GeoLocationBackgroud
 const RootStack = createStackNavigator(
     {
         Dashboard: {
@@ -51,6 +52,9 @@ const RootStack = createStackNavigator(
         },
         GeoLocationMap: {
             screen: GeoLocationMap,
+            navigationOptions: { headerShown: false },
+        }, GeoLocationBackgroud: {
+            screen: GeoLocationBackgroud,
             navigationOptions: { headerShown: false },
         },
 

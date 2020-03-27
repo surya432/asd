@@ -4,7 +4,9 @@ import Geolocation from 'react-native-geolocation-service';
 import GlobalStyles from '../Components/GlobalStyles';
 import { Content, Container } from 'native-base';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'
-export default class GeoLocationMap extends Component {
+import BackgroundJob from 'react-native-background-job';
+import BackgroundTimer from 'react-native-background-timer';
+export default class GeoLocationBackgroud extends Component {
     constructor() {
         super()
         this.state = {
@@ -15,8 +17,14 @@ export default class GeoLocationMap extends Component {
             logPosisi: null,
         }
     }
+    _doItbackgroud = async () => {
+        console.log("Running in background")
+        this.requestLocationPermission()
+    }
     async UNSAFE_componentWillMount() {
         await this.requestLocationPermission()
+
+
     }
     async getLocation() {
         try {
@@ -31,6 +39,7 @@ export default class GeoLocationMap extends Component {
                         geolng: lng1,
                         logPosisi: posision
                     })
+                    console.log(posision)
                 },
                 (error) => {
                     this.setState.error = error.message
@@ -38,7 +47,7 @@ export default class GeoLocationMap extends Component {
                 },
                 {
                     enableHighAccuracy: true,
-                    timeout: 15000,
+                    timeout: 10000,
                     maximumAge: 100
                 }
             )
@@ -46,7 +55,20 @@ export default class GeoLocationMap extends Component {
             console.log(error)
         }
     }
+    componentDidMount() {
+        BackgroundTimer.runBackgroundTimer(() => {
+            //code that will be called every 3 seconds 
+            console.log('tic');
+            this.requestLocationPermission()
+        },
+            90000);
+        const backgroundJob = {
+            jobKey: "myJob",
+            job: () => this._doItbackgroud()
+        };
 
+        BackgroundJob.register(backgroundJob);
+    }
     async requestLocationPermission() {
         const chckLocationPermission = PermissionsAndroid.check(
             PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
@@ -87,9 +109,6 @@ export default class GeoLocationMap extends Component {
         };
     }
     render() {
-        const { geolng, geolat, error, jarak, logPosisi } = this.state
-        
-        // console.log()
         return (
             <SafeAreaView style={GlobalStyles.droidSafeArea}>
                 <View style={{ flex: 1 }}>
@@ -102,9 +121,10 @@ export default class GeoLocationMap extends Component {
     viewMap() {
         const { geolat, geolng, logPosisi } = this.state
         if (geolat != "" && geolng != "" & logPosisi != null) {
-            const regis = this.regionFrom(logPosisi.coords.latitude,logPosisi.coords.longitude,logPosisi.coords.accuracy)
+            const regis = this.regionFrom(logPosisi.coords.latitude, logPosisi.coords.longitude, logPosisi.coords.accuracy)
+            console.log(regis)
             return (
-                
+
                 <MapView
                     provider={PROVIDER_GOOGLE}
                     style={styles.map}

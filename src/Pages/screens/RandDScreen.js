@@ -13,12 +13,19 @@ export class RandDScreen extends Component {
     _onClickGPSDistance() {
         this.props.navigation.navigate('GeoLocationDistance');
     }
-    _onClickTakePicture(){
+    _onClickTakePicture() {
         this.props.navigation.navigate('CameraScreen');
     }
-    _onClickTakeBarcode(){
+    _onClickTakeBarcode() {
         this.props.navigation.navigate('BarcodeScreen');
     }
+    _onClickGPSMap() {
+        this.props.navigation.navigate('GeoLocationMap');
+    }
+    _onClickGeoLocationBackgroud() {
+        this.props.navigation.navigate('GeoLocationBackgroud');
+    }
+
     render() {
         return (
             <SafeAreaView style={GlobalStyles.droidSafeArea}>
@@ -33,6 +40,13 @@ export class RandDScreen extends Component {
                         <ListItem onPress={this._onClickGPSDistance.bind(this)} >
                             <Text>Get Location Distance</Text>
                         </ListItem>
+                        <ListItem onPress={this._onClickGPSMap.bind(this)} >
+                            <Text>Get Location With Map</Text>
+                        </ListItem>
+                        <ListItem onPress={this._onClickGeoLocationBackgroud.bind(this)} >
+                            <Text>Get Location Background</Text>
+                        </ListItem>
+
                         <Separator bordered>
                             <Text>Camera</Text>
                         </Separator>

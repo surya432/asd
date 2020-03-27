@@ -49,7 +49,7 @@ export class HomeScreen extends React.Component {
     async _calldata() {
         try {
             const dataUser = await AsyncStorage.getItem('dataUser')
-                    .then((result) => JSON.parse(result))
+                .then((result) => JSON.parse(result))
             const dataList = await ServiceTaskListFilter(null, "taskAll/" + dataUser.id)
             if (dataList.kode == 1) {
                 this.setState({
@@ -61,6 +61,11 @@ export class HomeScreen extends React.Component {
             }
         } catch (error) {
             console.log(error)
+            if (error == "TypeError: Network request failed") {
+                Alert.alert("Error", "Koneksi Tidak Tersedia")
+            } else {
+                Alert.alert("Error", error)
+            }
         }
 
     }
@@ -71,6 +76,7 @@ export class HomeScreen extends React.Component {
         this.setState({ chosenDate: newDate });
     }
     myCallback = async (dataFromChild) => {
+        this.spanFilter.close()
         try {
             if (dataFromChild.tgl == "Pilih Tanggal" && dataFromChild.status == "Semua") {
                 this._kondisiAwal()
@@ -89,6 +95,11 @@ export class HomeScreen extends React.Component {
             }
         } catch (error) {
             console.log(error)
+            if (error == "TypeError: Network request failed") {
+                Alert.alert("Error", "Koneksi Tidak Tersedia")
+            } else {
+                Alert.alert("Error", error)
+            }
         }
     }
     handlerOnclick = (items) => {
@@ -132,6 +143,11 @@ export class HomeScreen extends React.Component {
             }
         } catch (error) {
             console.log(error)
+            if (error == "TypeError: Network request failed") {
+                Alert.alert("Error", "Koneksi Tidak Tersedia")
+            } else {
+                Alert.alert("Error", error)
+            }
         }
     }
     render() {
