@@ -25,7 +25,10 @@ export class RandDScreen extends Component {
     _onClickGeoLocationBackgroud() {
         this.props.navigation.navigate('GeoLocationBackgroud');
     }
+    intentKe = (value)=>{
+        this.props.navigation.navigate(value);
 
+    }
     render() {
         return (
             <SafeAreaView style={GlobalStyles.droidSafeArea}>
@@ -55,6 +58,13 @@ export class RandDScreen extends Component {
                         </ListItem>
                         <ListItem onPress={this._onClickTakeBarcode.bind(this)} >
                             <Text>Take Barcode</Text>
+                        </ListItem>
+                        <Separator bordered>
+                            <Text>Notifikasi</Text>
+                        </Separator>
+                        
+                        <ListItem onPress={()=> this.intentKe("SendNotifikasiLokal")} >
+                            <Text>Send Notifikasi</Text>
                         </ListItem>
                     </Content>
                 </Container>

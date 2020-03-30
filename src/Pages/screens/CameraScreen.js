@@ -2,12 +2,19 @@ import React, { PureComponent } from 'react'
 import { Text, StyleSheet, PermissionsAndroid, View, SafeAreaView, TouchableOpacity } from 'react-native'
 import Geolocation from 'react-native-geolocation-service';
 import GlobalStyles from '../Components/GlobalStyles';
-import { Content, Container } from 'native-base';
+import { Content, Container, Icon } from 'native-base';
 import { RNCamera } from 'react-native-camera';
+import RBSheet from "react-native-raw-bottom-sheet";
+
 export default class GeoLocation extends PureComponent {
     constructor() {
         super()
         this.getPermission()
+        this.state = ({
+            "uripath": null,
+            "flashStatus": RNCamera.Constants.FlashMode.off,
+            "cameraType": RNCamera.Constants.Type.back
+        })
     }
     async getPermission() {
         try {
@@ -34,15 +41,59 @@ export default class GeoLocation extends PureComponent {
             console.warn(err)
         }
     }
+    setFlash = async () => {
+        if (this.state.flashStatus == 2) {
+            this.setState({
+                "flashStatus": RNCamera.Constants.FlashMode.off
+            })
+        } else if(this.state.flashStatus == 1){
+            this.setState({
+                "flashStatus": RNCamera.Constants.FlashMode.torch
+            })
+        } else {
+            this.setState({
+                "flashStatus": RNCamera.Constants.FlashMode.on
+            })
+        }
+        
+        console.log(this.state.flashStatus)
+    }
     takePicture = async () => {
         if (this.camera) {
             const options = { quality: 0.5, base64: true };
             const data = await this.camera.takePictureAsync(options);
-            console.log(data.uri);
-
+            console.log(data.base64);
+            this.setState({
+                uripath: data.uri
+            })
         }
     };
+    setIconFlash = (param) => {
+        {console.log("adasds"+param)}
+
+        switch (param) {
+            case 0:
+                return "flash-off"
+            case 1:
+                return "flash-auto"
+            case 2:
+                return "flash"
+        }
+    }
+    changePhoto = async () => {
+        if (this.state.cameraType == 0) {
+            this.setState({
+                "cameraType": RNCamera.Constants.Type.front
+            })
+        } else {
+            this.setState({
+                "cameraType": RNCamera.Constants.Type.back
+            })
+        }
+        
+    }
     render() {
+        const { uripath, flashStatus, cameraType } = this.state
         return (
             <SafeAreaView style={GlobalStyles.droidSafeArea}>
                 <View style={styles.container}>
@@ -51,8 +102,8 @@ export default class GeoLocation extends PureComponent {
                             this.camera = ref;
                         }}
                         style={styles.preview}
-                        type={RNCamera.Constants.Type.back}
-                        flashMode={RNCamera.Constants.FlashMode.off}
+                        type={cameraType}
+                        flashMode={flashStatus}
                         androidCameraPermissionOptions={{
                             title: 'Permission to use camera',
                             message: 'We need your permission to use your camera',
@@ -72,10 +123,18 @@ export default class GeoLocation extends PureComponent {
                         {({ camera, status, recordAudioPermissionStatus }) => {
                             if (status !== 'READY') return <PendingView />;
                             return (
-                                <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
-                                    <TouchableOpacity onPress={() => this.takePicture(camera)} style={styles.capture}>
-                                        <Text style={{ fontSize: 14 }}> SNAP </Text>
-                                    </TouchableOpacity>
+                                <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'space-around' }}>
+                                    <View style={styles.ContentAction}>
+                                        <TouchableOpacity onPress={() => this.setFlash()} style={styles.capture}>
+                                            <Icon type="MaterialCommunityIcons" name={this.setIconFlash(flashStatus)} />
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={() => this.takePicture(camera)} style={styles.capture}>
+                                            <Icon name="camera" type="FontAwesome" />
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={() => this.changePhoto()} style={styles.capture}>
+                                            <Icon name="ios-reverse-camera" type="Ionicons" />
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
                             );
                         }}
@@ -89,7 +148,6 @@ const PendingView = () => (
     <View
         style={{
             flex: 1,
-            backgroundColor: 'lightgreen',
             justifyContent: 'center',
             alignItems: 'center',
         }}
@@ -107,6 +165,9 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-end',
         alignItems: 'center',
+    },
+    ContentAction: {
+        flexDirection: "row",
     },
     capture: {
         flex: 0,

@@ -9,7 +9,6 @@ import {
     createAppContainer,
 } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-
 import SplashScreen from './Pages/SplashScreen';
 import LoginScreen from './Pages/Auth/LoginScreen';
 import DashboardScreen from './Pages/DashboardScreen';
@@ -23,7 +22,7 @@ import CameraScreen from './Pages/screens/CameraScreen'
 import BarcodeScreen from './Pages/screens/BarcodeScreen'
 import GeoLocationMap from './Pages/screens/GeoLocationMap'
 import GeoLocationBackgroud from './Pages/screens/GeoLocationBackgroud'
-GeoLocationBackgroud
+import SendNotifikasiLokal from './Pages/screens/SendNotifikasiLokal'
 const RootStack = createStackNavigator(
     {
         Dashboard: {
@@ -53,8 +52,13 @@ const RootStack = createStackNavigator(
         GeoLocationMap: {
             screen: GeoLocationMap,
             navigationOptions: { headerShown: false },
-        }, GeoLocationBackgroud: {
+        },
+        GeoLocationBackgroud: {
             screen: GeoLocationBackgroud,
+            navigationOptions: { headerShown: false },
+        },
+        SendNotifikasiLokal: {
+            screen: SendNotifikasiLokal,
             navigationOptions: { headerShown: false },
         },
 

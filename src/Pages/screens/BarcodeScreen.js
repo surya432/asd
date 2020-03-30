@@ -96,7 +96,6 @@ const PendingView = () => (
     <View
         style={{
             flex: 1,
-            backgroundColor: 'lightgreen',
             justifyContent: 'center',
             alignItems: 'center',
         }}
@@ -108,7 +107,6 @@ const ScanBarcode = () => (
     <View
         style={{
             flex: 1,
-            backgroundColor: 'lightgreen',
             justifyContent: 'center',
             alignItems: 'center',
         }}

@@ -36,6 +36,8 @@ target 'SimpleApps' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
+
   target 'SimpleAppsTests' do
     inherit! :search_paths
     # Pods for testing

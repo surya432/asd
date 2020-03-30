@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "502277087728",
+    "firebase_url": "https://proud-shoreline-147708.firebaseio.com",
+    "project_id": "proud-shoreline-147708",
+    "storage_bucket": "proud-shoreline-147708.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:502277087728:android:5bd22e26c9dfd6314e7d35",
+        "android_client_info": {
+          "package_name": "com.simpleApps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "502277087728-cun1g691juhnv4un6cmcbvk00no3ieia.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmGHW_-G1lD8mlzTc6sOMs_1YMU9zX89Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "502277087728-cun1g691juhnv4un6cmcbvk00no3ieia.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
