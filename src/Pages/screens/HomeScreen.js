@@ -25,6 +25,7 @@ import { ServiceTaskListFilter } from '../../services/ServiceTaskListFilter';
 import Spinner from 'react-native-loading-spinner-overlay';
 import ListitemTask from '../Components/ListitemTask';
 import { withNavigationFocus } from 'react-navigation';
+import FCMService from "./../Components/FCMService";
 export class HomeScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -35,7 +36,6 @@ export class HomeScreen extends React.Component {
             dataFilter: {},
             spinner: false,
         };
-
     }
     CheckConnectivity = () => {
         // For Android devices
@@ -44,7 +44,7 @@ export class HomeScreen extends React.Component {
                 if (isConnected) {
                     Alert.alert("You are online!");
                 } else {
-                    Alert.alert("You are offline!");
+                    Alert.alert("You are Offline!");
                 }
             });
         } else {
@@ -63,12 +63,14 @@ export class HomeScreen extends React.Component {
         );
 
         if (isConnected === false) {
-            Alert.alert("You are offline!");
+            Alert.alert("You are Offline!");
         } else {
-            Alert.alert("You are online!");
+            Alert.alert("You are Online!");
         }
     };
     async componentDidMount() {
+        FCMService()
+
         const { navigation } = this.props;
         navigation.addListener('didFocus', () => {
             this._kondisiAwal();
