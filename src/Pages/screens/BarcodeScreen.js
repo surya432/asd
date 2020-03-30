@@ -48,7 +48,6 @@ export default class GeoLocation extends PureComponent {
 
     render() {
         const { shouldReadBarCode } = this.state;
-        console.log(shouldReadBarCode)
         return (
             <SafeAreaView style={GlobalStyles.droidSafeArea}>
                 <View style={styles.container}>
@@ -92,28 +91,6 @@ export default class GeoLocation extends PureComponent {
         )
     }
 }
-const PendingView = () => (
-    <View
-        style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-        }}
-    >
-        <Text>Waiting</Text>
-    </View>
-);
-const ScanBarcode = () => (
-    <View
-        style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-        }}
-    >
-        <Text>Waiting</Text>
-    </View>
-);
 const styles = StyleSheet.create({
     container: {
         flex: 1,

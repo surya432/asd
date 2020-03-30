@@ -69,8 +69,6 @@ export default class GeoLocation extends PureComponent {
         }
     };
     setIconFlash = (param) => {
-        { console.log("adasds" + param) }
-
         switch (param) {
             case 0:
                 return "flash-off"
@@ -121,23 +119,25 @@ export default class GeoLocation extends PureComponent {
                         }}
                     >
                         {({ camera, status, recordAudioPermissionStatus }) => {
-                            if (status !== 'READY') return <PendingView />;
-                            return (
-                                <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'space-around' }}>
-                                    <View style={styles.ContentAction}>
-                                        <TouchableOpacity onPress={() => this.setFlash()} style={styles.capture}>
-                                            <Icon type="MaterialCommunityIcons" name={this.setIconFlash(flashStatus)} />
-                                        </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => this.takePicture(camera)} style={styles.capture}>
-                                            <Icon name="camera" type="FontAwesome" />
-                                        </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => this.changePhoto()} style={styles.capture}>
-                                            <Icon name="ios-reverse-camera" type="Ionicons" />
-                                        </TouchableOpacity>
-                                    </View>
+                            if (status !== 'READY') { return <PendingView />; } else {
+                                return (
+                                    <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'space-around' }}>
+                                        <View style={styles.ContentAction}>
+                                            <TouchableOpacity onPress={() => this.setFlash()} style={styles.capture}>
+                                                <Icon type="MaterialCommunityIcons" name={this.setIconFlash(flashStatus)} />
+                                            </TouchableOpacity>
+                                            <TouchableOpacity onPress={() => this.takePicture(camera)} style={styles.capture}>
+                                                <Icon name="camera" type="FontAwesome" />
+                                            </TouchableOpacity>
+                                            <TouchableOpacity onPress={() => this.changePhoto()} style={styles.capture}>
+                                                <Icon name="ios-reverse-camera" type="Ionicons" />
+                                            </TouchableOpacity>
+                                        </View>
 
-                                </View>
-                            );
+                                    </View>
+                                );
+                            }
+
                         }}
                     </RNCamera>
                 </View>

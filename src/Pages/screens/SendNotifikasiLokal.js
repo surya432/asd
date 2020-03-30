@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Text, StyleSheet, View, SafeAreaView } from 'react-native'
 import GlobalStyles from '../Components/GlobalStyles'
+import messaging from '@react-native-firebase/messaging';
+import { firebase } from '@react-native-firebase/messaging';
 export default class SendNotifikasiLokal extends Component {
     async componentDidMount() {
         this._registerFcm();
