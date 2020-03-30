@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD
     package="com.simpleapps">
 
+=======
+  package="com.simpleapps">
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+>>>>>>> e35f7e01caa2a9c19e38730ad7fc5d340dee3ced
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />

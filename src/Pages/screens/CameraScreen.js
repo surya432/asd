@@ -46,7 +46,7 @@ export default class GeoLocation extends PureComponent {
             this.setState({
                 "flashStatus": RNCamera.Constants.FlashMode.off
             })
-        } else if(this.state.flashStatus == 1){
+        } else if (this.state.flashStatus == 1) {
             this.setState({
                 "flashStatus": RNCamera.Constants.FlashMode.torch
             })
@@ -55,7 +55,7 @@ export default class GeoLocation extends PureComponent {
                 "flashStatus": RNCamera.Constants.FlashMode.on
             })
         }
-        
+
         console.log(this.state.flashStatus)
     }
     takePicture = async () => {
@@ -69,7 +69,7 @@ export default class GeoLocation extends PureComponent {
         }
     };
     setIconFlash = (param) => {
-        {console.log("adasds"+param)}
+        { console.log("adasds" + param) }
 
         switch (param) {
             case 0:
@@ -90,7 +90,7 @@ export default class GeoLocation extends PureComponent {
                 "cameraType": RNCamera.Constants.Type.back
             })
         }
-        
+
     }
     render() {
         const { uripath, flashStatus, cameraType } = this.state
@@ -135,6 +135,7 @@ export default class GeoLocation extends PureComponent {
                                             <Icon name="ios-reverse-camera" type="Ionicons" />
                                         </TouchableOpacity>
                                     </View>
+
                                 </View>
                             );
                         }}

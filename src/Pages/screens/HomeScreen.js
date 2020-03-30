@@ -37,6 +37,37 @@ export class HomeScreen extends React.Component {
         };
 
     }
+    CheckConnectivity = () => {
+        // For Android devices
+        if (Platform.OS === "android") {
+            NetInfo.isConnected.fetch().then(isConnected => {
+                if (isConnected) {
+                    Alert.alert("You are online!");
+                } else {
+                    Alert.alert("You are offline!");
+                }
+            });
+        } else {
+            // For iOS devices
+            NetInfo.isConnected.addEventListener(
+                "connectionChange",
+                this.handleFirstConnectivityChange
+            );
+        }
+    };
+
+    handleFirstConnectivityChange = isConnected => {
+        NetInfo.isConnected.removeEventListener(
+            "connectionChange",
+            this.handleFirstConnectivityChange
+        );
+
+        if (isConnected === false) {
+            Alert.alert("You are offline!");
+        } else {
+            Alert.alert("You are online!");
+        }
+    };
     async componentDidMount() {
         const { navigation } = this.props;
         navigation.addListener('didFocus', () => {
@@ -69,12 +100,7 @@ export class HomeScreen extends React.Component {
         }
 
     }
-    refeshDataCok = async () => {
-        this._kondisiAwal();
-    }
-    setDate(newDate) {
-        this.setState({ chosenDate: newDate });
-    }
+
     myCallback = async (dataFromChild) => {
         this.spanFilter.close()
         try {
@@ -92,6 +118,33 @@ export class HomeScreen extends React.Component {
                     alert(dataList.keterangan);
                     return;
                 }
+            }
+        } catch (error) {
+            console.log(error)
+            if (error == "TypeError: Network request failed") {
+                Alert.alert("Error", "Koneksi Tidak Tersedia")
+            } else {
+                Alert.alert("Error", error)
+            }
+        }
+    }
+    onDelete = async (items) => {
+        console.log(items)
+        try {
+            this.setState({
+                spinner: false
+            })
+            let filter = {
+                id: items,
+            }
+            console.log(filter);
+            const dataList = await ServiceTaskListFilter(filter, "taksDelete")
+            console.log(dataList)
+            if (dataList.kode == 1) {
+                this._kondisiAwal()
+                alert(dataList.keterangan);
+            } else {
+                alert(dataList.keterangan);
             }
         } catch (error) {
             console.log(error)
@@ -122,34 +175,13 @@ export class HomeScreen extends React.Component {
             ],
         );
     }
-
-    onDelete = async (items) => {
-        console.log(items)
-        try {
-            this.setState({
-                spinner: false
-            })
-            let filter = {
-                id: items,
-            }
-            console.log(filter);
-            const dataList = await ServiceTaskListFilter(filter, "taksDelete")
-            console.log(dataList)
-            if (dataList.kode == 1) {
-                this._kondisiAwal()
-                alert(dataList.keterangan);
-            } else {
-                alert(dataList.keterangan);
-            }
-        } catch (error) {
-            console.log(error)
-            if (error == "TypeError: Network request failed") {
-                Alert.alert("Error", "Koneksi Tidak Tersedia")
-            } else {
-                Alert.alert("Error", error)
-            }
-        }
+    refeshDataCok = async () => {
+        this._kondisiAwal();
     }
+    setDate(newDate) {
+        this.setState({ chosenDate: newDate });
+    }
+
     render() {
         const formattedDate = moment(new Date()).format("MM/DD/YYYY");
         this.state.chosenDate = formattedDate
