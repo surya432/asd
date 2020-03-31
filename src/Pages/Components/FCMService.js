@@ -1,11 +1,12 @@
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-community/async-storage';
-import Notification from    "@react-native-firebase/app"
+import Notification from "@react-native-firebase/app"
 const FCMService = async () => {
     CheckPermissionAndReturnFcmToken()
         .then((fcmToken) => {
-            createNotificationListeners()
+            // createNotificationListeners()
+
         })
         .catch((error) => {
             console.log("Error Check Permission ", error)
@@ -38,7 +39,6 @@ const CheckPermissionAndReturnFcmToken = () => new Promise(async (resolve, rejec
         const fcmToken = await ReturnFcmToken();
         await AsyncStorage.setItem("fcmToken", fcmToken);
         const token = await AsyncStorage.getItem("fcmToken")
-        console.log(token)
         resolve(fcmToken);
     } else {
         try {
@@ -46,7 +46,6 @@ const CheckPermissionAndReturnFcmToken = () => new Promise(async (resolve, rejec
             const fcmToken = await ReturnFcmToken();
             await AsyncStorage.setItem("fcmToken", fcmToken);
             const token = await AsyncStorage.getItem("fcmToken")
-            console.log(token)
             resolve(fcmToken);
         } catch (e) {
             reject(e);
@@ -60,7 +59,7 @@ const createNotificationListeners = () => new Promise(async (resolve, reject) =>
     * */
     this.notificationListener = firebase.notifications().onNotification((notification) => {
         const { title, body } = notification;
-        this.showAlert(title, body);
+        console.log(notification)
     });
 
     /*
@@ -68,7 +67,7 @@ const createNotificationListeners = () => new Promise(async (resolve, reject) =>
     * */
     this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
         const { title, body } = notificationOpen.notification;
-        this.showAlert(title, body);
+        console.log(notificationOpen.notification)
     });
 
     /*
@@ -77,7 +76,8 @@ const createNotificationListeners = () => new Promise(async (resolve, reject) =>
     const notificationOpen = await firebase.notifications().getInitialNotification();
     if (notificationOpen) {
         const { title, body } = notificationOpen.notification;
-        this.showAlert(title, body);
+        console.log(notificationOpen.notification);
+
     }
     /*
     * Triggered for data only payload in foreground
@@ -86,7 +86,7 @@ const createNotificationListeners = () => new Promise(async (resolve, reject) =>
         //process data message
         console.log(JSON.stringify(message));
     });
-    
+
 });
 
 

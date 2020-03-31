@@ -2,10 +2,13 @@ import React, { Component } from 'react'
 import { Text, SafeAreaView, PermissionsAndroid, StyleSheet } from 'react-native'
 import GlobalStyles from '../Components/GlobalStyles';
 import { Container, Content, Separator, List, ListItem } from 'native-base';
+import NotifService, { onRegister, onNotif, getTokenFCM } from './../Components/NotifService';
 
 export class RandDScreen extends Component {
     constructor(props) {
         super(props)
+        this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
+        getTokenFCM()
     }
     _onClickGPS() {
         this.props.navigation.navigate('GeoLocationScreen');
@@ -25,7 +28,7 @@ export class RandDScreen extends Component {
     _onClickGeoLocationBackgroud() {
         this.props.navigation.navigate('GeoLocationBackgroud');
     }
-    intentKe = (value)=>{
+    intentKe = (value) => {
         this.props.navigation.navigate(value);
 
     }
@@ -62,8 +65,8 @@ export class RandDScreen extends Component {
                         <Separator bordered>
                             <Text>Notifikasi</Text>
                         </Separator>
-                        
-                        <ListItem onPress={()=> this.intentKe("SendNotifikasiLokal")} >
+
+                        <ListItem onPress={() => this.intentKe("SendNotifikasiLokal")} >
                             <Text>Send Notifikasi</Text>
                         </ListItem>
                     </Content>

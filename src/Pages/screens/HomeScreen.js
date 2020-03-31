@@ -24,8 +24,8 @@ import FilterSheet from '../Components/FilterSheet';
 import { ServiceTaskListFilter } from '../../services/ServiceTaskListFilter';
 import Spinner from 'react-native-loading-spinner-overlay';
 import ListitemTask from '../Components/ListitemTask';
-import { withNavigationFocus } from 'react-navigation';
-import FCMService from "./../Components/FCMService";
+import NotifService, { onRegister, onNotif, getTokenFCM } from './../Components/NotifService';
+
 export class HomeScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -36,6 +36,8 @@ export class HomeScreen extends React.Component {
             dataFilter: {},
             spinner: false,
         };
+        this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
+        getTokenFCM()
     }
     CheckConnectivity = () => {
         // For Android devices
@@ -69,7 +71,6 @@ export class HomeScreen extends React.Component {
         }
     };
     async componentDidMount() {
-        FCMService()
 
         const { navigation } = this.props;
         navigation.addListener('didFocus', () => {

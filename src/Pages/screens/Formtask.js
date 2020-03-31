@@ -4,6 +4,7 @@ import GlobalStyles from '../Components/GlobalStyles'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { Container, Content } from 'native-base';
 import Fontisto from "react-native-vector-icons/Fontisto";
+import NotifService, { onRegister, onNotif, getTokenFCM } from './../Components/NotifService';
 
 export default class Formtask extends Component {
     constructor(props) {
@@ -11,6 +12,8 @@ export default class Formtask extends Component {
         this.state = {
             jsonDataParse: {}
         }
+        this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
+        getTokenFCM()
     }
     getImageStatus2 = (param) => {
         switch (param) {

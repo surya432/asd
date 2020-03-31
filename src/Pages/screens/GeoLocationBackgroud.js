@@ -6,6 +6,8 @@ import { Content, Container } from 'native-base';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'
 import BackgroundJob from 'react-native-background-job';
 import BackgroundTimer from 'react-native-background-timer';
+import NotifService, { onRegister, onNotif, getTokenFCM } from './../Components/NotifService';
+
 export default class GeoLocationBackgroud extends Component {
     constructor() {
         super()
@@ -16,6 +18,8 @@ export default class GeoLocationBackgroud extends Component {
             address: null,
             logPosisi: null,
         }
+        this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
+        getTokenFCM()
     }
     _doItbackgroud = async () => {
         console.log("Running in background")

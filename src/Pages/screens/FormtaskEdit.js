@@ -4,7 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import { Container, Content, Form, Item, Label, Input, DatePicker, Picker, Icon, Textarea, Button } from 'native-base'
 import Moment from "moment"
 import AsyncStorage from '@react-native-community/async-storage';
-
+import NotifService, { onRegister, onNotif, getTokenFCM } from './../Components/NotifService';
 import { ServiceTaskListFilter } from '../../services/ServiceTaskListFilter'
 export default class FormtaskEdit extends Component {
     constructor(props) {
@@ -18,6 +18,8 @@ export default class FormtaskEdit extends Component {
             id: "",
             user_id: "",
         }
+        this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
+        getTokenFCM()
     }
     handleChange(evt) {
         const value = evt.target.value; const key = evt.target.name;

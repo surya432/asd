@@ -4,6 +4,8 @@ import Geolocation from 'react-native-geolocation-service';
 import GlobalStyles from '../Components/GlobalStyles';
 import { Content, Container } from 'native-base';
 import Geocoder from 'react-native-geocoding';
+import NotifService, { onRegister, onNotif, getTokenFCM } from './../Components/NotifService';
+
 export default class GeoLocation extends Component {
     constructor() {
         super()
@@ -14,7 +16,8 @@ export default class GeoLocation extends Component {
             address: null,
         }
         this.requestLocationPermission()
-
+        this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
+        getTokenFCM()
     }
     async getLocation() {
         try {

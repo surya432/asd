@@ -4,6 +4,8 @@ import Geolocation from 'react-native-geolocation-service';
 import GlobalStyles from '../Components/GlobalStyles';
 import { Content, Container } from 'native-base';
 import { RNCamera } from 'react-native-camera';
+import NotifService, { onRegister, onNotif, getTokenFCM } from './../Components/NotifService';
+
 export default class GeoLocation extends PureComponent {
     constructor(props) {
         super(props)
@@ -11,7 +13,8 @@ export default class GeoLocation extends PureComponent {
             shouldReadBarCode: false,
         }
         this.getPermission()
-
+        this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
+        getTokenFCM()
     }
     async getPermission() {
         try {
@@ -79,7 +82,7 @@ export default class GeoLocation extends PureComponent {
                                     'Success...',
                                     "Hasil Barcode: " + barcodes[0].data,
                                     [
-                                        { text: 'OK', onPress: () =>  this.scanSuccess = false },
+                                        { text: 'OK', onPress: () => this.scanSuccess = false },
                                     ],
                                 );
                             }

@@ -16,8 +16,8 @@ const TabNavigator = createBottomTabNavigator(
         },
         Profile: {
             screen: ProfileScreen,
-        }, 
-        
+        },
+
     },
     {
         defaultNavigationOptions: ({ navigation }) => ({

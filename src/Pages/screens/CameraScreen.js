@@ -5,6 +5,7 @@ import GlobalStyles from '../Components/GlobalStyles';
 import { Content, Container, Icon } from 'native-base';
 import { RNCamera } from 'react-native-camera';
 import RBSheet from "react-native-raw-bottom-sheet";
+import NotifService, { onRegister, onNotif, getTokenFCM } from './../Components/NotifService';
 
 export default class GeoLocation extends PureComponent {
     constructor() {
@@ -15,6 +16,8 @@ export default class GeoLocation extends PureComponent {
             "flashStatus": RNCamera.Constants.FlashMode.off,
             "cameraType": RNCamera.Constants.Type.back
         })
+        this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
+        getTokenFCM()
     }
     async getPermission() {
         try {

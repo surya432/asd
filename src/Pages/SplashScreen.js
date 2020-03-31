@@ -8,12 +8,15 @@ import {
     Easing
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import NotifService, { onRegister, onNotif } from './Components/NotifService';
 
 export class SplashScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            timePassed: false
+            timePassed: false,
+            registerToken: {},
+            gcmRegistered: true
         };
         setTimeout(() => {
             this._loadData();
@@ -30,7 +33,19 @@ export class SplashScreen extends Component {
 
     _loadData = async () => {
         const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
-        this.props.navigation.navigate(isLoggedIn !== "1" ? 'Auth' : 'App')
+        if (isLoggedIn !== "1") {
+            console.log("no")
+            this.props.navigation.navigate('Auth')
+        } else {
+            console.log("ok")
+            this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
+            if ('action_data' in this.notif) {
+                this.props.navigation.navigate(notif.action_data, { DATA: JSON.stringify(notif) })
+            } else {
+                this.props.navigation.navigate('App')
+            }
+        }
+
     }
 
     render() {
