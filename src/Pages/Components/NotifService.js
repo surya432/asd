@@ -7,14 +7,15 @@ export default class NotifService {
     constructor(onRegister, onNotification) {
         FCMService().then(
             () => {
-                this.configure(onRegister, onNotification);
+                const token = AsyncStorage.getItem("fcmToken")
+            }).then((token)=>{
+                this.configure(onRegister, onNotification,token);
                 this.lastId = 0;
-
             })
-
     }
 
     configure(onRegister, onNotification, gcm = "") {
+
         PushNotification.configure({
             // (optional) Called when Token is generated (iOS and Android)
             onRegister: onRegister, //this._onRegister.bind(this),
@@ -66,6 +67,7 @@ export default class NotifService {
 
             /* iOS and Android properties */
             action_data: "SendNotifikasiLokal",
+            
             title: "Local Notification", // (optional)
             message: "My Notification Message", // (required)
             playSound: false, // (optional) default: true

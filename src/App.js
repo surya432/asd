@@ -23,10 +23,17 @@ import BarcodeScreen from './Pages/screens/BarcodeScreen'
 import GeoLocationMap from './Pages/screens/GeoLocationMap'
 import GeoLocationBackgroud from './Pages/screens/GeoLocationBackgroud'
 import SendNotifikasiLokal from './Pages/screens/SendNotifikasiLokal'
+import ImagePicker from './Pages/screens/ImagePicker'
+import ProfileScreen from './Pages/screens/ProfileScreen'
 const RootStack = createStackNavigator(
     {
+
         Dashboard: {
             screen: DashboardScreen,
+            navigationOptions: { headerShown: false },
+        },
+        Profile: {
+            screen: ProfileScreen,
             navigationOptions: { headerShown: false },
         },
         FormTask: {
@@ -61,12 +68,13 @@ const RootStack = createStackNavigator(
             screen: SendNotifikasiLokal,
             navigationOptions: { headerShown: false },
         },
-
+        ImagePicker: {
+            screen: ImagePicker,
+            navigationOptions: { headerShown: false },
+        },
         FormTaskEdit: {
             screen: FormtaskEdit,
-            navigationOptions: {
-
-            },
+            navigationOptions: { headerShown: false },
         },
         FormtaskCreate: {
             screen: FormtaskCreate,

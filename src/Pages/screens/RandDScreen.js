@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, SafeAreaView, PermissionsAndroid, StyleSheet } from 'react-native'
+import { Text, SafeAreaView, PermissionsAndroid, StyleSheet, } from 'react-native'
 import GlobalStyles from '../Components/GlobalStyles';
 import { Container, Content, Separator, List, ListItem } from 'native-base';
 import NotifService, { onRegister, onNotif, getTokenFCM } from './../Components/NotifService';
@@ -18,6 +18,9 @@ export class RandDScreen extends Component {
     }
     _onClickTakePicture() {
         this.props.navigation.navigate('CameraScreen');
+    }
+    _onClickTakePicturePick() {
+        this.props.navigation.navigate('ImagePicker');
     }
     _onClickTakeBarcode() {
         this.props.navigation.navigate('BarcodeScreen');
@@ -61,6 +64,9 @@ export class RandDScreen extends Component {
                         </ListItem>
                         <ListItem onPress={this._onClickTakeBarcode.bind(this)} >
                             <Text>Take Barcode</Text>
+                        </ListItem>
+                        <ListItem onPress={this._onClickTakePicturePick.bind(this)} >
+                            <Text>Picker Image</Text>
                         </ListItem>
                         <Separator bordered>
                             <Text>Notifikasi</Text>

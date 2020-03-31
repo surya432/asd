@@ -39,13 +39,17 @@ export class SplashScreen extends Component {
         } else {
             console.log("ok")
             this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
+            console.log(this.notif)
             if ('action_data' in this.notif) {
-                this.props.navigation.navigate(notif.action_data, { DATA: JSON.stringify(notif) })
+                if (this.notif.flagMsg !== "promo" && isLoggedIn) {
+                    this.props.navigation.navigate("Profile", { DATA: JSON.stringify(notif) })
+                } else {
+                    this.props.navigation.navigate("SendNotifikasiLokal", { DATA: JSON.stringify(notif) })
+                }
             } else {
                 this.props.navigation.navigate('App')
             }
         }
-
     }
 
     render() {
