@@ -33,7 +33,6 @@ export class RandDScreen extends Component {
     }
     intentKe = (value) => {
         this.props.navigation.navigate(value);
-
     }
     render() {
         return (
@@ -74,6 +73,13 @@ export class RandDScreen extends Component {
 
                         <ListItem onPress={() => this.intentKe("SendNotifikasiLokal")} >
                             <Text>Send Notifikasi</Text>
+                        </ListItem>
+                        <Separator bordered>
+                            <Text>Transaction</Text>
+                        </Separator>
+
+                        <ListItem onPress={() => this.intentKe("Transaction")} >
+                            <Text>TransactionScreen</Text>
                         </ListItem>
                     </Content>
                 </Container>

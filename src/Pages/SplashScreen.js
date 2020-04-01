@@ -5,11 +5,11 @@ import {
     View, Text,
     Image,
     Animated,
-    Easing
+    Easing, Dimensions
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import NotifService, { onRegister, onNotif } from './Components/NotifService';
-
+const { width, height } = Dimensions.get('window');
 export class SplashScreen extends Component {
     constructor(props) {
         super(props);
@@ -27,7 +27,7 @@ export class SplashScreen extends Component {
     _start = () => {
         Animated.timing(this.state.fadeValue, {
             toValue: 1,
-            duration: 3000
+            duration: 2000
         }).start();
     };
 
@@ -55,10 +55,16 @@ export class SplashScreen extends Component {
     render() {
         return (
             <View style={styles.Container}>
-                <Animated.View style={[styles.imageContainer, { opacity: this.state.fadeValue, }]}>
-                    <Image source={require('../asset/asset1.png')} style={styles.Images} />
-                    <Text style={[styles.TextHead, { paddingHorizontal: 25, marginTop: 18 }]}>Qui laborum pariatur est cupidatat</Text>
-                    <Text style={[styles.TextSubtile, { paddingHorizontal: 25, marginTop: 6 }]}>Sit minim nulla officia pariatur laborum eiusmod mollit aliquip enim velit ad. Anim commodo sunt culpa amet ipsum ex ut adipisicing commodo qui enim. Ea aute ea anim ipsum minim sit adipisicing tempor.</Text>
+                <Animated.View style={[styles.imageContainer, {
+                    opacity: this.state.fadeValue, flex: 2, alignItems: "center",
+                    justifyContent: "center",
+                }]}>
+                    <Image source={require('../asset/asset1.png')} style={[styles.Images, { marginTop: 16 }]} />
+
+                </Animated.View>
+                <Animated.View style={[styles.imageContainer, { opacity: this.state.fadeValue, flex: 1 }]}>
+                    <Text style={[styles.TextHead, {opacity: this.state.fadeValue, paddingHorizontal: 25, marginTop: 18 }]}>Qui laborum pariatur est cupidatat</Text>
+                    <Text style={[styles.TextSubtile, { opacity: this.state.fadeValue,paddingHorizontal: 25, marginTop: 6 }]}>Sit minim nulla officia pariatur laborum eiusmod mollit aliquip enim velit ad. Anim commodo sunt culpa amet ipsum ex ut adipisicing commodo qui enim. Ea aute ea anim ipsum minim sit adipisicing tempor.</Text>
                 </Animated.View>
             </View>
         )
@@ -75,7 +81,7 @@ const styles = new StyleSheet.create({
     imageContainer: {
         flex: 1,
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
     },
     TextHead: {
         fontWeight: "bold",
@@ -93,8 +99,9 @@ const styles = new StyleSheet.create({
         textAlign: "center",
     },
     Images: {
-        width: 300,
-        height: 300,
+        aspectRatio: 1,
+        height: '60%',
+        width: "50%",
         resizeMode: "stretch"
     },
 

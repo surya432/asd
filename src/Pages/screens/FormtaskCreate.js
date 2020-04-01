@@ -212,7 +212,6 @@ export default class FormtaskCreate extends Component {
 const styles = StyleSheet.create({
     Container: {
         flex: 1,
-        margin: 15,
     },
     textInput: {
         borderBottomColor: 'gray', // Add this to specify bottom border color

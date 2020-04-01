@@ -25,6 +25,7 @@ import GeoLocationBackgroud from './Pages/screens/GeoLocationBackgroud'
 import SendNotifikasiLokal from './Pages/screens/SendNotifikasiLokal'
 import ImagePicker from './Pages/screens/ImagePicker'
 import ProfileScreen from './Pages/screens/ProfileScreen'
+import TransactionScreen from './Pages/screens/TransactionScreen'
 const RootStack = createStackNavigator(
     {
 
@@ -74,7 +75,9 @@ const RootStack = createStackNavigator(
         },
         FormTaskEdit: {
             screen: FormtaskEdit,
-            navigationOptions: { headerShown: false },
+        },
+        Transaction: {
+            screen: TransactionScreen,
         },
         FormtaskCreate: {
             screen: FormtaskCreate,
