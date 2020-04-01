@@ -84,7 +84,7 @@ export class HomeScreen extends React.Component {
         });
         this._calldata()
     }
-    
+
     async _calldata() {
         try {
             const dataUser = await AsyncStorage.getItem('dataUser')
@@ -100,7 +100,6 @@ export class HomeScreen extends React.Component {
             }
         } catch (error) {
             console.log(error)
-            this.setState({ dataResponse: [] });
             if (error == "TypeError: Network request failed") {
                 Alert.alert("Error", "Koneksi Tidak Tersedia")
             } else {
@@ -168,7 +167,6 @@ export class HomeScreen extends React.Component {
     handlerOnclick = (items) => {
         this.props.navigation.navigate('FormTask', { dataObject: JSON.stringify(items) });
     }
-
     handlerOnclickEdit = (items) => {
         console.log(items)
         this.props.navigation.navigate('FormTaskEdit', { dataObject: JSON.stringify(items) });
