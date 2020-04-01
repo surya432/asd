@@ -7,7 +7,7 @@ class TopBar extends React.Component {
                 {/* <Text>Left</Text> */}
                 <Text styles={styles.TitleBar}>HOME</Text>
                 {/* <Text>Right</Text> */}
-                
+
             </View>
         );
     }
@@ -25,8 +25,8 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10
     },
-    TitleBar:{
-        fontSize:28,
+    TitleBar: {
+        fontSize: 28,
         fontWeight: "bold"
     }
 });

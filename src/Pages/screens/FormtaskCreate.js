@@ -89,32 +89,54 @@ export default class FormtaskCreate extends Component {
     }
     onUpdate = async () => {
         const { id, perkerjaan, status, tglmulai, tglselesai, keterangan, user_id } = this.state
-        try {
-            this.setState({
-                spinner: false
-            })
-            let filter = {
-                perkerjaan: perkerjaan,
-                status: status,
-                tglStart: tglmulai,
-                tglEnd: tglselesai,
-                keterangan: keterangan,
-                user_id: user_id,
-                id: id,
-            }
-            console.log(filter);
-            const dataList = await ServiceTaskListFilter(filter, "taskcreate2")
-            console.log(dataList)
-            if (dataList.kode == 1) {
-                alert(dataList.keterangan);
-                this.props.navigation.navigate('Dashboard');
-            } else {
-                alert(dataList.keterangan);
-                return;
-            }
-        } catch (error) {
-            console.log(error)
+        if (perkerjaan.length == 0) {
+            alert("Field perkerjaan Kosong!")
+            return;
         }
+        if (status.length == 0) {
+            alert("Field status Kosong!")
+            return;
+        }
+        if (tglmulai.length == 0) {
+            alert("Field tglmulai Kosong!")
+            return;
+        }
+        if (tglselesai.length == 0) {
+            alert("Field tglselesai Kosong!")
+            return;
+        }
+        if (keterangan.length == 0) {
+            alert("Field keterangan Kosong!")
+            return;
+        }else{
+            try {
+                this.setState({
+                    spinner: false
+                })
+                let filter = {
+                    perkerjaan: perkerjaan,
+                    status: status,
+                    tglStart: tglmulai,
+                    tglEnd: tglselesai,
+                    keterangan: keterangan,
+                    user_id: user_id,
+                    id: id,
+                }
+                console.log(filter);
+                const dataList = await ServiceTaskListFilter(filter, "taskcreate2")
+                console.log(dataList)
+                if (dataList.kode == 1) {
+                    alert(dataList.keterangan);
+                    this.props.navigation.navigate('Dashboard');
+                } else {
+                    alert(dataList.keterangan);
+                    return;
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        
     }
     render() {
         const { tglmulai, tglselesai, status, keterangan } = this.state

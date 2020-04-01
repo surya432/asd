@@ -8,8 +8,8 @@ export default class NotifService {
         FCMService().then(
             () => {
                 const token = AsyncStorage.getItem("fcmToken")
-            }).then((token)=>{
-                this.configure(onRegister, onNotification,token);
+            }).then((token) => {
+                this.configure(onRegister, onNotification, token);
                 this.lastId = 0;
             })
     }
@@ -67,7 +67,7 @@ export default class NotifService {
 
             /* iOS and Android properties */
             action_data: "SendNotifikasiLokal",
-            
+
             title: "Local Notification", // (optional)
             message: "My Notification Message", // (required)
             playSound: false, // (optional) default: true

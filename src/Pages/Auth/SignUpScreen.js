@@ -72,7 +72,7 @@ export default class SignUpScreen extends Component {
         }
         formBody = formBody.join("&");
         console.log(formBody)
-        return await fetch(base_url+"create/user", {
+        return await fetch(base_url + "create/user", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -85,11 +85,11 @@ export default class SignUpScreen extends Component {
                     spinner: false
                 })
                 if (responseJson.kode == 1) {
-                    Alert.alert("Berhasil",responseJson.keterangan)
+                    Alert.alert("Berhasil", responseJson.keterangan)
                     this.props.navigation.goBack(null)
                     return;
                 } else {
-                    Alert.alert("Error",responseJson.keterangan)
+                    Alert.alert("Error", responseJson.keterangan)
                     return;
                 }
             }).catch((error) => {
@@ -104,7 +104,7 @@ export default class SignUpScreen extends Component {
         return (
             <LinearGradient
                 start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-                colors={['#2980B9', '#6DD5FA',"#FFFFFF"]}
+                colors={['#2980B9', '#6DD5FA', "#FFFFFF"]}
                 style={styles.Container}>
                 <View style={styles.cardLogin} >
                     <Spinner

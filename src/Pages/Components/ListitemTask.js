@@ -4,7 +4,6 @@ import { ListItem, Left, Body, Right, Thumbnail, Icon } from 'native-base'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Fontisto from "react-native-vector-icons/Fontisto";
 const ListitemTask = (props) => {
-
     const getImageStatus = (param) => {
         switch (param) {
             case 'On Progress':
@@ -25,7 +24,7 @@ const ListitemTask = (props) => {
                 return "hourglass-end"
         }
     }
-    const getcolorStatus2 = (param)=>{
+    const getcolorStatus2 = (param) => {
         switch (param) {
             case 'On Progress':
                 return "green"
@@ -40,21 +39,20 @@ const ListitemTask = (props) => {
     }
     const onHalderClickEdit = (itms) => {
         props.onclickEdit(itms)
-    } 
+    }
     const onHalderClickDelete = (itms) => {
         props.onclickDelete(itms)
     }
     return (
         <ListItem button avatar >
-
             <Left>
-                <TouchableOpacity onPress={() => onHalderClick(props.dataObject)}>
+                <TouchableOpacity onLongPress={() => onHalderClickEdit(props.dataObject)} onPress={() => onHalderClick(props.dataObject)}>
                     {/* <Thumbnail source={getImageStatus(props.status)} /> */}
-                    <Fontisto name={getImageStatus2(props.status)} color={getcolorStatus2(props.status)} size={24} /> 
+                    <Fontisto name={getImageStatus2(props.status)} color={getcolorStatus2(props.status)} size={24} />
                 </TouchableOpacity>
             </Left>
             <Body>
-                <TouchableOpacity onPress={() => onHalderClick(props.dataObject)}>
+                <TouchableOpacity onLongPress={() => onHalderClickEdit(props.dataObject)} onPress={() => onHalderClick(props.dataObject)}>
                     <Text>{props.perkerjaan}</Text>
                     <Text note>{props.tglmulai} - {props.tglselesai}</Text>
                 </TouchableOpacity>
@@ -69,7 +67,7 @@ const ListitemTask = (props) => {
                     </TouchableOpacity>
                 </View>
             </Right>
-        </ListItem >
+        </ListItem>
     )
 }
 
@@ -84,6 +82,5 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-around",
         width: 55,
-
     }
 })

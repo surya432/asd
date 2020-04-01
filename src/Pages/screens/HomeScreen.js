@@ -39,6 +39,7 @@ export class HomeScreen extends React.Component {
         this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
         getTokenFCM()
     }
+
     CheckConnectivity = () => {
         // For Android devices
         if (Platform.OS === "android") {
@@ -63,23 +64,27 @@ export class HomeScreen extends React.Component {
             "connectionChange",
             this.handleFirstConnectivityChange
         );
-
         if (isConnected === false) {
             Alert.alert("You are Offline!");
         } else {
             Alert.alert("You are Online!");
         }
     };
-    async componentDidMount() {
 
+    async componentDidMount() {
         const { navigation } = this.props;
         navigation.addListener('didFocus', () => {
             this._kondisiAwal();
         });
     }
+
     async _kondisiAwal() {
+        this.setState({
+            dataResponse: [],
+        });
         this._calldata()
     }
+    
     async _calldata() {
         try {
             const dataUser = await AsyncStorage.getItem('dataUser')
@@ -95,13 +100,13 @@ export class HomeScreen extends React.Component {
             }
         } catch (error) {
             console.log(error)
+            this.setState({ dataResponse: [] });
             if (error == "TypeError: Network request failed") {
                 Alert.alert("Error", "Koneksi Tidak Tersedia")
             } else {
                 Alert.alert("Error", error)
             }
         }
-
     }
 
     myCallback = async (dataFromChild) => {
@@ -124,6 +129,7 @@ export class HomeScreen extends React.Component {
             }
         } catch (error) {
             console.log(error)
+            this.setState({ dataResponse: [] });
             if (error == "TypeError: Network request failed") {
                 Alert.alert("Error", "Koneksi Tidak Tersedia")
             } else {
@@ -144,13 +150,14 @@ export class HomeScreen extends React.Component {
             const dataList = await ServiceTaskListFilter(filter, "taksDelete")
             console.log(dataList)
             if (dataList.kode == 1) {
-                this._kondisiAwal()
                 alert(dataList.keterangan);
+                this._kondisiAwal()
             } else {
                 alert(dataList.keterangan);
             }
         } catch (error) {
             console.log(error)
+            this.setState({ dataResponse: [] });
             if (error == "TypeError: Network request failed") {
                 Alert.alert("Error", "Koneksi Tidak Tersedia")
             } else {
@@ -163,6 +170,7 @@ export class HomeScreen extends React.Component {
     }
 
     handlerOnclickEdit = (items) => {
+        console.log(items)
         this.props.navigation.navigate('FormTaskEdit', { dataObject: JSON.stringify(items) });
     }
     handlerOnclickCreate = () => {
@@ -178,13 +186,9 @@ export class HomeScreen extends React.Component {
             ],
         );
     }
-    refeshDataCok = async () => {
-        this._kondisiAwal();
-    }
     setDate(newDate) {
         this.setState({ chosenDate: newDate });
     }
-
     render() {
         const formattedDate = moment(new Date()).format("MM/DD/YYYY");
         this.state.chosenDate = formattedDate
