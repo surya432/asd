@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Text, StyleSheet, PermissionsAndroid, View, SafeAreaView } from 'react-native'
 import Geolocation from 'react-native-geolocation-service';
 import GlobalStyles from '../Components/GlobalStyles';
-import { Content, Container } from 'native-base';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'
 import BackgroundJob from 'react-native-background-job';
 import BackgroundTimer from 'react-native-background-timer';
@@ -27,8 +26,6 @@ export default class GeoLocationBackgroud extends Component {
     }
     async UNSAFE_componentWillMount() {
         await this.requestLocationPermission()
-
-
     }
     async getLocation() {
         try {
@@ -70,7 +67,6 @@ export default class GeoLocationBackgroud extends Component {
             jobKey: "myJob",
             job: () => this._doItbackgroud()
         };
-
         BackgroundJob.register(backgroundJob);
     }
     async requestLocationPermission() {
@@ -117,7 +113,6 @@ export default class GeoLocationBackgroud extends Component {
             <SafeAreaView style={GlobalStyles.droidSafeArea}>
                 <View style={{ flex: 1 }}>
                     {this.viewMap()}
-
                 </View>
             </SafeAreaView>
         )
@@ -142,7 +137,6 @@ export default class GeoLocationBackgroud extends Component {
                         description={"description"} />
                 </MapView>
             )
-
         } else {
             return (
                 <Text>Waiting Get Location</Text>
@@ -150,7 +144,6 @@ export default class GeoLocationBackgroud extends Component {
         }
     }
 }
-
 const styles = StyleSheet.create({
     map: {
         flex: 1,

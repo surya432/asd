@@ -26,16 +26,10 @@ class ProfileScreen extends Component {
             chosenDate: new Date(),
             dataUser: {},
         };
+        this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
+        getTokenFCM()
     }
     async componentDidMount() {
-        // const isLoggedIn = await AsyncStorage.getItem('dataUser');
-        // const jsonParse = await JSON.parse(isLoggedIn);
-        // this.setState({
-        //     dataUser: {
-        //         nama: jsonParse.nama,
-        //         email: jsonParse.email,
-        //     },
-        // });
         const isLoggedIn = await AsyncStorage.getItem('dataUser')
             .then((result) => JSON.parse(result))
             .then((dataUser) =>
@@ -43,7 +37,6 @@ class ProfileScreen extends Component {
                     dataUser
                 })
             )
-
     }
     _logOut = async () => {
 
@@ -62,7 +55,6 @@ class ProfileScreen extends Component {
         await AsyncStorage.removeItem('fcmToken');
         this.props.navigation.navigate('Auth');
     }
-
     render() {
         const uri =
             'https://facebook.github.io/react-native/docs/assets/favicon.png';

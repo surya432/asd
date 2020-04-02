@@ -1,7 +1,7 @@
 import { base_url } from "../config/config"
-export async function ServiceTaskUpdate(Body = {},endpoint = "") {
+export async function ServiceTaskUpdate(Body = {}, endpoint = "") {
     try {
-        console.log(base_url+endpoint)
+        console.log(base_url + endpoint)
         console.log(body)
         var formBody = [];
         for (var property in Body) {

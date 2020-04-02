@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View, SafeAreaView, Alert, Image } from 'react-native'
-import { Container, Header, Right, Button, Body, Title, Modal, Content, Icon, Footer, FooterTab, Left, Thumbnail } from 'native-base'
+import { Text, StyleSheet, View, Alert, Image } from 'react-native'
+import { Container, Content, Icon, Footer, Thumbnail } from 'native-base'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 export default class TransactionScreen extends Component {

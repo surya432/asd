@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import {
     Image,
-    PixelRatio,
     StyleSheet,
     Text,
-    TouchableOpacity,
     Button,
     View,
 } from 'react-native'
@@ -19,15 +17,12 @@ export default class ImagePicker extends Component {
     chooseFile = () => {
         var options = {
             title: 'Pilih Foto',
-            
             storageOptions: {
                 skipBackup: true,
                 path: 'images',
             },
         };
         ImagePicker2.showImagePicker(options, response => {
-            console.log('Response = ', response);
-
             if (response.didCancel) {
                 console.log('User cancelled image picker');
             } else if (response.error) {
@@ -49,9 +44,6 @@ export default class ImagePicker extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.container}>
-                    {/*<Image 
-              source={{ uri: this.state.filePath.path}} 
-              style={{width: 100, height: 100}} />*/}
                     <Image
                         source={{
                             uri: 'data:image/jpeg;base64,' + this.state.filePath.data,

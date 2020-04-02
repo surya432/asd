@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react'
-import { Text, StyleSheet, PermissionsAndroid, View, SafeAreaView, TouchableOpacity, Alert } from 'react-native'
-import Geolocation from 'react-native-geolocation-service';
+import {  StyleSheet, PermissionsAndroid, View, SafeAreaView,  Alert } from 'react-native'
 import GlobalStyles from '../Components/GlobalStyles';
-import { Content, Container } from 'native-base';
 import { RNCamera } from 'react-native-camera';
 import NotifService, { onRegister, onNotif, getTokenFCM } from './../Components/NotifService';
 
@@ -86,7 +84,6 @@ export default class GeoLocation extends PureComponent {
                                     ],
                                 );
                             }
-
                         }}
                     />
                 </View>

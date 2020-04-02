@@ -1,18 +1,14 @@
 import React, { Component, useState, useEffect } from 'react'
-import { Text, View, StyleSheet, SafeAreaView, Alert, FlatList, RefreshControl } from 'react-native'
+import { Text, View, StyleSheet, SafeAreaView, Alert, RefreshControl } from 'react-native'
 import {
     Container,
     Header,
-    Left,
     FooterTab,
     List,
     Right,
     Content,
     Button,
-    Thumbnail,
-    Body,
     Footer,
-    ListItem,
 } from 'native-base';
 import GlobalStyles from "../Components/GlobalStyles"
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -25,13 +21,13 @@ import { ServiceTaskListFilter } from '../../services/ServiceTaskListFilter';
 import Spinner from 'react-native-loading-spinner-overlay';
 import ListitemTask from '../Components/ListitemTask';
 import NotifService, { onRegister, onNotif, getTokenFCM } from './../Components/NotifService';
+import { HandleErrorCatch } from '../Atom/HandleError';
 
 export class HomeScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             chosenDate: new Date(),
-            dataUser: {},
             dataResponse: [],
             dataFilter: {},
             spinner: false,
@@ -41,7 +37,6 @@ export class HomeScreen extends React.Component {
     }
 
     CheckConnectivity = () => {
-        // For Android devices
         if (Platform.OS === "android") {
             NetInfo.isConnected.fetch().then(isConnected => {
                 if (isConnected) {
@@ -51,7 +46,6 @@ export class HomeScreen extends React.Component {
                 }
             });
         } else {
-            // For iOS devices
             NetInfo.isConnected.addEventListener(
                 "connectionChange",
                 this.handleFirstConnectivityChange
@@ -100,11 +94,8 @@ export class HomeScreen extends React.Component {
             }
         } catch (error) {
             console.log(error)
-            if (error == "TypeError: Network request failed") {
-                Alert.alert("Error", "Koneksi Tidak Tersedia")
-            } else {
-                Alert.alert("Error", error)
-            }
+            Alert.alert("Error", error.message)
+
         }
     }
 
@@ -129,11 +120,8 @@ export class HomeScreen extends React.Component {
         } catch (error) {
             console.log(error)
             this.setState({ dataResponse: [] });
-            if (error == "TypeError: Network request failed") {
-                Alert.alert("Error", "Koneksi Tidak Tersedia")
-            } else {
-                Alert.alert("Error", error)
-            }
+            Alert.alert("Error", error.message)
+
         }
     }
     onDelete = async (items) => {
@@ -150,20 +138,19 @@ export class HomeScreen extends React.Component {
             console.log(dataList)
             if (dataList.kode == 1) {
                 alert(dataList.keterangan);
-                this._kondisiAwal()
             } else {
                 alert(dataList.keterangan);
             }
+            this._kondisiAwal()
         } catch (error) {
             console.log(error)
             this.setState({ dataResponse: [] });
-            if (error == "TypeError: Network request failed") {
-                Alert.alert("Error", "Koneksi Tidak Tersedia")
-            } else {
-                Alert.alert("Error", error)
-            }
+            Alert.alert("Error", error.message)
+
+
         }
     }
+
     handlerOnclick = (items) => {
         this.props.navigation.navigate('FormTask', { dataObject: JSON.stringify(items) });
     }
@@ -261,7 +248,7 @@ export class HomeScreen extends React.Component {
                         <FooterTab>
                             <Button block onPress={this.handlerOnclickCreate.bind(this)}>
                                 <Text style={{
-                                    color: "white", fontSize: 16, fontWeight: "400"
+                                    color: "white", fontSize: 16, fontWeight: "600"
                                 }}>Buat Task Baru</Text>
                             </Button>
                         </FooterTab>

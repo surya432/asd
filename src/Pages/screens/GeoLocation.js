@@ -37,7 +37,6 @@ export default class GeoLocation extends Component {
                         console.log(location);
                     })
                         .catch(error => console.warn(error));
-
                 },
                 (error) => {
                     this.setState.error = error.message

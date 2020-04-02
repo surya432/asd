@@ -5,7 +5,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import { Container, Content } from 'native-base';
 import Fontisto from "react-native-vector-icons/Fontisto";
 import NotifService, { onRegister, onNotif, getTokenFCM } from './../Components/NotifService';
-
 export default class Formtask extends Component {
     constructor(props) {
         super(props)
@@ -70,7 +69,6 @@ export default class Formtask extends Component {
                                     marginTop: 8,
                                     alignItems: "center",
                                     justifyContent: "center",
-
                                 }}
                             >
                                 <Text style={{ fontSize: 20, fontWeight: '700' }}>

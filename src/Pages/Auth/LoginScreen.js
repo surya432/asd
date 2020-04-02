@@ -33,7 +33,7 @@ export default class App extends Component {
     _onPressSignUp = async () => {
         this.props.navigation.navigate('SignUpScreen');
     }
-
+    
     _onPressLogin = async () => {
         const { edtUserName, edtPass } = this.state;
         if (edtUserName.length == 0 && edtPass.length == 0) {

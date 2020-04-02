@@ -3,7 +3,7 @@ import { Text, StyleSheet, PermissionsAndroid, View, SafeAreaView } from 'react-
 import Geolocation from 'react-native-geolocation-service';
 import GlobalStyles from '../Components/GlobalStyles';
 import { Content, Container } from 'native-base';
-import { getDistance, getPreciseDistance } from 'geolib';
+import { getDistance } from 'geolib';
 import NotifService, { onRegister, onNotif, getTokenFCM } from './../Components/NotifService';
 
 export default class GeoLocation extends Component {

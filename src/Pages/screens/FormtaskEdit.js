@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View, SafeAreaView, TouchableOpacity, Alert } from 'react-native'
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import { Text, StyleSheet, SafeAreaView, Alert } from 'react-native'
 import { Container, Content, Form, Item, Label, Input, DatePicker, Picker, Icon, Textarea, Button } from 'native-base'
 import Moment from "moment"
 import AsyncStorage from '@react-native-community/async-storage';
@@ -51,11 +50,6 @@ export default class FormtaskEdit extends Component {
         headerRightContainerStyle: {
             paddingRight: 10
         },
-        // headerRight: () => (
-        //     <TouchableOpacity onPress={() => navigation.navigate("storiesList")}>
-        //         <Ionicons name="ios-search" size={25} color="black" left={20} />
-        //     </TouchableOpacity>
-        // )
     });
     onValueChangeDatePickertglmulai(value) {
         this.setState({
@@ -143,9 +137,6 @@ export default class FormtaskEdit extends Component {
                             <Item stackedLabel>
                                 <Label>Tanggal Mulai</Label>
                                 <DatePicker
-                                    defaultDate={new Date(2018, 4, 4)}
-                                    minimumDate={new Date(2018, 1, 1)}
-                                    maximumDate={new Date(2018, 12, 31)}
                                     locale={"en"}
                                     selected={selectedmulai}
                                     timeZoneOffsetInMinutes={undefined}
@@ -165,6 +156,7 @@ export default class FormtaskEdit extends Component {
                                 <DatePicker
                                     selected={selectedselesai}
                                     locale={"en"}
+                                    style={styles.DatePicker}
                                     timeZoneOffsetInMinutes={undefined}
                                     modalTransparent={false}
                                     animationType={"fade"}
@@ -217,6 +209,10 @@ export default class FormtaskEdit extends Component {
 const styles = StyleSheet.create({
     Container: {
         flex: 1,
+    },
+    DatePicker: {
+        padding: 5,
+        alignItems: 'flex-start'
     },
     textInput: {
         borderBottomColor: 'gray', // Add this to specify bottom border color

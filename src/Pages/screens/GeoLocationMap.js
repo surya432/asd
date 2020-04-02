@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Text, StyleSheet, PermissionsAndroid, View, SafeAreaView } from 'react-native'
 import Geolocation from 'react-native-geolocation-service';
 import GlobalStyles from '../Components/GlobalStyles';
-import { Content, Container } from 'native-base';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'
 import NotifService, { onRegister, onNotif, getTokenFCM } from './../Components/NotifService';
 
@@ -91,14 +90,10 @@ export default class GeoLocationMap extends Component {
         };
     }
     render() {
-        const { geolng, geolat, error, jarak, logPosisi } = this.state
-
-        // console.log()
         return (
             <SafeAreaView style={GlobalStyles.droidSafeArea}>
                 <View style={{ flex: 1 }}>
                     {this.viewMap()}
-
                 </View>
             </SafeAreaView>
         )
@@ -108,7 +103,6 @@ export default class GeoLocationMap extends Component {
         if (geolat != "" && geolng != "" & logPosisi != null) {
             const regis = this.regionFrom(logPosisi.coords.latitude, logPosisi.coords.longitude, logPosisi.coords.accuracy)
             return (
-
                 <MapView
                     provider={PROVIDER_GOOGLE}
                     style={styles.map}
@@ -122,7 +116,6 @@ export default class GeoLocationMap extends Component {
                         description={"description"} />
                 </MapView>
             )
-
         } else {
             return (
                 <Text>Waiting Get Location</Text>

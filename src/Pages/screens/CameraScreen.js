@@ -1,10 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Text, StyleSheet, PermissionsAndroid, View, SafeAreaView, TouchableOpacity } from 'react-native'
-import Geolocation from 'react-native-geolocation-service';
 import GlobalStyles from '../Components/GlobalStyles';
-import { Content, Container, Icon } from 'native-base';
 import { RNCamera } from 'react-native-camera';
-import RBSheet from "react-native-raw-bottom-sheet";
 import NotifService, { onRegister, onNotif, getTokenFCM } from './../Components/NotifService';
 
 export default class GeoLocation extends PureComponent {
@@ -94,7 +91,7 @@ export default class GeoLocation extends PureComponent {
 
     }
     render() {
-        const { uripath, flashStatus, cameraType } = this.state
+        const {  flashStatus, cameraType } = this.state
         return (
             <SafeAreaView style={GlobalStyles.droidSafeArea}>
                 <View style={styles.container}>

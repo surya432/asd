@@ -5,7 +5,7 @@ import {
     View, Text,
     Image,
     Animated,
-    Easing, Dimensions
+    Dimensions
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import NotifService, { onRegister, onNotif } from './Components/NotifService';
@@ -60,11 +60,10 @@ export class SplashScreen extends Component {
                     justifyContent: "center",
                 }]}>
                     <Image source={require('../asset/asset1.png')} style={[styles.Images, { marginTop: 16 }]} />
-
                 </Animated.View>
                 <Animated.View style={[styles.imageContainer, { opacity: this.state.fadeValue, flex: 1 }]}>
-                    <Text style={[styles.TextHead, {opacity: this.state.fadeValue, paddingHorizontal: 25, marginTop: 18 }]}>Qui laborum pariatur est cupidatat</Text>
-                    <Text style={[styles.TextSubtile, { opacity: this.state.fadeValue,paddingHorizontal: 25, marginTop: 6 }]}>Sit minim nulla officia pariatur laborum eiusmod mollit aliquip enim velit ad. Anim commodo sunt culpa amet ipsum ex ut adipisicing commodo qui enim. Ea aute ea anim ipsum minim sit adipisicing tempor.</Text>
+                    <Text style={[styles.TextHead, { opacity: this.state.fadeValue, paddingHorizontal: 25, marginTop: 18 }]}>Qui laborum pariatur est cupidatat</Text>
+                    <Text style={[styles.TextSubtile, { opacity: this.state.fadeValue, paddingHorizontal: 25, marginTop: 6 }]}>Sit minim nulla officia pariatur laborum eiusmod mollit aliquip enim velit ad. Anim commodo sunt culpa amet ipsum ex ut adipisicing commodo qui enim. Ea aute ea anim ipsum minim sit adipisicing tempor.</Text>
                 </Animated.View>
             </View>
         )

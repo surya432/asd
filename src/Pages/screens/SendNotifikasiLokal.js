@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Text, StyleSheet, View, SafeAreaView } from 'react-native'
 import GlobalStyles from '../Components/GlobalStyles'
-import NotifService, { onRegister, onNotif, getTokenFCM, localNotif } from './../Components/NotifService';
+import NotifService, { onRegister, onNotif, getTokenFCM } from './../Components/NotifService';
 import { Button } from 'native-base';
 export default class SendNotifikasiLokal extends Component {
     constructor(props) {
@@ -34,7 +34,6 @@ export default class SendNotifikasiLokal extends Component {
         }
         console.log("yuhuuu " + JSON.stringify(this.props.navigation.state))
     }
-
     sendnotifLokal() {
         console.log("ok notif")
         this.notif.localNotif()
