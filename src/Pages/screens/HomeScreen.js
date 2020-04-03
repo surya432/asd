@@ -21,7 +21,6 @@ import { ServiceTaskListFilter } from '../../services/ServiceTaskListFilter';
 import Spinner from 'react-native-loading-spinner-overlay';
 import ListitemTask from '../Components/ListitemTask';
 import NotifService, { onRegister, onNotif, getTokenFCM } from './../Components/NotifService';
-import { HandleErrorCatch } from '../Atom/HandleError';
 
 export class HomeScreen extends React.Component {
     constructor(props) {
@@ -144,11 +143,8 @@ export class HomeScreen extends React.Component {
             console.log(error)
             this.setState({ dataResponse: [] });
             Alert.alert("Error", error.message)
-
-
         }
     }
-
     handlerOnclick = (items) => {
         this.props.navigation.navigate('FormTask', { dataObject: JSON.stringify(items) });
     }

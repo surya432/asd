@@ -47,7 +47,6 @@ const ListitemTask = (props) => {
         <ListItem button avatar >
             <Left>
                 <TouchableOpacity onLongPress={() => onHalderClickEdit(props.dataObject)} onPress={() => onHalderClick(props.dataObject)}>
-                    {/* <Thumbnail source={getImageStatus(props.status)} /> */}
                     <Fontisto name={getImageStatus2(props.status)} color={getcolorStatus2(props.status)} size={24} />
                 </TouchableOpacity>
             </Left>
@@ -72,7 +71,6 @@ const ListitemTask = (props) => {
 }
 
 export default ListitemTask
-
 const styles = StyleSheet.create({
     containerBtn: {
         justifyContent: "center",

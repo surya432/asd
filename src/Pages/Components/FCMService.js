@@ -1,11 +1,9 @@
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-community/async-storage';
-import Notification from "@react-native-firebase/app"
 const FCMService = async () => {
     CheckPermissionAndReturnFcmToken()
         .then((fcmToken) => {
-            // createNotificationListeners()
 
         })
         .catch((error) => {
@@ -86,10 +84,5 @@ const createNotificationListeners = () => new Promise(async (resolve, reject) =>
         //process data message
         console.log(JSON.stringify(message));
     });
-
 });
-
-
-
-
 export default FCMService
