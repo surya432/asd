@@ -95,7 +95,6 @@ export class HomeScreen extends React.Component {
         } catch (error) {
             console.log(error)
             Alert.alert("Error", error.message)
-
         }
     }
 
@@ -121,7 +120,6 @@ export class HomeScreen extends React.Component {
             console.log(error)
             this.setState({ dataResponse: [] });
             Alert.alert("Error", error.message)
-
         }
     }
     onDelete = async (items) => {
