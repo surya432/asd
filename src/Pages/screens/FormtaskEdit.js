@@ -143,13 +143,13 @@ export default class FormtaskEdit extends Component {
     }
     render() {
         const { tglmulai, tglselesai, status, keterangan } = this.state
-        const selectedmulai = Moment(tglmulai).format('DD-MM-YYYY');
-        const selectedselesai = Moment(tglselesai).format('DD-MM-YYYY');
-        let dtStart = selectedmulai.split('-');
-        let dtEnd = selectedselesai.split('-');
+        const selectedmulai = Moment(tglmulai).format('DD/MM/YYYY');
+        const selectedselesai = Moment(tglselesai).format('DD/MM/YYYY');
+        let dtStart = selectedmulai.split('/');
+        let dtEnd = selectedselesai.split('/');
         var today = new Date();
 
-        console.log(new Date(today.setMonth(today.getMonth()+1)))
+        console.log(selectedselesai+selectedmulai+"/"+today.setMonth(today.getMonth()))
         return (
             <SafeAreaView style={styles.Container}>
                 <Container>
@@ -174,7 +174,7 @@ export default class FormtaskEdit extends Component {
                                     modalTransparent={false}
                                     animationType={"fade"}
                                     value={selectedmulai}
-                                    format={"dd-mm-yyy"}
+                                    format={"dd/mm/yyyy"}
                                     androidMode={"default"}
                                     placeHolderText={selectedmulai}
                                     textStyle={{ color: "green" }}
@@ -187,7 +187,8 @@ export default class FormtaskEdit extends Component {
                                 <Label>Tanggal Selesai</Label>
                                 <DatePicker
                                     minimumDate={new Date(parseInt(dtStart[2]), parseInt(dtStart[1] - 1), parseInt(dtStart[0]))}
-                                    maximumDate={new Date(today.setMonth(today.getMonth()))}
+                                    maximumDate={moment(today).add(1, 'M')}
+                                    // maximumDate={new Date(parseInt(dtEnd[2]),today.setMonth(today.getMonth()),parseInt(dtEnd[0]))}
                                     // defaultDate={new Date(parseInt(dateNumbers1[2]), parseInt(dateNumbers1[1] - 1), parseInt(dateNumbers1[0] + 1))}
                                     locale={"en"}
                                     style={styles.DatePicker}
@@ -196,7 +197,7 @@ export default class FormtaskEdit extends Component {
                                     animationType={"fade"}
                                     value={selectedselesai}
                                     androidMode={"default"}
-                                    format={"dd-mm-yy"}
+                                    format={"dd/mm/yyyy"}
                                     placeHolderText={selectedselesai}
                                     textStyle={{ color: "green" }}
                                     placeHolderTextStyle={{ color: "#000" }}
