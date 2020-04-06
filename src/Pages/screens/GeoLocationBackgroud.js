@@ -19,14 +19,15 @@ export default class GeoLocationBackgroud extends Component {
         }
         this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
         getTokenFCM()
+        this.requestLocationPermission()
+
     }
     _doItbackgroud = async () => {
         console.log("Running in background")
         this.requestLocationPermission()
     }
-    async UNSAFE_componentWillMount() {
-        await this.requestLocationPermission()
-    }
+    // async UNSAFE_componentWillMount() {
+    // }
     async getLocation() {
         try {
             let lat1 = ""

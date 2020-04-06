@@ -19,10 +19,21 @@ export default class FormtaskCreate extends Component {
         }
         this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
         getTokenFCM()
+        this.getDataAwal()
     }
     handleChange(evt) {
         const value = evt.target.value; const key = evt.target.name;
         this.setState({ key: value });
+    }
+    getDataAwal = async()=>{
+        const isLoggedIn = await AsyncStorage.getItem('dataUser');
+        const jsonParse = await JSON.parse(isLoggedIn);
+        this.setState({
+            user_id: jsonParse.id,
+            status: "Mulai",
+            tglmulai: Moment(new Date()).format('YYYY-MM-DD'),
+            tglselesai: Moment(new Date()).format('YYYY-MM-DD'),
+        })
     }
     async UNSAFE_componentWillMount() {
         const isLoggedIn = await AsyncStorage.getItem('dataUser');
@@ -35,7 +46,7 @@ export default class FormtaskCreate extends Component {
         })
     }
     static navigationOptions = ({ navigation }) => ({
-        title: "Form Task Edit",
+        title: "Form Task Create",
         headerTitleStyle: {
             textAlign: "left",
             fontFamily: "OpenSans-Regular",
@@ -198,6 +209,7 @@ export default class FormtaskCreate extends Component {
                                             color: "white",
                                         }
                                     }}
+                                 
                                     timeZoneOffsetInMinutes={undefined}
                                     modalTransparent={false}
                                     animationType={"fade"}

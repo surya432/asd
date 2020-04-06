@@ -19,10 +19,36 @@ export default class FormtaskEdit extends Component {
         }
         this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
         getTokenFCM()
+        this.getDataAwal()
     }
     handleChange(evt) {
         const value = evt.target.value; const key = evt.target.name;
         this.setState({ key: value });
+    }
+    getDataAwal = async () => {
+        const isLoggedIn = await AsyncStorage.getItem('dataUser');
+        const jsonParse = await JSON.parse(isLoggedIn);
+        this.setState({
+            user_id: jsonParse.id,
+            status: "Mulai",
+            tglmulai: Moment(new Date()).format('YYYY-MM-DD'),
+            tglselesai: Moment(new Date()).format('YYYY-MM-DD'),
+        })
+    }
+    async   componentDidMount() {
+        const isLoggedIn = await AsyncStorage.getItem('dataUser');
+        const jsonParse = await JSON.parse(isLoggedIn);
+
+        const jsonDecode = JSON.parse(this.props.navigation.state.params.dataObject);
+        this.setState({
+            perkerjaan: jsonDecode.perkerjaan,
+            status: jsonDecode.status,
+            tglmulai: jsonDecode.tglmulai,
+            tglselesai: jsonDecode.tglselesai,
+            keterangan: jsonDecode.keterangan,
+            id: jsonDecode.id,
+            user_id: jsonParse.id,
+        })
     }
     async UNSAFE_componentWillMount() {
         const isLoggedIn = await AsyncStorage.getItem('dataUser');
@@ -55,13 +81,13 @@ export default class FormtaskEdit extends Component {
         this.setState({
             tglmulai: Moment(value).format('YYYY-MM-DD'),
         });
-        console.log(this.state.tglmulai)
+        // console.log(this.state.tglmulai)
     }
     onValueChangeDatePickertglselesai(value) {
         this.setState({
             tglselesai: Moment(value).format('YYYY-MM-DD'),
         });
-        console.log(this.state.tglmulai)
+        // console.log(this.state.tglmulai)
     }
     onValueChangePicker(value) {
         this.setState({
@@ -117,8 +143,11 @@ export default class FormtaskEdit extends Component {
     }
     render() {
         const { tglmulai, tglselesai, status, keterangan } = this.state
-        const selectedmulai = Moment(tglmulai).format('YYYY-MM-DD');
-        const selectedselesai = Moment(tglselesai).format('YYYY-MM-DD');
+        const selectedmulai = Moment(tglmulai).format('DD-MM-YYYY');
+        const selectedselesai = Moment(tglselesai).format('DD-MM-YYYY');
+        let dateNumbers = selectedmulai.split('-');
+        let dateNumbers1 = selectedselesai.split('-');
+        console.log(new Date(parseInt(dateNumbers1[2]), parseInt(dateNumbers1[1]-1), parseInt(dateNumbers1[0])))
         return (
             <SafeAreaView style={styles.Container}>
                 <Container>
@@ -138,7 +167,8 @@ export default class FormtaskEdit extends Component {
                                 <Label>Tanggal Mulai</Label>
                                 <DatePicker
                                     locale={"en"}
-                                    selected={selectedmulai}
+                                    minimumDate={new Date(parseInt(dateNumbers[2]), parseInt(dateNumbers[1]-1), parseInt(dateNumbers[0]))}
+                                    maximumDate={new Date(parseInt(dateNumbers1[2]), parseInt(dateNumbers1[1]-1), parseInt(dateNumbers1[0]))}
                                     timeZoneOffsetInMinutes={undefined}
                                     modalTransparent={false}
                                     animationType={"fade"}
@@ -154,7 +184,8 @@ export default class FormtaskEdit extends Component {
                             <Item stackedLabel>
                                 <Label>Tanggal Selesai</Label>
                                 <DatePicker
-                                    selected={selectedselesai}
+                                    // defaultDate={new Date(parseInt(dateNumbers1[2]), parseInt(dateNumbers1[1]), parseInt(dateNumbers1[0]))}
+                                    minimumDate={new Date(parseInt(dateNumbers[2]), parseInt(dateNumbers[1]-1), parseInt(dateNumbers[0]))}
                                     locale={"en"}
                                     style={styles.DatePicker}
                                     timeZoneOffsetInMinutes={undefined}
@@ -162,6 +193,7 @@ export default class FormtaskEdit extends Component {
                                     animationType={"fade"}
                                     value={selectedselesai}
                                     androidMode={"default"}
+                                    format={"DD-MM-YYYY"}
                                     placeHolderText={selectedselesai}
                                     textStyle={{ color: "green" }}
                                     placeHolderTextStyle={{ color: "#000" }}
@@ -190,7 +222,7 @@ export default class FormtaskEdit extends Component {
                                     rowSpan={5}
                                     style={{ width: "100%", marginHorizontal: 8 }}
                                     bordered placeholder="Textarea"
-                                    value={this.state.keterangan}
+                                    value={keterangan}
                                     multiline={true}
                                     numberOfLines={4}
                                     onChange={this.onValueChangeKeterangan} />

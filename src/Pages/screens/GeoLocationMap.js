@@ -17,10 +17,11 @@ export default class GeoLocationMap extends Component {
         }
         this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
         getTokenFCM()
+        this.requestLocationPermission()
     }
-    async UNSAFE_componentWillMount() {
-        await this.requestLocationPermission()
-    }
+    // async UNSAFE_componentWillMount() {
+    //     await this.requestLocationPermission()
+    // }
     async getLocation() {
         try {
             let lat1 = ""
