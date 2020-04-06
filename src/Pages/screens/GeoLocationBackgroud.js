@@ -26,8 +26,9 @@ export default class GeoLocationBackgroud extends Component {
         console.log("Running in background")
         this.requestLocationPermission()
     }
-    // async UNSAFE_componentWillMount() {
-    // }
+    async UNSAFE_componentWillMount() {
+        this.requestLocationPermission()
+    }
     async getLocation() {
         try {
             let lat1 = ""

@@ -145,9 +145,11 @@ export default class FormtaskEdit extends Component {
         const { tglmulai, tglselesai, status, keterangan } = this.state
         const selectedmulai = Moment(tglmulai).format('DD-MM-YYYY');
         const selectedselesai = Moment(tglselesai).format('DD-MM-YYYY');
-        let dateNumbers = selectedmulai.split('-');
-        let dateNumbers1 = selectedselesai.split('-');
-        console.log(new Date(parseInt(dateNumbers1[2]), parseInt(dateNumbers1[1] - 1), parseInt(dateNumbers1[0])))
+        let dtStart = selectedmulai.split('-');
+        let dtEnd = selectedselesai.split('-');
+        var today = new Date();
+
+        console.log(new Date(today.setMonth(today.getMonth()+1)))
         return (
             <SafeAreaView style={styles.Container}>
                 <Container>
@@ -166,13 +168,13 @@ export default class FormtaskEdit extends Component {
                             <Item stackedLabel>
                                 <Label>Tanggal Mulai</Label>
                                 <DatePicker
-                                    locale={"en"}
-                                    minimumDate={new Date(parseInt(dateNumbers[2]), parseInt(dateNumbers[1] - 1), parseInt(dateNumbers[0]))}
-                                    maximumDate={new Date(parseInt(dateNumbers1[2]), parseInt(dateNumbers1[1] - 1), parseInt(dateNumbers1[0]))}
+                                    minimumDate={new Date(parseInt(dtStart[2]), parseInt(dtStart[1] - 2), parseInt(dtStart[0] ))}
+                                    maximumDate={new Date(parseInt(dtEnd[2]), parseInt(dtEnd[1] - 1), parseInt(dtEnd[0]))}
                                     timeZoneOffsetInMinutes={undefined}
                                     modalTransparent={false}
                                     animationType={"fade"}
                                     value={selectedmulai}
+                                    format={"dd-mm-yyy"}
                                     androidMode={"default"}
                                     placeHolderText={selectedmulai}
                                     textStyle={{ color: "green" }}
@@ -184,7 +186,9 @@ export default class FormtaskEdit extends Component {
                             <Item stackedLabel>
                                 <Label>Tanggal Selesai</Label>
                                 <DatePicker
-                                    minimumDate={new Date(parseInt(dateNumbers[2]), parseInt(dateNumbers[1] - 1), parseInt(dateNumbers[0]))}
+                                    minimumDate={new Date(parseInt(dtStart[2]), parseInt(dtStart[1] - 1), parseInt(dtStart[0]))}
+                                    maximumDate={new Date(today.setMonth(today.getMonth()))}
+                                    // defaultDate={new Date(parseInt(dateNumbers1[2]), parseInt(dateNumbers1[1] - 1), parseInt(dateNumbers1[0] + 1))}
                                     locale={"en"}
                                     style={styles.DatePicker}
                                     timeZoneOffsetInMinutes={undefined}
@@ -192,7 +196,7 @@ export default class FormtaskEdit extends Component {
                                     animationType={"fade"}
                                     value={selectedselesai}
                                     androidMode={"default"}
-                                    format={"DD-MM-YYYY"}
+                                    format={"dd-mm-yy"}
                                     placeHolderText={selectedselesai}
                                     textStyle={{ color: "green" }}
                                     placeHolderTextStyle={{ color: "#000" }}

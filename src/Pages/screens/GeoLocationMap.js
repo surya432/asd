@@ -19,9 +19,9 @@ export default class GeoLocationMap extends Component {
         getTokenFCM()
         this.requestLocationPermission()
     }
-    // async UNSAFE_componentWillMount() {
-    //     await this.requestLocationPermission()
-    // }
+    async UNSAFE_componentWillMount() {
+        await this.requestLocationPermission()
+    }
     async getLocation() {
         try {
             let lat1 = ""
