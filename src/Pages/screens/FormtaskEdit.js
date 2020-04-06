@@ -147,7 +147,7 @@ export default class FormtaskEdit extends Component {
         const selectedselesai = Moment(tglselesai).format('DD-MM-YYYY');
         let dateNumbers = selectedmulai.split('-');
         let dateNumbers1 = selectedselesai.split('-');
-        console.log(new Date(parseInt(dateNumbers1[2]), parseInt(dateNumbers1[1]-1), parseInt(dateNumbers1[0])))
+        console.log(new Date(parseInt(dateNumbers1[2]), parseInt(dateNumbers1[1] - 1), parseInt(dateNumbers1[0])))
         return (
             <SafeAreaView style={styles.Container}>
                 <Container>
@@ -167,8 +167,8 @@ export default class FormtaskEdit extends Component {
                                 <Label>Tanggal Mulai</Label>
                                 <DatePicker
                                     locale={"en"}
-                                    minimumDate={new Date(parseInt(dateNumbers[2]), parseInt(dateNumbers[1]-1), parseInt(dateNumbers[0]))}
-                                    maximumDate={new Date(parseInt(dateNumbers1[2]), parseInt(dateNumbers1[1]-1), parseInt(dateNumbers1[0]))}
+                                    minimumDate={new Date(parseInt(dateNumbers[2]), parseInt(dateNumbers[1] - 1), parseInt(dateNumbers[0]))}
+                                    maximumDate={new Date(parseInt(dateNumbers1[2]), parseInt(dateNumbers1[1] - 1), parseInt(dateNumbers1[0]))}
                                     timeZoneOffsetInMinutes={undefined}
                                     modalTransparent={false}
                                     animationType={"fade"}
@@ -184,8 +184,7 @@ export default class FormtaskEdit extends Component {
                             <Item stackedLabel>
                                 <Label>Tanggal Selesai</Label>
                                 <DatePicker
-                                    // defaultDate={new Date(parseInt(dateNumbers1[2]), parseInt(dateNumbers1[1]), parseInt(dateNumbers1[0]))}
-                                    minimumDate={new Date(parseInt(dateNumbers[2]), parseInt(dateNumbers[1]-1), parseInt(dateNumbers[0]))}
+                                    minimumDate={new Date(parseInt(dateNumbers[2]), parseInt(dateNumbers[1] - 1), parseInt(dateNumbers[0]))}
                                     locale={"en"}
                                     style={styles.DatePicker}
                                     timeZoneOffsetInMinutes={undefined}
