@@ -22,7 +22,7 @@ export default class FormtaskEdit extends Component {
         // this.getDataAwal()
     }
     handleChange(evt) {
-        const value = evt.target.value;        this.setState({ key: value });
+        const value = evt.target.value; this.setState({ key: value });
     }
     // getDataAwal = async () => {
     //     const isLoggedIn = await AsyncStorage.getItem('dataUser');

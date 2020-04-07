@@ -107,6 +107,7 @@ export class HomeScreen extends React.Component {
                     .then((result) => JSON.parse(result))
                 const dataList = await ServiceTaskListFilter(dataFromChild, "filterNew/" + dataUser.id)
                 if (dataList.kode == 1) {
+
                     this.setState({ dataResponse: dataList.data });
                     return dataList;
                 } else {
@@ -172,6 +173,8 @@ export class HomeScreen extends React.Component {
         const formattedDate = moment(new Date()).format("MM/DD/YYYY");
         this.state.chosenDate = formattedDate
         const { dataResponse } = this.state;
+        console.log(dataResponse.length)
+
         return (
             <SafeAreaView style={GlobalStyles.droidSafeArea}>
                 <Container style={{ backgroundColor: "#gray" }}>
