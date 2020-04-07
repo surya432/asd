@@ -30,9 +30,12 @@ export class HomeScreen extends React.Component {
             dataResponse: [],
             dataFilter: {},
             spinner: false,
+            isRefresh: false,
+            countData: 0,
         };
         this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
         getTokenFCM()
+        this._kondisiAwal()
     }
 
     CheckConnectivity = () => {
@@ -66,18 +69,45 @@ export class HomeScreen extends React.Component {
 
     async componentDidMount() {
         const { navigation } = this.props;
+        console.log(navigation);
         navigation.addListener('didFocus', () => {
-            this._kondisiAwal();
+            this._kondisiAwalRefesh();
         });
     }
 
     async _kondisiAwal() {
         this.setState({
             dataResponse: [],
+            countData: 0,
         });
         this._calldata()
     }
+    async _kondisiAwalRefesh() {
+        try {
+            this.setState({
+                isRefresh: false
+            });
+            const dataUser = await AsyncStorage.getItem('dataUserTask')
+                .then((result) => JSON.parse(result))
+                .then((result) => {
+                    if (result.length > 0) {
+                        this.setState({
+                            dataResponse: result,
+                            isRefresh: true,
 
+                        });
+                    } else {
+                        this.setState({
+                            dataResponse: [],
+                            isRefresh: true
+                        });
+                    }
+                })
+        } catch (error) {
+            console.log(error)
+            Alert.alert("Error", error.message)
+        }
+    }
     async _calldata() {
         try {
             const dataUser = await AsyncStorage.getItem('dataUser')
@@ -87,6 +117,7 @@ export class HomeScreen extends React.Component {
                 this.setState({
                     dataResponse: dataList.data,
                 });
+                await AsyncStorage.setItem('dataUserTask', JSON.stringify(dataList.data))
                 return dataList;
             } else {
                 return null;
@@ -101,14 +132,17 @@ export class HomeScreen extends React.Component {
         this.spanFilter.close()
         try {
             if (dataFromChild.tgl == "Pilih Tanggal" && dataFromChild.status == "Semua") {
-                this._kondisiAwal()
+                this._kondisiAwalRefesh()
             } else {
                 const dataUser = await AsyncStorage.getItem('dataUser')
                     .then((result) => JSON.parse(result))
                 const dataList = await ServiceTaskListFilter(dataFromChild, "filterNew/" + dataUser.id)
                 if (dataList.kode == 1) {
+                    this.setState({
+                        dataResponse: dataList.data,
+                        isRefresh: true,
 
-                    this.setState({ dataResponse: dataList.data });
+                    });
                     return dataList;
                 } else {
                     this.setState({ dataResponse: [] });
@@ -118,8 +152,26 @@ export class HomeScreen extends React.Component {
             }
         } catch (error) {
             console.log(error)
-            this.setState({ dataResponse: [] });
+            this.setState({ dataResponse: [], countData: 0 });
             Alert.alert("Error", error.message)
+        }
+    }
+    async updateArray(data) {
+        try {
+            const dataUser = await AsyncStorage.getItem('dataUserTask')
+            const dataUserJson = await JSON.parse(dataUser);
+            var index = dataUserJson.findIndex(x => x.id == data.id);
+            console.log("Delete Index " + index)
+            if (index > 0) {
+                dataUserJson.splice(index, 1);
+            }
+            await AsyncStorage.setItem('dataUserTask', JSON.stringify(dataUserJson))
+            this.setState({
+                isRefresh: true,
+            });
+            console.log(dataUserJson.length)
+        } catch (error) {
+            console.log("updateArray " + error.massage)
         }
     }
     onDelete = async (items) => {
@@ -135,14 +187,18 @@ export class HomeScreen extends React.Component {
             const dataList = await ServiceTaskListFilter(filter, "taksDelete")
             console.log(dataList)
             if (dataList.kode == 1) {
-                alert(dataList.keterangan);
+                this.updateArray(filter).then(() => {
+                    this._kondisiAwalRefesh()
+                }).then(() => {
+                    alert(dataList.keterangan);
+                })
+
             } else {
                 alert(dataList.keterangan);
             }
-            this._kondisiAwal()
+
         } catch (error) {
             console.log(error)
-            this.setState({ dataResponse: [] });
             Alert.alert("Error", error.message)
         }
     }
@@ -172,16 +228,15 @@ export class HomeScreen extends React.Component {
     render() {
         const formattedDate = moment(new Date()).format("MM/DD/YYYY");
         this.state.chosenDate = formattedDate
-        const { dataResponse } = this.state;
-        console.log(dataResponse.length)
-
+        const { dataResponse, isRefresh, countData } = this.state;
+        console.log("count DataRespond " + dataResponse.length + " " + isRefresh + " " + countData)
         return (
             <SafeAreaView style={GlobalStyles.droidSafeArea}>
                 <Container style={{ backgroundColor: "#gray" }}>
                     <Header noLeft translucent noShadow>
                         <Right>
                             <View style={{ flexDirection: "row" }}>
-                                <Button transparent onPress={() => this._kondisiAwal()} >
+                                <Button transparent onPress={() => this._kondisiAwalRefesh()} >
                                     <Feather size={24} active name='refresh-ccw' style={{ marginStart: 8 }} />
                                 </Button>
                                 <Button transparent onPress={() => this.spanFilter.open()}>
@@ -213,7 +268,7 @@ export class HomeScreen extends React.Component {
                         refreshControl={
                             <RefreshControl
                                 refreshing={this.state.spinner}
-                                onRefresh={() => this._kondisiAwal()}
+                                onRefresh={() => this._kondisiAwalRefesh()}
                                 title="Loading..."
                             />
                         }
@@ -225,19 +280,21 @@ export class HomeScreen extends React.Component {
                         />
                         <List>
                             {
-                                dataResponse.map(item => {
-                                    return <ListitemTask
-                                        key={item.id}
-                                        dataObject={item}
-                                        onclick={this.handlerOnclick}
-                                        onclickEdit={this.handlerOnclickEdit}
-                                        onclickDelete={this.handlerOnclickDelete}
-                                        status={item.status}
-                                        perkerjaan={item.perkerjaan}
-                                        tglmulai={item.tglmulai}
-                                        tglselesai={item.tglselesai}
-                                    />
-                                })
+                                dataResponse.length > 0 ?
+                                    dataResponse.map(item => {
+                                        return <ListitemTask
+                                            key={item.id}
+                                            dataObject={item}
+                                            onclick={this.handlerOnclick}
+                                            onclickEdit={this.handlerOnclickEdit}
+                                            onclickDelete={this.handlerOnclickDelete}
+                                            status={item.status}
+                                            perkerjaan={item.perkerjaan}
+                                            tglmulai={item.tglmulai}
+                                            tglselesai={item.tglselesai}
+                                        />
+                                    })
+                                    : null
                             }
                         </List>
                     </Content>

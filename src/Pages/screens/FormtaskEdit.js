@@ -112,6 +112,19 @@ export default class FormtaskEdit extends Component {
             ],
         );
     }
+    async updateArray(data) {
+        try {
+            const dataUser = await AsyncStorage.getItem('dataUserTask')
+            const dataUserJson = await JSON.parse(dataUser);
+            var index = dataUserJson.findIndex(x => x.id == data.id);
+            // console.log(data)
+            dataUserJson[index] = data
+            // console.log("update " + JSON.stringify(dataUserJson))
+            await AsyncStorage.setItem('dataUserTask', JSON.stringify(dataUserJson))
+        } catch (error) {
+            console.log("updateArray "+error.massage)
+        }
+    }
     onUpdate = async () => {
         const { id, perkerjaan, status, tglmulai, tglselesai, keterangan } = this.state
         try {
@@ -131,6 +144,7 @@ export default class FormtaskEdit extends Component {
             console.log(dataList)
             if (dataList.kode == 1) {
                 alert(dataList.keterangan);
+                await this.updateArray(dataList.data);
                 this.props.navigation.navigate('Dashboard');
             } else {
                 alert(dataList.keterangan);
@@ -149,11 +163,11 @@ export default class FormtaskEdit extends Component {
         const dtStartSelect = new Date(Moment(tglmulai).format('llll'))
         const dtStartMin = new Date(parseInt(dtStart[2]), parseInt(dtStart[1] - 2), parseInt(dtStart[0]))
         const dtStartMax = new Date(parseInt(dtEnd[2]), parseInt(dtEnd[1] - 1), parseInt(dtEnd[0]))
-        console.log("dtStart " + dtStartMin + " / " + dtStartMax + " / " + dtStartSelect + "/" + new Date(parseInt(dtStart[2]), parseInt(dtStart[1] - 1), parseInt(dtStart[0])))
+        // console.log("dtStart " + dtStartMin + " / " + dtStartMax + " / " + dtStartSelect + "/" + new Date(parseInt(dtStart[2]), parseInt(dtStart[1] - 1), parseInt(dtStart[0])))
         const dtEndSelect = new Date(Moment(tglselesai).format('llll'))
         const dtEndMin = new Date(parseInt(dtStart[2]), parseInt(dtStart[1] - 1), parseInt(dtStart[0]))
         const dtEndMax = new Date(parseInt(dtEnd[2]), parseInt(dtEnd[1]), parseInt(dtEnd[0]))
-        console.log("dtEnd " + dtEndSelect + " / " + dtEndMin + " / " + dtEndMax)
+        // console.log("dtEnd " + dtEndSelect + " / " + dtEndMin + " / " + dtEndMax)
         return (
             <SafeAreaView style={styles.Container}>
                 <Container>

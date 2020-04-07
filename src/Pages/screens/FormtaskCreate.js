@@ -25,7 +25,7 @@ export default class FormtaskCreate extends Component {
         const value = evt.target.value; const key = evt.target.name;
         this.setState({ key: value });
     }
-    getDataAwal = async()=>{
+    getDataAwal = async () => {
         const isLoggedIn = await AsyncStorage.getItem('dataUser');
         const jsonParse = await JSON.parse(isLoggedIn);
         this.setState({
@@ -123,12 +123,15 @@ export default class FormtaskCreate extends Component {
                     user_id: user_id,
                     id: id,
                 }
-                console.log(filter);
                 const dataList = await ServiceTaskListFilter(filter, "taskcreate2")
                 console.log(dataList)
                 if (dataList.kode == 1) {
-                    alert(dataList.keterangan);
-                    this.props.navigation.navigate('Dashboard');
+                    this.updateArray(dataList.data)
+                        .then(() => {
+                            alert(dataList.keterangan);
+                            this.props.navigation.navigate('Dashboard');
+                        })
+
                 } else {
                     alert(dataList.keterangan);
                     return;
@@ -138,6 +141,18 @@ export default class FormtaskCreate extends Component {
             }
         }
 
+    }
+    async updateArray(data) {
+        try {
+            const dataUser = await AsyncStorage.getItem('dataUserTask')
+            const dataUserJson = await JSON.parse(dataUser);
+            console.log(data)
+            dataUserJson.splice(0, 0, data);
+            console.log("add new  " + JSON.stringify(dataUserJson))
+            await AsyncStorage.setItem('dataUserTask', JSON.stringify(dataUserJson))
+        } catch (error) {
+            console.log("updateArray " + error.massage)
+        }
     }
     render() {
         const selectedmulai = Moment(new Date()).format('YYYY-MM-DD');
@@ -209,7 +224,7 @@ export default class FormtaskCreate extends Component {
                                             color: "white",
                                         }
                                     }}
-                                 
+
                                     timeZoneOffsetInMinutes={undefined}
                                     modalTransparent={false}
                                     animationType={"fade"}
