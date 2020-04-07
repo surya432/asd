@@ -19,37 +19,36 @@ export default class FormtaskEdit extends Component {
         }
         this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
         getTokenFCM()
-        this.getDataAwal()
+        // this.getDataAwal()
     }
     handleChange(evt) {
-        const value = evt.target.value; const key = evt.target.name;
-        this.setState({ key: value });
+        const value = evt.target.value;        this.setState({ key: value });
     }
-    getDataAwal = async () => {
-        const isLoggedIn = await AsyncStorage.getItem('dataUser');
-        const jsonParse = await JSON.parse(isLoggedIn);
-        this.setState({
-            user_id: jsonParse.id,
-            status: "Mulai",
-            tglmulai: Moment(new Date()).format('YYYY-MM-DD'),
-            tglselesai: Moment(new Date()).format('YYYY-MM-DD'),
-        })
-    }
-    async   componentDidMount() {
-        const isLoggedIn = await AsyncStorage.getItem('dataUser');
-        const jsonParse = await JSON.parse(isLoggedIn);
+    // getDataAwal = async () => {
+    //     const isLoggedIn = await AsyncStorage.getItem('dataUser');
+    //     const jsonParse = await JSON.parse(isLoggedIn);
+    //     this.setState({
+    //         user_id: jsonParse.id,
+    //         status: "Mulai",
+    //         tglmulai: Moment(new Date()).format('YYYY-MM-DD'),
+    //         tglselesai: Moment(new Date()).format('YYYY-MM-DD'),
+    //     })
+    // }
+    // async   componentDidMount() {
+    //     const isLoggedIn = await AsyncStorage.getItem('dataUser');
+    //     const jsonParse = await JSON.parse(isLoggedIn);
 
-        const jsonDecode = JSON.parse(this.props.navigation.state.params.dataObject);
-        this.setState({
-            perkerjaan: jsonDecode.perkerjaan,
-            status: jsonDecode.status,
-            tglmulai: jsonDecode.tglmulai,
-            tglselesai: jsonDecode.tglselesai,
-            keterangan: jsonDecode.keterangan,
-            id: jsonDecode.id,
-            user_id: jsonParse.id,
-        })
-    }
+    //     const jsonDecode = JSON.parse(this.props.navigation.state.params.dataObject);
+    //     this.setState({
+    //         perkerjaan: jsonDecode.perkerjaan,
+    //         status: jsonDecode.status,
+    //         tglmulai: jsonDecode.tglmulai,
+    //         tglselesai: jsonDecode.tglselesai,
+    //         keterangan: jsonDecode.keterangan,
+    //         id: jsonDecode.id,
+    //         user_id: jsonParse.id,
+    //     })
+    // }
     async UNSAFE_componentWillMount() {
         const isLoggedIn = await AsyncStorage.getItem('dataUser');
         const jsonParse = await JSON.parse(isLoggedIn);
@@ -65,7 +64,7 @@ export default class FormtaskEdit extends Component {
             user_id: jsonParse.id,
         })
     }
-    static navigationOptions = ({ navigation }) => ({
+    static navigationOptions = () => ({
         title: "Form Task Edit",
         headerTitleStyle: {
             textAlign: "left",
@@ -95,11 +94,11 @@ export default class FormtaskEdit extends Component {
         });
     }
     onValueChangeKeterangan = (event) => {
-        const { eventCount, target, text } = event.nativeEvent;
+        const { text } = event.nativeEvent;
         this.setState({ keterangan: text });
     };
     onHalderPerkerjaan = (event) => {
-        const { eventCount, target, text } = event.nativeEvent;
+        const { text } = event.nativeEvent;
         this.setState({ perkerjaan: text });
     };
 
@@ -143,13 +142,18 @@ export default class FormtaskEdit extends Component {
     }
     render() {
         const { tglmulai, tglselesai, status, keterangan } = this.state
-        const selectedmulai = Moment(tglmulai).format('DD/MM/YYYY');
-        const selectedselesai = Moment(tglselesai).format('DD/MM/YYYY');
+        const selectedmulai = Moment(tglmulai).format('DD/M/YYYY');
+        const selectedselesai = Moment(tglselesai).format('DD/M/YYYY');
         let dtStart = selectedmulai.split('/');
         let dtEnd = selectedselesai.split('/');
-        var today = new Date();
-
-        console.log(selectedselesai+selectedmulai+"/"+today.setMonth(today.getMonth()))
+        const dtStartSelect = new Date(Moment(tglmulai).format('llll'))
+        const dtStartMin = new Date(parseInt(dtStart[2]), parseInt(dtStart[1] - 2), parseInt(dtStart[0]))
+        const dtStartMax = new Date(parseInt(dtEnd[2]), parseInt(dtEnd[1] - 1), parseInt(dtEnd[0]))
+        console.log("dtStart " + dtStartMin + " / " + dtStartMax + " / " + dtStartSelect + "/" + new Date(parseInt(dtStart[2]), parseInt(dtStart[1] - 1), parseInt(dtStart[0])))
+        const dtEndSelect = new Date(Moment(tglselesai).format('llll'))
+        const dtEndMin = new Date(parseInt(dtStart[2]), parseInt(dtStart[1] - 1), parseInt(dtStart[0]))
+        const dtEndMax = new Date(parseInt(dtEnd[2]), parseInt(dtEnd[1]), parseInt(dtEnd[0]))
+        console.log("dtEnd " + dtEndSelect + " / " + dtEndMin + " / " + dtEndMax)
         return (
             <SafeAreaView style={styles.Container}>
                 <Container>
@@ -168,8 +172,9 @@ export default class FormtaskEdit extends Component {
                             <Item stackedLabel>
                                 <Label>Tanggal Mulai</Label>
                                 <DatePicker
-                                    minimumDate={new Date(parseInt(dtStart[2]), parseInt(dtStart[1] - 2), parseInt(dtStart[0] ))}
-                                    maximumDate={new Date(parseInt(dtEnd[2]), parseInt(dtEnd[1] - 1), parseInt(dtEnd[0]))}
+                                    minimumDate={dtStartMin}
+                                    maximumDate={dtStartMax}
+                                    // defaultDate={new Date(parseInt(dtStart[2]),parseInt(dtStart[1]-1),parseInt(dtStart[0]))}
                                     timeZoneOffsetInMinutes={undefined}
                                     modalTransparent={false}
                                     animationType={"fade"}
@@ -177,7 +182,6 @@ export default class FormtaskEdit extends Component {
                                     format={"dd/mm/yyyy"}
                                     androidMode={"default"}
                                     placeHolderText={selectedmulai}
-                                    textStyle={{ color: "green" }}
                                     placeHolderTextStyle={{ color: "#000" }}
                                     onDateChange={this.onValueChangeDatePickertglmulai.bind(this)}
                                     disabled={false}
@@ -186,20 +190,16 @@ export default class FormtaskEdit extends Component {
                             <Item stackedLabel>
                                 <Label>Tanggal Selesai</Label>
                                 <DatePicker
-                                    minimumDate={new Date(parseInt(dtStart[2]), parseInt(dtStart[1] - 1), parseInt(dtStart[0]))}
-                                    maximumDate={moment(today).add(1, 'M')}
-                                    // maximumDate={new Date(parseInt(dtEnd[2]),today.setMonth(today.getMonth()),parseInt(dtEnd[0]))}
-                                    // defaultDate={new Date(parseInt(dateNumbers1[2]), parseInt(dateNumbers1[1] - 1), parseInt(dateNumbers1[0] + 1))}
+                                    minimumDate={dtEndMin}
+                                    maximumDate={dtEndMax}
                                     locale={"en"}
                                     style={styles.DatePicker}
                                     timeZoneOffsetInMinutes={undefined}
                                     modalTransparent={false}
                                     animationType={"fade"}
-                                    value={selectedselesai}
                                     androidMode={"default"}
-                                    format={"dd/mm/yyyy"}
+                                    value={selectedselesai}
                                     placeHolderText={selectedselesai}
-                                    textStyle={{ color: "green" }}
                                     placeHolderTextStyle={{ color: "#000" }}
                                     onDateChange={this.onValueChangeDatePickertglselesai.bind(this)}
                                     disabled={false}
