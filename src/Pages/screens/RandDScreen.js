@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, SafeAreaView, StyleSheet, } from 'react-native'
+import { Text, SafeAreaView, } from 'react-native'
 import GlobalStyles from '../Components/GlobalStyles';
 import { Container, Content, Separator, ListItem } from 'native-base';
 import NotifService, { onRegister, onNotif, getTokenFCM } from './../Components/NotifService';
