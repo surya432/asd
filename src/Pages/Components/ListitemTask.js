@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, } from 'react-native'
 import { ListItem, Left, Body, Right, Thumbnail, Icon } from 'native-base'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Fontisto from "react-native-vector-icons/Fontisto";
+import Moment from "moment"
+
 const ListitemTask = (props) => {
     const getImageStatus = (param) => {
         switch (param) {
@@ -53,7 +55,7 @@ const ListitemTask = (props) => {
             <Body>
                 <TouchableOpacity onLongPress={() => onHalderClickEdit(props.dataObject)} onPress={() => onHalderClick(props.dataObject)}>
                     <Text>{props.perkerjaan}</Text>
-                    <Text note>{props.tglmulai} - {props.tglselesai}</Text>
+                    <Text note>{Moment(props.tglmulai).format("DD/M/YYYY")} - {Moment(props.tglselesai).format("DD/M/YYYY")}</Text>
                 </TouchableOpacity>
             </Body>
             <Right style={styles.containerBtn}>

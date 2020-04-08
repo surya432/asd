@@ -69,7 +69,6 @@ export class HomeScreen extends React.Component {
 
     async componentDidMount() {
         const { navigation } = this.props;
-        console.log(navigation);
         navigation.addListener('didFocus', () => {
             this._kondisiAwalRefesh();
         });
@@ -84,13 +83,11 @@ export class HomeScreen extends React.Component {
     }
     async _kondisiAwalRefesh() {
         try {
-            this.setState({
-                isRefresh: false
-            });
+         
             const dataUser = await AsyncStorage.getItem('dataUserTask')
                 .then((result) => JSON.parse(result))
                 .then((result) => {
-                    if (result.length > 0) {
+                    if (result && result.length > 0) {
                         this.setState({
                             dataResponse: result,
                             isRefresh: true,
@@ -99,12 +96,12 @@ export class HomeScreen extends React.Component {
                     } else {
                         this.setState({
                             dataResponse: [],
-                            isRefresh: true
+                            isRefresh: false
                         });
                     }
                 })
         } catch (error) {
-            console.log(error)
+            console.log("_kondisiAwalRefesh" + error)
             Alert.alert("Error", error.message)
         }
     }
@@ -123,7 +120,7 @@ export class HomeScreen extends React.Component {
                 return null;
             }
         } catch (error) {
-            console.log(error)
+            console.log("_calldata" + error)
             Alert.alert("Error", error.message)
         }
     }
@@ -161,8 +158,8 @@ export class HomeScreen extends React.Component {
             const dataUser = await AsyncStorage.getItem('dataUserTask')
             const dataUserJson = await JSON.parse(dataUser);
             var index = dataUserJson.findIndex(x => x.id == data.id);
-            console.log("Delete Index " + index)
-            if (index > 0) {
+            console.log("Delete Index " + index +dataUserJson.length)
+            if (dataUserJson.length > 0) {
                 dataUserJson.splice(index, 1);
             }
             await AsyncStorage.setItem('dataUserTask', JSON.stringify(dataUserJson))
@@ -280,7 +277,7 @@ export class HomeScreen extends React.Component {
                         />
                         <List>
                             {
-                                dataResponse.length > 0 ?
+                                dataResponse.length > 0 && dataResponse ?
                                     dataResponse.map(item => {
                                         return <ListitemTask
                                             key={item.id}

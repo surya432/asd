@@ -18,7 +18,6 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 import GlobalStyles from '../Components/GlobalStyles';
 import NotifService, { onRegister, onNotif, getTokenFCM } from './../Components/NotifService';
-
 class ProfileScreen extends Component {
     constructor(props) {
         super(props);
@@ -53,6 +52,7 @@ class ProfileScreen extends Component {
         await AsyncStorage.removeItem('isLoggedIn');
         await AsyncStorage.removeItem('dataUser');
         await AsyncStorage.removeItem('fcmToken');
+        await AsyncStorage.removeItem('dataUserTask');
         this.props.navigation.navigate('Auth');
     }
     render() {
