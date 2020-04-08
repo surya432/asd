@@ -22,10 +22,14 @@ class ProfileScreen extends Component {
             chosenDate: new Date(),
             dataUser: {},
         };
+        AsyncStorage.getItem('dataUser')
+            .then((result) => {
+                this.setState({
+                    dataUser: JSON.parse(result)
+                })
+            })
         this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
         getTokenFCM()
-    }
-    async componentDidMount() {
     }
     _logOut = async () => {
         Alert.alert(
