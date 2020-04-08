@@ -1,4 +1,4 @@
-import React, {  } from 'react'
+import React, { } from 'react'
 import { Text, View, StyleSheet, SafeAreaView, Alert, RefreshControl } from 'react-native'
 import {
     Container,
