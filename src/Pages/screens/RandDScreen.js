@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Text, SafeAreaView, StyleSheet, } from 'react-native'
 import GlobalStyles from '../Components/GlobalStyles';
-import { Container, Content, Separator, List, ListItem } from 'native-base';
+import { Container, Content, Separator, ListItem } from 'native-base';
 import NotifService, { onRegister, onNotif, getTokenFCM } from './../Components/NotifService';
 
 export class RandDScreen extends Component {
@@ -90,19 +90,3 @@ export class RandDScreen extends Component {
 
 export default RandDScreen
 
-const styles = new StyleSheet.create({
-    container: {
-        flex: 1
-    },
-    content: {
-        marginHorizontal: 15,
-        marginVertical: 12,
-    },
-    text: {
-        paddingHorizontal: 8,
-        paddingVertical: 5,
-    },
-    btnList: {
-
-    }
-});

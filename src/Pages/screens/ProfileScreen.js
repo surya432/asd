@@ -7,11 +7,8 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import {
-    Button,
     Container,
-    Header,
     Content,
-    Footer,
     Text,
     Thumbnail,
 } from 'native-base';
@@ -29,16 +26,8 @@ class ProfileScreen extends Component {
         getTokenFCM()
     }
     async componentDidMount() {
-        const isLoggedIn = await AsyncStorage.getItem('dataUser')
-            .then((result) => JSON.parse(result))
-            .then((dataUser) =>
-                this.setState({
-                    dataUser
-                })
-            )
     }
     _logOut = async () => {
-
         Alert.alert(
             'Peringatan!',
             'Apa Anda yakin ingin Keluar Dari Aplikasi?',
