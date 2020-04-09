@@ -35,7 +35,6 @@ export class HomeScreen extends React.Component {
             countData: 0,
         };
         this._kondisiAwalRefesh()
-
         this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
         getTokenFCM()
         this._kondisiAwal()
@@ -59,14 +58,13 @@ export class HomeScreen extends React.Component {
     }
     async _kondisiAwalRefesh() {
         try {
-            const dataUser = await AsyncStorage.getItem('dataUserTask')
+            await AsyncStorage.getItem('dataUserTask')
                 .then((result) => JSON.parse(result))
                 .then((result) => {
                     if (result && result.length > 0) {
                         this.setState({
                             dataResponse: result,
                             isRefresh: true,
-
                         });
                     } else {
                         this.setState({
@@ -93,7 +91,6 @@ export class HomeScreen extends React.Component {
                 return dataList;
             } else {
                 await AsyncStorage.setItem('dataUserTask', "[]")
-
                 return null;
             }
         } catch (error) {
