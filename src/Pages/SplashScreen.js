@@ -10,6 +10,8 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 import NotifService, { onRegister, onNotif } from './Components/NotifService';
 const { width, height } = Dimensions.get('window');
+import { ServiceTaskListFilter } from '../services/ServiceTaskListFilter';
+
 export class SplashScreen extends Component {
     constructor(props) {
         super(props);
@@ -38,20 +40,40 @@ export class SplashScreen extends Component {
             this.props.navigation.navigate('Auth')
         } else {
             console.log("ok")
-            this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
-            console.log(this.notif)
-            if ('action_data' in this.notif) {
-                if (this.notif.flagMsg !== "promo" && isLoggedIn) {
-                    this.props.navigation.navigate("Profile", { DATA: JSON.stringify(notif) })
+            this._calldata().then(() => {
+                this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
+                console.log(this.notif)
+                if ('action_data' in this.notif) {
+                    if (this.notif.flagMsg !== "promo" && isLoggedIn) {
+                        this.props.navigation.navigate("Profile", { DATA: JSON.stringify(notif) })
+                    } else {
+                        this.props.navigation.navigate("SendNotifikasiLokal", { DATA: JSON.stringify(notif) })
+                    }
                 } else {
-                    this.props.navigation.navigate("SendNotifikasiLokal", { DATA: JSON.stringify(notif) })
+                    this.props.navigation.navigate('App')
                 }
-            } else {
-                this.props.navigation.navigate('App')
-            }
+            })
+
         }
     }
 
+    async _calldata() {
+        try {
+            const dataUser = await AsyncStorage.getItem('dataUser')
+                .then((result) => JSON.parse(result))
+            const dataList = await ServiceTaskListFilter(null, "taskAll/" + dataUser.id)
+            if (dataList.kode == 1) {
+                await AsyncStorage.setItem('dataUserTask', JSON.stringify(dataList.data))
+            } else {
+                const data = []
+                await AsyncStorage.setItem('dataUserTask', data)
+
+                return null;
+            }
+        } catch (error) {
+            console.log("_calldata" + error)
+        }
+    }
     render() {
         return (
             <View style={styles.Container}>

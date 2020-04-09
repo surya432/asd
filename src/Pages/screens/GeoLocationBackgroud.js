@@ -64,7 +64,7 @@ export default class GeoLocationBackgroud extends Component {
             console.log('tic');
             this.requestLocationPermission()
         },
-            90000);
+            900);
         const backgroundJob = {
             jobKey: "myJob",
             job: () => this._doItbackgroud()

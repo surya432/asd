@@ -14,6 +14,8 @@ import {
 } from 'native-base';
 import AsyncStorage from '@react-native-community/async-storage';
 import GlobalStyles from '../Components/GlobalStyles';
+import BackgroundTimer from 'react-native-background-timer';
+
 import NotifService, { onRegister, onNotif, getTokenFCM } from './../Components/NotifService';
 class ProfileScreen extends Component {
     constructor(props) {
@@ -46,6 +48,7 @@ class ProfileScreen extends Component {
         await AsyncStorage.removeItem('dataUser');
         await AsyncStorage.removeItem('fcmToken');
         await AsyncStorage.removeItem('dataUserTask');
+        await BackgroundTimer.stopBackgroundTimer()
         this.props.navigation.navigate('Auth');
     }
     render() {

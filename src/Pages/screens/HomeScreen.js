@@ -21,6 +21,7 @@ import { ServiceTaskListFilter } from '../../services/ServiceTaskListFilter';
 import Spinner from 'react-native-loading-spinner-overlay';
 import ListitemTask from '../Components/ListitemTask';
 import NotifService, { onRegister, onNotif, getTokenFCM } from './../Components/NotifService';
+import CheckConnectivity from './../../Helper/CheckConnectivity'
 
 export class HomeScreen extends React.Component {
     constructor(props) {
@@ -33,44 +34,19 @@ export class HomeScreen extends React.Component {
             isRefresh: false,
             countData: 0,
         };
+        this._kondisiAwalRefesh()
+
         this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
         getTokenFCM()
         this._kondisiAwal()
+        CheckConnectivity()
     }
 
-    CheckConnectivity = () => {
-        if (Platform.OS === "android") {
-            NetInfo.isConnected.fetch().then(isConnected => {
-                if (isConnected) {
-                    Alert.alert("You are online!");
-                } else {
-                    Alert.alert("You are Offline!");
-                }
-            });
-        } else {
-            NetInfo.isConnected.addEventListener(
-                "connectionChange",
-                this.handleFirstConnectivityChange
-            );
-        }
-    };
-
-    handleFirstConnectivityChange = isConnected => {
-        NetInfo.isConnected.removeEventListener(
-            "connectionChange",
-            this.handleFirstConnectivityChange
-        );
-        if (isConnected === false) {
-            Alert.alert("You are Offline!");
-        } else {
-            Alert.alert("You are Online!");
-        }
-    };
 
     async componentDidMount() {
         const { navigation } = this.props;
         navigation.addListener('didFocus', () => {
-            this._kondisiAwalRefesh();
+            this._kondisiAwalRefesh()
         });
     }
 
@@ -84,21 +60,21 @@ export class HomeScreen extends React.Component {
     async _kondisiAwalRefesh() {
         try {
             const dataUser = await AsyncStorage.getItem('dataUserTask')
-            .then((result) => JSON.parse(result))
-            .then((result) => {
-                if (result && result.length > 0) {
-                    this.setState({
-                        dataResponse: result,
-                        isRefresh: true,
+                .then((result) => JSON.parse(result))
+                .then((result) => {
+                    if (result && result.length > 0) {
+                        this.setState({
+                            dataResponse: result,
+                            isRefresh: true,
 
-                    });
-                } else {
-                    this.setState({
-                        dataResponse: [],
-                        isRefresh: false
-                    });
-                }
-            })
+                        });
+                    } else {
+                        this.setState({
+                            dataResponse: [],
+                            isRefresh: false
+                        });
+                    }
+                })
         } catch (error) {
             console.log("_kondisiAwalRefesh" + error)
             Alert.alert("Error", error.message)
@@ -116,6 +92,8 @@ export class HomeScreen extends React.Component {
                 await AsyncStorage.setItem('dataUserTask', JSON.stringify(dataList.data))
                 return dataList;
             } else {
+                await AsyncStorage.setItem('dataUserTask', "[]")
+
                 return null;
             }
         } catch (error) {
@@ -137,7 +115,6 @@ export class HomeScreen extends React.Component {
                     this.setState({
                         dataResponse: dataList.data,
                         isRefresh: true,
-
                     });
                     return dataList;
                 } else {
@@ -158,7 +135,7 @@ export class HomeScreen extends React.Component {
             const dataUserJson = await JSON.parse(dataUser);
             var index = dataUserJson.findIndex(x => x.id == data.id);
             console.log("Delete Index " + index + dataUserJson.length)
-            if (index >-1) {
+            if (index > -1) {
                 dataUserJson.splice(index, 1);
             }
             await AsyncStorage.setItem('dataUserTask', JSON.stringify(dataUserJson))
@@ -188,7 +165,6 @@ export class HomeScreen extends React.Component {
                 }).then(() => {
                     alert(dataList.keterangan);
                 })
-
             } else {
                 alert(dataList.keterangan);
             }

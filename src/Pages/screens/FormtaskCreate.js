@@ -147,13 +147,16 @@ export default class FormtaskCreate extends Component {
             const dataUser = await AsyncStorage.getItem('dataUserTask')
             const dataUserJson = await JSON.parse(dataUser);
             console.log(data)
-            if (dataUserJson.length > 0 && dataUserJson) {
+            if (dataUserJson != null) {
                 dataUserJson.splice(0, 0, data);
+                await AsyncStorage.setItem('dataUserTask', JSON.stringify(dataUserJson))
+
             } else {
-                dataUserJson.push(data)
+                const dataUserJson2 = []
+                dataUserJson2.push(data)
+                await AsyncStorage.setItem('dataUserTask', JSON.stringify(dataUserJson2))
+
             }
-            console.log("add new  " + JSON.stringify(dataUserJson))
-            await AsyncStorage.setItem('dataUserTask', JSON.stringify(dataUserJson))
         } catch (error) {
             console.log("updateArray " + error)
         }
