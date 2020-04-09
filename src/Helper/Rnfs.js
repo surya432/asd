@@ -24,7 +24,6 @@ export async function writeFiles(filename, content) {
                 });
             })
     }
-
 }
 
 export async function readFiles(filename) {

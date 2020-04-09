@@ -147,16 +147,20 @@ export default class FormtaskCreate extends Component {
             const dataUser = await AsyncStorage.getItem('dataUserTask')
             const dataUserJson = await JSON.parse(dataUser);
             console.log(data)
-            dataUserJson.splice(0, 0, data);
+            if (dataUserJson.length > 0 && dataUserJson) {
+                dataUserJson.splice(0, 0, data);
+            } else {
+                dataUserJson.push(data)
+            }
             console.log("add new  " + JSON.stringify(dataUserJson))
             await AsyncStorage.setItem('dataUserTask', JSON.stringify(dataUserJson))
         } catch (error) {
-            console.log("updateArray " + error.massage)
+            console.log("updateArray " + error)
         }
     }
     render() {
-        const selectedmulai = Moment(new Date()).format('YYYY-MM-DD');
-        const selectedselesai = Moment(new Date()).format('YYYY-MM-DD');
+        const selectedmulai = Moment(new Date()).format('DD/M/YYYY');
+        const selectedselesai = Moment(new Date()).format('DD/M/YYYY');
         return (
             <SafeAreaView style={styles.Container}>
                 <Container>

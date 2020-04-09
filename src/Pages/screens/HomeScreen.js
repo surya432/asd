@@ -83,7 +83,22 @@ export class HomeScreen extends React.Component {
     }
     async _kondisiAwalRefesh() {
         try {
+            const dataUser = await AsyncStorage.getItem('dataUserTask')
+            .then((result) => JSON.parse(result))
+            .then((result) => {
+                if (result && result.length > 0) {
+                    this.setState({
+                        dataResponse: result,
+                        isRefresh: true,
 
+                    });
+                } else {
+                    this.setState({
+                        dataResponse: [],
+                        isRefresh: false
+                    });
+                }
+            })
         } catch (error) {
             console.log("_kondisiAwalRefesh" + error)
             Alert.alert("Error", error.message)
@@ -143,7 +158,7 @@ export class HomeScreen extends React.Component {
             const dataUserJson = await JSON.parse(dataUser);
             var index = dataUserJson.findIndex(x => x.id == data.id);
             console.log("Delete Index " + index + dataUserJson.length)
-            if (dataUserJson.length > 0) {
+            if (index >-1) {
                 dataUserJson.splice(index, 1);
             }
             await AsyncStorage.setItem('dataUserTask', JSON.stringify(dataUserJson))
