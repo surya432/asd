@@ -44,7 +44,7 @@ export class HomeScreen extends React.Component {
         this._kondisiAwalRefesh()
         this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
         getTokenFCM()
-        this._kondisiAwal()
+        // this._kondisiAwal()
         CheckConnectivity()
     }
 
@@ -254,7 +254,9 @@ export class HomeScreen extends React.Component {
                             textContent={'Tunggu Sebentar...'}
                             textStyle={styles.spinnerTextStyle}
                         />
-                        <List>
+                        <List
+
+                        >
                             {
                                 dataResponse.length > 0 && dataResponse ?
                                     dataResponse.map(item => {
@@ -286,6 +288,19 @@ export class HomeScreen extends React.Component {
                 </Container>
             </SafeAreaView>
         )
+    }
+    textRender() {
+        if (this.state.showLoading) {//To show or hide 'Waiting'
+            return (
+                <Text style={styles.waiting}>
+                    Waiting.....
+                </Text>
+            )
+        }
+        else {
+            return <View />
+        }
+
     }
 }
 

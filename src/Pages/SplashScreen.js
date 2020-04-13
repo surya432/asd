@@ -67,7 +67,6 @@ export class SplashScreen extends Component {
             } else {
                 const data = []
                 await AsyncStorage.setItem('dataUserTask', data)
-
                 return null;
             }
         } catch (error) {
