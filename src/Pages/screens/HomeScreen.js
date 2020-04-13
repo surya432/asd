@@ -22,6 +22,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import ListitemTask from '../Components/ListitemTask';
 import NotifService, { onRegister, onNotif, getTokenFCM } from './../Components/NotifService';
 import CheckConnectivity from './../../Helper/CheckConnectivity'
+import BackgroundTimer from 'react-native-background-timer';
 
 export class HomeScreen extends React.Component {
     constructor(props) {
@@ -34,6 +35,12 @@ export class HomeScreen extends React.Component {
             isRefresh: false,
             countData: 0,
         };
+        // BackgroundTimer.runBackgroundTimer(() => {
+        //     //code that will be called every 3 seconds 
+        //     this._kondisiAwalRefesh()
+        // },
+        //     1000 * 60 * 15
+        // );
         this._kondisiAwalRefesh()
         this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
         getTokenFCM()

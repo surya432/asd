@@ -55,7 +55,7 @@ const ListitemTask = (props) => {
             <Body>
                 <TouchableOpacity onLongPress={() => onHalderClickEdit(props.dataObject)} onPress={() => onHalderClick(props.dataObject)}>
                     <Text>{props.perkerjaan}</Text>
-                    <Text note>{Moment(props.tglmulai).format("DD/M/YYYY")} - {Moment(props.tglselesai).format("DD/M/YYYY")}</Text>
+                    <Text note>{props.dataObject.id} - {Moment(props.tglmulai).format("DD/M/YYYY")} - {Moment(props.tglselesai).format("DD/M/YYYY")}</Text>
                 </TouchableOpacity>
             </Body>
             <Right style={styles.containerBtn}>
