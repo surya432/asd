@@ -42,10 +42,14 @@ export class HomeScreen extends React.Component {
         // },
         //     1000 * 60 * 15
         // );
+        
+        // this._kondisiAwal()
+    }
+    UNSAFE_componentWillMount(){
         this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
         getTokenFCM()
         CheckConnectivity()
-        this._kondisiAwal()
+
     }
     async componentDidMount() {
         const { navigation } = this.props;
