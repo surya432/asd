@@ -42,9 +42,11 @@ const ListitemTask = (props) => {
     const onHalderClickEdit = (itms) => {
         props.onclickEdit(itms)
     }
+    
     const onHalderClickDelete = (itms) => {
         props.onclickDelete(itms)
     }
+
     return (
         <ListItem button avatar >
             <Left>

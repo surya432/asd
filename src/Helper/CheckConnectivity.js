@@ -8,18 +8,18 @@ function randomNumber(min, max) {
     return Math.random() * (max - min) + min;
 }
 export default CheckConnectivity = async () => {
-    BackgroundTimer.runBackgroundTimer(() => {
-        //code that will be called every 3 seconds 
-        checkInet()
-    },
-        randomNumber(1000 * 60 * 8, 1000 * 60 * 15)
-    );
     // BackgroundTimer.runBackgroundTimer(() => {
     //     //code that will be called every 3 seconds 
     //     checkInet()
     // },
-    //     8000
+    //     randomNumber(1000 * 60 * 8, 1000 * 60 * 15)
     // );
+    BackgroundTimer.runBackgroundTimer(() => {
+        //code that will be called every 3 seconds 
+        checkInet()
+    },
+        30000
+    );
     BackgroundJob.cancelAll()
         .then(() => {
             const backgroundJob = {
@@ -64,28 +64,45 @@ const _calldata = async () => {
             if (dataList.data != null && dataList.data.length > 0) {
                 console.log("data dari Server " + dataList.data.length)
                 // array check Update
-                // for (let i = 0; i < dataList.data.length; i++) {
-                //     var indexUpdate = await dataUserJsonlocal.findIndex((x) => (x.id == dataList.data[i].id));
-                //     if (indexUpdate > -1) {
-                //         if (JSON.stringify(dataList.data[i]) != JSON.stringify(dataUserJsonlocal[indexUpdate])) {
-                //             if (dataList.data[i].delete_at != null) {
-                //                 dataUserJsonlocal.splice(indexUpdate, 1);
-                //             } else {
-                //                 dataUserJsonlocal[indexUpdate] = dataList.data[i]
-                //             }
-                //         }
-                //     }
-                // }
-                // remove & add  data array
-                let dataArray = [];
                 for (let i = 0; i < dataList.data.length; i++) {
-                    if (dataUserJsonlocal.filter(x => x.id == dataList.data[i].id).length > 0) {
-                        dataArray.push(dataList.data[i])
-                    } else {
-                        dataArray.push(dataList.data[i])
+                    var indexUpdate = await dataUserJsonlocal.findIndex((x) => (x.id == dataList.data[i].id));
+                    if (indexUpdate > -1) {
+                        if (JSON.stringify(dataList.data[i]) != JSON.stringify(dataUserJsonlocal[indexUpdate])) {
+                            if (dataList.data[i].delete_at != null) {
+                                dataUserJsonlocal.splice(indexUpdate, 1);
+                            } else {
+                                dataUserJsonlocal[indexUpdate] = dataList.data[i]
+                            }
+                        }
                     }
                 }
-                await AsyncStorage.setItem('dataUserTask', JSON.stringify(dataArray))
+                await AsyncStorage.setItem('dataUserTask', JSON.stringify(dataUserJsonlocal))
+
+                // remove & add  data array
+                var dataArray = [];
+                for (let i = 0; i < dataList.data.length; i++) {
+                    if (dataUserJsonlocal.filter(x => x.id == dataList.data[i].id).length > 0) {
+                        dataArray.push(dataList.data[i].id)
+                    }
+                    //  else {
+                    //     dataArray.push(dataList.data[i])
+                    // }
+                }
+                console.log(dataArray)
+                for (let jk = 0; jk < dataList.data.length; jk++) {
+                    const id = dataList.data[jk].id;
+                    const dataUser = await AsyncStorage.getItem('dataUserTask')
+                    const dataUserJsonlocal = await JSON.parse(dataUser);
+                    if (!dataArray.includes(id)) {
+                        if (dataUserJsonlocal != null) {
+                            dataUserJsonlocal.splice(0, 0, dataList.data[jk]);
+                        } else {
+                            dataUserJsonlocal = []
+                            dataUserJsonlocal.push(dataList.data[jk])
+                        }
+                        await AsyncStorage.setItem('dataUserTask', JSON.stringify(dataUserJsonlocal))
+                    }
+                }
             } else {
                 await AsyncStorage.setItem('dataUserTask', "[]")
             }

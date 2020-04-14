@@ -25,7 +25,6 @@ export async function writeFiles(filename, content) {
             })
     }
 }
-
 export async function readFiles(filename) {
     var path = rootPath + '/' + filename + ".txt";
     var content = await RNFS.readFile(path);
