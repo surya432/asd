@@ -61,6 +61,7 @@ export class SplashScreen extends Component {
             const dataUser = await AsyncStorage.getItem('dataUser')
                 .then((result) => JSON.parse(result))
             const dataList = await ServiceTaskListFilter(null, "taskAll/" + dataUser.id)
+            console.log(dataList.keterangan)
             if (dataList.kode == 1) {
                 await AsyncStorage.setItem('dataUserTask', JSON.stringify(dataList.data))
             } else {

@@ -42,10 +42,10 @@ export class HomeScreen extends React.Component {
         // },
         //     1000 * 60 * 15
         // );
-        
-        // this._kondisiAwal()
+
+        this._kondisiAwal()
     }
-    UNSAFE_componentWillMount(){
+    UNSAFE_componentWillMount() {
         this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
         getTokenFCM()
         CheckConnectivity()
@@ -82,6 +82,9 @@ export class HomeScreen extends React.Component {
                         });
                     }
                 })
+            this.setState({
+                isRefresh: true,
+            });
         } catch (error) {
             console.log("_kondisiAwalRefesh" + error)
             Alert.alert("Error", error.message)
@@ -275,7 +278,7 @@ export class HomeScreen extends React.Component {
                                             tglselesai={item.tglselesai}
                                         />
                                     })
-                                    : <WaitingData />
+                                    : null
                             }
                         </List>
                     </Content>
@@ -294,11 +297,32 @@ export class HomeScreen extends React.Component {
     }
 
 }
-const WaitingData = () => {
+const WaitingData = (props) => {
+    console.log(props)
     return (
         <View style={styles.ContentWaiting}>
-            <Spinner color='green' />
-            <Text>Sedang Memuat Data.....</Text>
+            {props.dataObject < 1 ? <DataKosong /> : <DataWaiting />
+
+            }            {/* {
+                
+                props.dataObject < 1  ? null : null
+            } */}
+
+        </View>
+    )
+}
+const DataKosong = () => {
+    return (
+        <View style={styles.ContentWaiting}>
+            <Text>Data Kosong....</Text>
+        </View>
+    )
+}
+const DataWaiting = () => {
+    return (
+        <View style={styles.ContentWaiting}>
+            <Spinner />
+            <Text>Tunggu Sebentar....</Text>
         </View>
     )
 }
