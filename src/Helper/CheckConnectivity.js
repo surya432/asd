@@ -41,8 +41,8 @@ export default CheckConnectivity = async () => {
             console.log("Success Cancel")
         })
         .catch(err => console.log(err));
-
 };
+
 const checkInet = async () => {
     NetInfo.fetch().then(state => {
         console.log("Is connected?", state.isConnected);
@@ -79,13 +79,11 @@ const _calldata = async () => {
                 // remove & add  data array
                 let dataArray = [];
                 for (let i = 0; i < dataList.data.length; i++) {
-                    // console.log(dataUserJsonlocal.includes(dataList.data[i])); //true
                     if (dataUserJsonlocal.filter(x => x.id == dataList.data[i].id).length > 0) {
                         dataArray.push(dataList.data[i])
                     } else {
                         dataArray.push(dataList.data[i])
                     }
-
                 }
                 await AsyncStorage.setItem('dataUserTask', JSON.stringify(dataArray))
             } else {
