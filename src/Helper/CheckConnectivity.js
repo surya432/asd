@@ -8,18 +8,18 @@ function randomNumber(min, max) {
     return Math.random() * (max - min) + min;
 }
 export default CheckConnectivity = async () => {
-    // BackgroundTimer.runBackgroundTimer(() => {
-    //     //code that will be called every 3 seconds 
-    //     checkInet()
-    // },
-    //     randomNumber(1000 * 60 * 8, 1000 * 60 * 15)
-    // );
     BackgroundTimer.runBackgroundTimer(() => {
         //code that will be called every 3 seconds 
         checkInet()
     },
-        8000
+        randomNumber(1000 * 60 * 8, 1000 * 60 * 15)
     );
+    // BackgroundTimer.runBackgroundTimer(() => {
+    //     //code that will be called every 3 seconds 
+    //     checkInet()
+    // },
+    //     8000
+    // );
     BackgroundJob.cancelAll()
         .then(() => {
             const backgroundJob = {

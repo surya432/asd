@@ -53,7 +53,6 @@ export class SplashScreen extends Component {
                     this.props.navigation.navigate('App')
                 }
             })
-
         }
     }
 

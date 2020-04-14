@@ -8,6 +8,7 @@ import {
     Right,
     Content,
     Button,
+    Spinner,
     Footer,
 } from 'native-base';
 import GlobalStyles from "../Components/GlobalStyles"
@@ -18,7 +19,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import RBSheet from "react-native-raw-bottom-sheet";
 import FilterSheet from '../Components/FilterSheet';
 import { ServiceTaskListFilter } from '../../services/ServiceTaskListFilter';
-import Spinner from 'react-native-loading-spinner-overlay';
+import Spinner2 from 'react-native-loading-spinner-overlay';
 import ListitemTask from '../Components/ListitemTask';
 import NotifService, { onRegister, onNotif, getTokenFCM } from './../Components/NotifService';
 import CheckConnectivity from './../../Helper/CheckConnectivity'
@@ -41,14 +42,11 @@ export class HomeScreen extends React.Component {
         // },
         //     1000 * 60 * 15
         // );
-        this._kondisiAwalRefesh()
         this.notif = new NotifService(onRegister.bind(this), onNotif.bind(this));
         getTokenFCM()
-        // this._kondisiAwal()
         CheckConnectivity()
+        this._kondisiAwal()
     }
-
-
     async componentDidMount() {
         const { navigation } = this.props;
         navigation.addListener('didFocus', () => {
@@ -152,11 +150,11 @@ export class HomeScreen extends React.Component {
         }
     }
     onDelete = async (items) => {
+        this.setState({
+            spinner: true
+        })
         console.log(items)
         try {
-            this.setState({
-                spinner: false
-            })
             let filter = {
                 id: items,
             }
@@ -172,7 +170,9 @@ export class HomeScreen extends React.Component {
             } else {
                 alert(dataList.keterangan);
             }
-
+            this.setState({
+                spinner: false
+            })
         } catch (error) {
             console.log(error)
             Alert.alert("Error", error.message)
@@ -182,7 +182,6 @@ export class HomeScreen extends React.Component {
         this.props.navigation.navigate('FormTask', { dataObject: JSON.stringify(items) });
     }
     handlerOnclickEdit = (items) => {
-        console.log(items)
         this.props.navigation.navigate('FormTaskEdit', { dataObject: JSON.stringify(items) });
     }
     handlerOnclickCreate = () => {
@@ -194,7 +193,9 @@ export class HomeScreen extends React.Component {
             'Apa Anda yakin ingin Menghapus?',
             [
                 { text: 'Tidak', onPress: () => console.log('Cancel Delete'), style: 'cancel' },
-                { text: 'Hapus Sekarang', onPress: () => this.onDelete(items) },
+                {
+                    text: 'Hapus Sekarang', onPress: () => this.onDelete(items)
+                },
             ],
         );
     }
@@ -249,14 +250,12 @@ export class HomeScreen extends React.Component {
                             />
                         }
                     >
-                        <Spinner
+                        <Spinner2
                             visible={this.state.spinner}
                             textContent={'Tunggu Sebentar...'}
                             textStyle={styles.spinnerTextStyle}
                         />
-                        <List
-
-                        >
+                        <List>
                             {
                                 dataResponse.length > 0 && dataResponse ?
                                     dataResponse.map(item => {
@@ -272,7 +271,7 @@ export class HomeScreen extends React.Component {
                                             tglselesai={item.tglselesai}
                                         />
                                     })
-                                    : null
+                                    : <WaitingData />
                             }
                         </List>
                     </Content>
@@ -289,19 +288,15 @@ export class HomeScreen extends React.Component {
             </SafeAreaView>
         )
     }
-    textRender() {
-        if (this.state.showLoading) {//To show or hide 'Waiting'
-            return (
-                <Text style={styles.waiting}>
-                    Waiting.....
-                </Text>
-            )
-        }
-        else {
-            return <View />
-        }
 
-    }
+}
+const WaitingData = () => {
+    return (
+        <View style={styles.ContentWaiting}>
+            <Spinner color='green' />
+            <Text>Sedang Memuat Data.....</Text>
+        </View>
+    )
 }
 
 export default HomeScreen
@@ -316,5 +311,10 @@ const styles = new StyleSheet.create({
     text: {
         paddingHorizontal: 8,
         paddingVertical: 5,
+    },
+    ContentWaiting: {
+        textAlign: "center",
+        justifyContent: "center",
+        alignItems: "center"
     }
 });
