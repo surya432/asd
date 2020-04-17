@@ -18,7 +18,7 @@ export default CheckConnectivity = async () => {
         //code that will be called every 3 seconds 
         checkInet()
     },
-        30000
+        60000 * 5
     );
     BackgroundJob.cancelAll()
         .then(() => {
